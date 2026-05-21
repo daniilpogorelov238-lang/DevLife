@@ -65,7 +65,7 @@
         .nav-links a:hover {
             color: var(--accent);
         }
-        
+
         .hero {
             height: 100vh;
             display: flex;
@@ -102,30 +102,49 @@
             -webkit-text-fill-color: transparent;
         }
         
-        .hero p {
-            font-size: 1.4rem;
-            margin-bottom: 2rem;
+        .about-section {
+            padding: 100px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(26, 26, 46, 0.6);
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+        }
+        
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .about-text h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+        
+        .about-text p {
+            font-size: 1.15rem;
+            margin-bottom: 1.2rem;
             opacity: 0.9;
         }
         
-        .btn {
-            display: inline-block;
-            padding: 14px 32px;
-            background: transparent;
-            color: var(--accent);
-            border: 2px solid var(--accent);
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-            margin: 0 10px;
+        .about-image {
+            flex: 1;
+            min-width: 280px;
+            text-align: center;
         }
         
-        .btn:hover {
-            background: var(--accent);
-            color: #0f0f1a;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 255, 157, 0.3);
+        .about-image img {
+            width: 100%;
+            max-width: 320px;
+            border-radius: 20px;
+            border: 3px solid var(--accent);
+            box-shadow: 0 15px 30px rgba(0, 255, 157, 0.25);
         }
         
         .games-section {
@@ -229,7 +248,7 @@
             <div class="nav-links">
                 <a href="#">Главная</a>
                 <a href="#games">Игры</a>
-                <a href="#">Обо мне</a>
+                <a href="#about">Обо мне</a>
             </div>
         </div>
     </header>
@@ -251,7 +270,6 @@
         <h2 class="section-title">Мои игры</h2>
         
         <div class="games-grid">
-            <!-- Tetris -->
             <div class="game-card">
                 <img src="https://picsum.photos/600/300?random=10" alt="Тетрис">
                 <div class="game-info">
@@ -261,7 +279,6 @@
                 </div>
             </div>
             
-            <!-- Snake -->
             <div class="game-card">
                 <img src="https://picsum.photos/600/300?random=20" alt="Змейка">
                 <div class="game-info">
@@ -271,7 +288,6 @@
                 </div>
             </div>
             
-            <!-- МегаРисовалка -->
             <div class="game-card">
                 <img src="https://picsum.photos/600/300?random=30" alt="МегаРисовалка">
                 <div class="game-info">
@@ -279,6 +295,23 @@
                     <p>Создавай крутые рисунки и проявляй свою креативность!</p>
                     <a href="https://daniilpogorelov238-lang.github.io/mega-resovalka/" target="_blank" class="play-btn">Играть в МегаРисовалку →</a>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Me Section -->
+    <section id="about" class="about-section">
+        <div class="about-content">
+            <div class="about-text">
+                <h2>Обо мне</h2>
+                <p>Меня зовут Даниил. Я начинающий программист, разработчик игр и многого другого.</p>
+                <p>Моё желание работать в сфере разработки появилось изначально благодаря владельцу одного мессенджера под названием <strong>«Rossi»</strong>, который помог мне найти своё призвание в жизни.</p>
+                <p>Среди других проектов, которые я создавал, многие были не совсем практичными и актуальными до сегодняшнего дня.</p>
+                <p><strong>Надеюсь, что вам понравятся мои проекты, созданные с нуля.</strong></p>
+            </div>
+            
+            <div class="about-image">
+                <img src="https://picsum.photos/600/600?random=50" alt="Даниил">
             </div>
         </div>
     </section>
@@ -298,14 +331,14 @@
     </footer>
 
     <script>
-        // Простая анимация при скролле
-        window.addEventListener('scroll', () => {
-            const cards = document.querySelectorAll('.game-card');
-            cards.forEach(card => {
-                const cardTop = card.getBoundingClientRect().top;
-                if (cardTop < window.innerHeight - 100) {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
+        // Плавная прокрутка для ссылок
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if (this.getAttribute('href') !== '#') {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
                 }
             });
         });
