@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevLife — Игры и код</title>
+    <style>
+        :root {
+            --bg: #0f0f1a;
+            --accent: #00ff9d;
+            --text: #e0e0ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        header {
+            background: rgba(15, 15, 26, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--accent);
+        }
+        
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 80px;
+            background: url('https://picsum.photos/1920/1080?random=1') center/cover no-repeat;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 15, 26, 0.85);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #00ff9d, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin: 0 10px;
+        }
+        
+        .btn:hover {
+            background: var(--accent);
+            color: #0f0f1a;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 255, 157, 0.3);
+        }
+        
+        .games-section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 4rem;
+            color: var(--accent);
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .game-card {
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.4s, box-shadow 0.4s;
+            border: 1px solid rgba(0, 255, 157, 0.2);
+        }
+        
+        .game-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0, 255, 157, 0.25);
+        }
+        
+        .game-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+        
+        .game-info {
+            padding: 1.5rem;
+        }
+        
+        .game-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+        
+        .game-info p {
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+        
+        .play-btn {
+            background: var(--accent);
+            color: #0f0f1a;
+            padding: 12px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        
+        .play-btn:hover {
+            background: #00cc7a;
+            transform: scale(1.05);
+        }
+        
+        footer {
+            background: #0a0a12;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--accent);
+        }
+        
+        .social-links {
+            margin: 1.5rem 0;
+        }
+        
+        .social-links a {
+            color: var(--text);
+            font-size: 1.5rem;
+            margin: 0 15px;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+        
+        .social-links a:hover {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="navbar">
+            <div class="logo">DevLife</div>
+            <div class="nav-links">
+                <a href="#">Главная</a>
+                <a href="#games">Игры</a>
+                <a href="#">Проекты</a>
+                <a href="#">Обо мне</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>DevLife</h1>
+            <p>Разрабатывай. Играй. Живи.</p>
+            <p style="font-size: 1.2rem; opacity: 0.85;">Место, где код встречается с развлечениями</p>
+            <div style="margin-top: 3rem;">
+                <a href="#games" class="btn">Играть сейчас</a>
+                <a href="#" class="btn">Мои проекты</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Games Section -->
+    <section id="games" class="games-section">
+        <h2 class="section-title">Мои игры</h2>
+        
+        <div class="games-grid">
+            <!-- Tetris -->
+            <div class="game-card">
+                <img src="https://picsum.photos/600/300?random=10" alt="Тетрис">
+                <div class="game-info">
+                    <h3>Тетрис</h3>
+                    <p>Классическая аркада. Собирай линии и устанавливай новые рекорды!</p>
+                    <a href="https://daniilpogorelov238-lang.github.io/Tetris/" target="_blank" class="play-btn">Играть в Тетрис →</a>
+                </div>
+            </div>
+            
+            <!-- Snake -->
+            <div class="game-card">
+                <img src="https://picsum.photos/600/300?random=20" alt="Змейка">
+                <div class="game-info">
+                    <h3>Змейка</h3>
+                    <p>Управляй змейкой, собирай еду и становись длиннее.</p>
+                    <a href="https://daniilpogorelov238-lang.github.io/SnakeGame/" target="_blank" class="play-btn">Играть в Змейку →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="logo" style="font-size: 2.2rem; margin-bottom: 1rem;">DevLife</div>
+        <p>Создано с ❤️ для удовольствия от программирования</p>
+        
+        <div class="social-links">
+            <a href="https://rossims.ru/c/daniil_pogorelov/" target="_blank">Rossi</a>
+        </div>
+        
+        <p style="margin-top: 2rem; opacity: 0.6; font-size: 0.9rem;">
+            © 2026 DevLife. Все права защищены.
+        </p>
+    </footer>
+
+    <script>
+        // Простая анимация при скролле
+        window.addEventListener('scroll', () => {
+            const cards = document.querySelectorAll('.game-card');
+            cards.forEach(card => {
+                const cardTop = card.getBoundingClientRect().top;
+                if (cardTop < window.innerHeight - 100) {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }
+            });
+        });
+    </script>
+</body>
+                  </html>
