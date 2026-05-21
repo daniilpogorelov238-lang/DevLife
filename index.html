@@ -54,20 +54,38 @@
         .nav-links {
             display: flex;
             gap: 2rem;
+            align-items: center;
         }
         
         .nav-links a {
             color: var(--text);
             text-decoration: none;
             transition: color 0.3s;
+            font-size: 1.1rem;
         }
         
         .nav-links a:hover {
             color: var(--accent);
         }
 
+        /* Бургер-меню */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--accent);
+            transition: 0.3s;
+        }
+
         .hero {
             height: 100vh;
+            min-height: 600px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -95,17 +113,20 @@
         }
         
         .hero h1 {
-            font-size: 4.5rem;
+            font-size: 4rem;
             margin-bottom: 1rem;
             background: linear-gradient(90deg, #00ff9d, #00ccff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        .about-section, .projects-section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
         
         .about-section {
-            padding: 100px 20px;
-            max-width: 1000px;
-            margin: 0 auto;
             background: rgba(26, 26, 46, 0.6);
         }
         
@@ -127,42 +148,9 @@
             color: var(--accent);
         }
         
-        .about-text p {
-            font-size: 1.15rem;
-            margin-bottom: 1.2rem;
-            opacity: 0.9;
-        }
-        
-        .about-image {
-            flex: 1;
-            min-width: 280px;
-            text-align: center;
-        }
-        
-        .about-image img {
-            width: 100%;
-            max-width: 320px;
-            border-radius: 20px;
-            border: 3px solid var(--accent);
-            box-shadow: 0 15px 30px rgba(0, 255, 157, 0.25);
-        }
-        
-        .projects-section {
-            padding: 100px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .section-title {
-            text-align: center;
-            font-size: 2.8rem;
-            margin-bottom: 4rem;
-            color: var(--accent);
-        }
-        
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
         }
         
@@ -181,7 +169,7 @@
         
         .project-card img {
             width: 100%;
-            height: 220px;
+            height: 200px;
             object-fit: cover;
         }
         
@@ -190,16 +178,11 @@
         }
         
         .project-info h3 {
-            font-size: 1.8rem;
+            font-size: 1.7rem;
             margin-bottom: 0.5rem;
             color: var(--accent);
         }
-        
-        .project-info p {
-            opacity: 0.8;
-            margin-bottom: 1.5rem;
-        }
-        
+
         .play-btn {
             background: var(--accent);
             color: #0f0f1a;
@@ -209,34 +192,68 @@
             font-weight: bold;
             display: inline-block;
             transition: all 0.3s;
+            margin-top: 10px;
         }
         
         .play-btn:hover {
             background: #00cc7a;
             transform: scale(1.05);
         }
-        
+
         footer {
             background: #0a0a12;
             padding: 3rem 2rem;
             text-align: center;
             border-top: 1px solid var(--accent);
         }
-        
-        .social-links {
-            margin: 1.5rem 0;
+
+        /* Мобильная адаптация */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: #0f0f1a;
+                flex-direction: column;
+                align-items: center;
+                justify-content: start;
+                padding-top: 50px;
+                transition: 0.4s;
+                gap: 2rem;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .about-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .about-text h2 {
+                font-size: 2.3rem;
+            }
         }
-        
-        .social-links a {
-            color: var(--text);
-            font-size: 1.5rem;
-            margin: 0 15px;
-            transition: color 0.3s;
-            text-decoration: none;
-        }
-        
-        .social-links a:hover {
-            color: var(--accent);
+
+        @media (max-width: 480px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .project-card img {
+                height: 180px;
+            }
         }
     </style>
 </head>
@@ -245,10 +262,17 @@
     <header>
         <div class="navbar">
             <div class="logo">DevLife</div>
-            <div class="nav-links">
+            
+            <div class="nav-links" id="navLinks">
                 <a href="#">Главная</a>
                 <a href="#about">Обо мне</a>
                 <a href="#projects">Мои проекты</a>
+            </div>
+
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
     </header>
@@ -258,14 +282,14 @@
         <div class="hero-content">
             <h1>DevLife</h1>
             <p>Разрабатывай. Играй. Живи.</p>
-            <p style="font-size: 1.2rem; opacity: 0.85;">Место, где код встречается с развлечениями</p>
-            <div style="margin-top: 3rem;">
-                <a href="#projects" class="btn">Посмотреть проекты</a>
+            <p style="font-size: 1.1rem; opacity: 0.85;">Место, где код встречается с развлечениями</p>
+            <div style="margin-top: 2.5rem;">
+                <a href="#projects" class="btn" style="background: var(--accent); color: #0f0f1a; padding: 14px 32px; border-radius: 50px; text-decoration: none; font-weight: bold;">Посмотреть проекты</a>
             </div>
         </div>
     </section>
 
-    <!-- About Me Section -->
+    <!-- About Me -->
     <section id="about" class="about-section">
         <div class="about-content">
             <div class="about-text">
@@ -277,12 +301,12 @@
             </div>
             
             <div class="about-image">
-                <img src="https://picsum.photos/600/600?random=50" alt="Даниил">
+                <img src="https://picsum.photos/600/600?random=50" alt="Даниил" style="max-width: 280px;">
             </div>
         </div>
     </section>
 
-    <!-- Projects Section -->
+    <!-- Projects -->
     <section id="projects" class="projects-section">
         <h2 class="section-title">Мои проекты</h2>
         
@@ -292,7 +316,7 @@
                 <div class="project-info">
                     <h3>Тетрис</h3>
                     <p>Классическая аркада. Собирай линии и устанавливай новые рекорды!</p>
-                    <a href="https://daniilpogorelov238-lang.github.io/Tetris/" target="_blank" class="play-btn">Открыть проект →</a>
+                    <a href="https://daniilpogorelov238-lang.github.io/Tetris/" target="_blank" class="play-btn">Открыть →</a>
                 </div>
             </div>
             
@@ -301,7 +325,7 @@
                 <div class="project-info">
                     <h3>Змейка</h3>
                     <p>Управляй змейкой, собирай еду и становись длиннее.</p>
-                    <a href="https://daniilpogorelov238-lang.github.io/SnakeGame/" target="_blank" class="play-btn">Открыть проект →</a>
+                    <a href="https://daniilpogorelov238-lang.github.io/SnakeGame/" target="_blank" class="play-btn">Открыть →</a>
                 </div>
             </div>
             
@@ -310,7 +334,7 @@
                 <div class="project-info">
                     <h3>МегаРисовалка</h3>
                     <p>Создавай крутые рисунки и проявляй свою креативность!</p>
-                    <a href="https://daniilpogorelov238-lang.github.io/mega-resovalka/" target="_blank" class="play-btn">Открыть проект →</a>
+                    <a href="https://daniilpogorelov238-lang.github.io/mega-resovalka/" target="_blank" class="play-btn">Открыть →</a>
                 </div>
             </div>
 
@@ -319,7 +343,7 @@
                 <div class="project-info">
                     <h3>Rootlab</h3>
                     <p>Интерактивная лаборатория для экспериментов и исследований.</p>
-                    <a href="https://daniilpogorelov238-lang.github.io/RootLab2/" target="_blank" class="play-btn">Открыть проект →</a>
+                    <a href="https://daniilpogorelov238-lang.github.io/RootLab2/" target="_blank" class="play-btn">Открыть →</a>
                 </div>
             </div>
         </div>
@@ -330,17 +354,24 @@
         <div class="logo" style="font-size: 2.2rem; margin-bottom: 1rem;">DevLife</div>
         <p>Создано с ❤️ для удовольствия от программирования</p>
         
-        <div class="social-links">
-            <a href="https://rossims.ru/c/daniil_pogorelov/" target="_blank">Rossi</a>
+        <div class="social-links" style="margin: 1.5rem 0;">
+            <a href="https://rossims.ru/c/daniil_pogorelov/" target="_blank" style="font-size: 1.6rem;">Rossi</a>
         </div>
         
-        <p style="margin-top: 2rem; opacity: 0.6; font-size: 0.9rem;">
-            2026 DevLife.
+        <p style="opacity: 0.6; font-size: 0.9rem;">
         </p>
     </footer>
 
     <script>
-        // Плавная прокрутка для ссылок
+        // Бургер-меню
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Плавная прокрутка
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 if (this.getAttribute('href') !== '#') {
@@ -348,6 +379,8 @@
                     document.querySelector(this.getAttribute('href')).scrollIntoView({
                         behavior: 'smooth'
                     });
+                    // Закрываем меню на мобильных
+                    navLinks.classList.remove('active');
                 }
             });
         });
