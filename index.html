@@ -24,15 +24,15 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
             background: var(--bg);
             color: var(--text);
-            line-height: 1.6;
+            line-height: 1.65;
             transition: all 0.4s ease;
         }
 
         header {
-            background: rgba(15, 15, 26, 0.97);
+            background: rgba(15, 15, 26, 0.98);
             backdrop-filter: blur(12px);
             position: fixed;
             width: 100%;
@@ -42,24 +42,24 @@
         }
 
         .navbar {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
-            padding: 1.1rem 2rem;
+            padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 2.1rem;
-            font-weight: bold;
+            font-size: 2.2rem;
+            font-weight: 700;
             color: var(--accent);
-            text-shadow: 0 0 15px var(--accent);
+            letter-spacing: -1px;
         }
 
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 2.2rem;
             align-items: center;
         }
 
@@ -67,7 +67,7 @@
             color: var(--text);
             text-decoration: none;
             font-weight: 500;
-            transition: 0.3s;
+            transition: color 0.3s;
         }
 
         .nav-links a:hover { color: var(--accent); }
@@ -75,10 +75,9 @@
         .theme-toggle {
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 1.7rem;
             cursor: pointer;
             padding: 8px;
-            border-radius: 50%;
         }
 
         .hamburger {
@@ -89,161 +88,141 @@
         }
 
         .hamburger span {
-            width: 28px;
+            width: 30px;
             height: 3px;
             background: var(--accent);
             transition: 0.3s;
         }
 
-        /* Hero */
+        /* Основные секции */
+        .section {
+            padding: 100px 5%;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
         .hero {
             height: 100vh;
-            min-height: 650px;
+            min-height: 620px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            background: url('https://picsum.photos/1920/1080?random=42') center/cover no-repeat;
+            background: linear-gradient(rgba(15,15,26,0.85), rgba(15,15,26,0.85)), url('https://picsum.photos/1920/1080?random=42') center/cover;
             position: relative;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(15, 15, 26, 0.8);
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 850px;
-            padding: 0 20px;
-        }
-
-        .hero h1 {
-            font-size: 4.2rem;
+        .hero-content h1 {
+            font-size: clamp(2.8rem, 8vw, 5rem);
             background: linear-gradient(90deg, var(--accent), #00ccff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 1rem;
         }
 
-        /* Sections */
-        .section {
-            padding: 110px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
         .section-title {
             text-align: center;
-            font-size: 2.8rem;
-            margin-bottom: 4rem;
+            font-size: clamp(2.2rem, 6vw, 2.8rem);
+            margin-bottom: 3.5rem;
             color: var(--accent);
         }
 
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.8rem;
         }
 
         .project-card {
             background: var(--card);
-            border-radius: 18px;
+            border-radius: 20px;
             overflow: hidden;
-            transition: all 0.4s;
+            transition: all 0.4s ease;
             border: 1px solid rgba(0, 255, 157, 0.15);
         }
 
         .project-card:hover {
-            transform: translateY(-12px);
+            transform: translateY(-15px);
             box-shadow: 0 25px 50px rgba(0, 255, 157, 0.25);
         }
 
         .project-card img {
             width: 100%;
-            height: 230px;
+            height: 210px;
             object-fit: cover;
         }
 
         .project-info {
-            padding: 1.6rem;
-        }
-
-        .project-info h3 {
-            color: var(--accent);
-            margin-bottom: 0.6rem;
+            padding: 1.5rem;
         }
 
         .play-btn {
             background: var(--accent);
             color: #0f0f1a;
-            padding: 12px 30px;
+            padding: 12px 28px;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 600;
             display: inline-block;
-            margin-top: 10px;
+            margin-top: 12px;
             transition: 0.3s;
         }
 
-        .play-btn:hover { transform: scale(1.08); }
-
-        /* Contact */
+        /* Контакты */
         .contact-section {
             text-align: center;
-            padding: 90px 20px;
+            padding: 90px 5%;
             background: rgba(26, 26, 46, 0.6);
         }
 
         .contact-links {
             display: flex;
             justify-content: center;
-            gap: 2rem;
+            gap: 1.8rem;
             flex-wrap: wrap;
-            margin-top: 1.5rem;
         }
 
         .contact-card {
             background: var(--card);
-            padding: 25px 35px;
-            border-radius: 16px;
+            padding: 22px 30px;
+            border-radius: 18px;
             text-decoration: none;
             color: var(--text);
-            min-width: 170px;
+            min-width: 160px;
             transition: 0.3s;
         }
 
         .contact-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 255, 157, 0.3);
         }
 
         footer {
             background: #0a0a12;
-            padding: 3rem 2rem;
+            padding: 2.5rem 5%;
             text-align: center;
             border-top: 1px solid var(--accent);
         }
 
+        /* Мобильная оптимизация */
         @media (max-width: 768px) {
             .hamburger { display: flex; }
             .nav-links {
                 position: fixed;
-                top: 75px;
+                top: 70px;
                 left: -100%;
                 width: 100%;
-                height: calc(100vh - 75px);
+                height: calc(100vh - 70px);
                 background: var(--bg);
                 flex-direction: column;
-                padding-top: 60px;
+                padding-top: 50px;
                 gap: 2.5rem;
+                font-size: 1.35rem;
                 transition: 0.4s;
             }
             .nav-links.active { left: 0; }
-            .hero h1 { font-size: 3rem; }
+            
+            .section { padding: 80px 5%; }
+            .projects-grid { gap: 1.4rem; }
         }
     </style>
 </head>
@@ -269,7 +248,7 @@
     <section class="hero">
         <div class="hero-content">
             <h1>DevLife</h1>
-            <p style="font-size: 1.4rem; margin-bottom: 2rem;">Разрабатывай. Играй. Живи.</p>
+            <p style="font-size: 1.35rem; max-width: 600px; margin: 0 auto 2rem;">Разрабатывай. Играй. Живи.</p>
             <a href="#projects" class="play-btn">Посмотреть проекты</a>
         </div>
     </section>
@@ -277,9 +256,9 @@
     <!-- Обо мне -->
     <section id="about" class="section">
         <h2 class="section-title">Обо мне</h2>
-        <div style="max-width: 800px; margin: 0 auto; text-align: center; font-size: 1.15rem;">
+        <div style="max-width: 720px; margin: 0 auto; text-align: center; font-size: 1.1rem;">
             <p>Меня зовут Даниил. Я начинающий программист, разработчик игр и многого другого.</p>
-            <p>Моё желание работать в сфере разработки появилось благодаря владельцу мессенджера <strong>«Rossi»</strong>, который помог мне найти своё призвание в жизни.</p>
+            <p style="margin: 1.2rem 0;">Моё желание работать в сфере разработки появилось благодаря владельцу мессенджера <strong>«Rossi»</strong>, который помог мне найти своё призвание в жизни.</p>
             <p><strong>Надеюсь, вам понравятся мои проекты, созданные с нуля.</strong></p>
         </div>
     </section>
@@ -310,7 +289,7 @@
                 <img src="https://picsum.photos/id/1016/800/400" alt="МегаРисовалка">
                 <div class="project-info">
                     <h3>МегаРисовалка</h3>
-                    <p>Креативный редактор рисунков</p>
+                    <p>Креативный редактор</p>
                     <a href="https://daniilpogorelov238-lang.github.io/mega-resovalka/" target="_blank" class="play-btn">Открыть →</a>
                 </div>
             </div>
@@ -329,15 +308,15 @@
     <!-- Связаться -->
     <section id="contact" class="contact-section">
         <h2 class="section-title">Связаться со мной</h2>
-        <p style="margin-bottom: 2.5rem; font-size: 1.2rem;">Буду рад новым знакомствам и предложениям!</p>
-
+        <p style="margin-bottom: 2.5rem; opacity: 0.9;">Буду рад новым знакомствам и идеям!</p>
+        
         <div class="contact-links">
-            <a href="https://t.me/daniil_pogorelov_9" target="_blank" class="contact-card"> <!-- ← Замени ссылку -->
-                <span style="https://t.me/daniil_pogorelov_9-size: 3rem; display: block; margin-bottom: 10px;">✈️</span>
+            <a href="https://t.me/твоя_ссылка" target="_blank" class="contact-card"> <!-- ← Замени ссылку -->
+                <span style="font-size: 2.8rem; display: block; margin-bottom: 8px;">✈️</span>
                 <strong>Telegram</strong>
             </a>
             <a href="https://rossims.ru/c/daniil_pogorelov/" target="_blank" class="contact-card">
-                <span style="font-size: 3rem; display: block; margin-bottom: 10px; color: var(--accent);">R</span>
+                <span style="font-size: 2.8rem; display: block; margin-bottom: 8px; color: var(--accent);">R</span>
                 <strong>Rossi</strong>
             </a>
         </div>
@@ -345,39 +324,38 @@
 
     <!-- Footer -->
     <footer>
-        <div class="logo" style="font-size: 2.3rem; margin-bottom: 1rem;">DevLife</div>
+        <div class="logo" style="font-size: 2.3rem; margin-bottom: 0.8rem;">DevLife</div>
         <p>Создано с ❤️ для удовольствия от программирования</p>
-        <p style="margin-top: 1.5rem; opacity: 0.6;"> 2026 DevLife</p>
+        <p style="margin-top: 1.5rem; opacity: 0.6; font-size: 0.95rem;">© 2026 DevLife. Все права защищены.</p>
     </footer>
 
     <script>
-        // Темная / светлая тема
+        // Темная/светлая тема
         const toggle = document.getElementById('themeToggle');
-        const currentTheme = localStorage.getItem('theme') || 
+        let theme = localStorage.getItem('theme') || 
             (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-
-        document.documentElement.setAttribute('data-theme', currentTheme);
-        toggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+        
+        document.documentElement.setAttribute('data-theme', theme);
+        toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
 
         toggle.addEventListener('click', () => {
-            const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            toggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+            theme = theme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            toggle.textContent = theme === 'dark' ? '☀️' : '🌙';
         });
 
-        // Бургер меню
+        // Мобильное меню
         document.getElementById('hamburger').addEventListener('click', () => {
             document.getElementById('navLinks').classList.toggle('active');
         });
 
         // Плавная прокрутка
         document.querySelectorAll('a[href^="#"]').forEach(link => {
-            link.addEventListener('click', (e) => {
+            link.addEventListener('click', e => {
                 e.preventDefault();
-                document.querySelector(link.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                document.querySelector(link.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('navLinks').classList.remove('active');
             });
         });
     </script>
