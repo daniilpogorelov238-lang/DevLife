@@ -12,7 +12,6 @@
             --card: rgba(26, 26, 46, 0.95);
         }
 
-        /* Светлая тема */
         .light-theme {
             --bg: #f4f6f9;
             --accent: #00b36b;
@@ -27,17 +26,29 @@
             background: var(--bg);
             color: var(--text);
             line-height: 1.65;
-            transition: background 0.4s, color 0.4s;
+            transition: all 0.4s ease;
         }
 
-        header, .contact-section, footer {
-            transition: all 0.4s;
+        header {
+            background: rgba(15, 15, 26, 0.98);
+            backdrop-filter: blur(12px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
         }
 
-        /* Остальные стили оставлены без изменений (как в предыдущей версии) */
-        .navbar { max-width: 1300px; margin: 0 auto; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; }
+        .navbar {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         .logo { font-size: 2.2rem; font-weight: 700; color: var(--accent); }
-        .nav-links { display: flex; gap: 2.2rem; align-items: center; }
+        .nav-links { display: flex; gap: 2rem; align-items: center; }
         .nav-links a { color: var(--text); text-decoration: none; font-weight: 500; }
         .nav-links a:hover { color: var(--accent); }
 
@@ -46,20 +57,52 @@
         .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
         .hamburger span { width: 30px; height: 3px; background: var(--accent); }
 
-        .hero { height: 100vh; min-height: 620px; display: flex; align-items: center; justify-content: center; text-align: center; 
-                 background: linear-gradient(rgba(15,15,26,0.85), rgba(15,15,26,0.85)), url('https://picsum.photos/1920/1080?random=42') center/cover; }
-        .hero h1 { font-size: clamp(2.8rem, 8vw, 5rem); background: linear-gradient(90deg, var(--accent), #00ccff); 
-                    -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero {
+            height: 100vh;
+            min-height: 620px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(rgba(15,15,26,0.85), rgba(15,15,26,0.85)), url('https://picsum.photos/1920/1080?random=42') center/cover;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 8vw, 5rem);
+            background: linear-gradient(90deg, var(--accent), #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
         .section { padding: 100px 5%; max-width: 1300px; margin: 0 auto; }
-        .section-title { text-align: center; font-size: clamp(2.2rem, 6vw, 2.8rem); margin-bottom: 3.5rem; color: var(--accent); }
+        .section-title { text-align: center; font-size: clamp(2.2rem, 6vw, 2.8rem); margin-bottom: 3rem; color: var(--accent); }
 
-        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.8rem; }
-        .project-card { background: var(--card); border-radius: 20px; overflow: hidden; transition: all 0.4s; }
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.8rem;
+        }
+
+        .project-card {
+            background: var(--card);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s;
+        }
+
         .project-card:hover { transform: translateY(-15px); box-shadow: 0 25px 50px rgba(0, 255, 157, 0.25); }
         .project-card img { width: 100%; height: 210px; object-fit: cover; }
 
-        .play-btn { background: var(--accent); color: #0f0f1a; padding: 12px 28px; border-radius: 50px; text-decoration: none; font-weight: 600; display: inline-block; margin-top: 12px; }
+        .play-btn {
+            background: var(--accent);
+            color: #0f0f1a;
+            padding: 12px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 12px;
+        }
 
         .contact-section { text-align: center; padding: 90px 5%; background: rgba(26, 26, 46, 0.6); }
         .contact-links { display: flex; justify-content: center; gap: 1.8rem; flex-wrap: wrap; }
@@ -96,46 +139,117 @@
         </div>
     </header>
 
-    <!-- Hero, About, Projects, Contact, Footer — без изменений (как в предыдущей версии) -->
-    <!-- ... (вставь сюда остальной HTML из предыдущего сообщения) ... -->
+    <!-- Hero -->
+    <section class="hero">
+        <div style="text-align: center; z-index: 2; position: relative;">
+            <h1>DevLife</h1>
+            <p style="font-size: 1.35rem; margin: 1rem 0;">Разрабатывай. Играй. Живи.</p>
+            <a href="#projects" class="play-btn">Посмотреть проекты</a>
+        </div>
+    </section>
+
+    <!-- Обо мне -->
+    <section id="about" class="section">
+        <h2 class="section-title">Обо мне</h2>
+        <div style="max-width: 720px; margin: 0 auto; text-align: center;">
+            <p>Меня зовут Даниил. Я начинающий программист, разработчик игр и многого другого.</p>
+            <p style="margin: 1.2rem 0;">Моё желание работать в сфере разработки появилось благодаря владельцу мессенджера <strong>«Rossi»</strong>, который помог мне найти своё призвание в жизни.</p>
+            <p><strong>Надеюсь, вам понравятся мои проекты, созданные с нуля.</strong></p>
+        </div>
+    </section>
+
+    <!-- Мои проекты -->
+    <section id="projects" class="section">
+        <h2 class="section-title">Мои проекты</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <img src="https://picsum.photos/id/1015/800/400" alt="Тетрис">
+                <div style="padding: 1.5rem;">
+                    <h3>Тетрис</h3>
+                    <p>Классическая аркада</p>
+                    <a href="https://daniilpogorelov238-lang.github.io/Tetris/" target="_blank" class="play-btn">Открыть →</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <img src="https://picsum.photos/id/201/800/400" alt="Змейка">
+                <div style="padding: 1.5rem;">
+                    <h3>Змейка</h3>
+                    <p>Классическая змейка</p>
+                    <a href="https://daniilpogorelov238-lang.github.io/SnakeGame/" target="_blank" class="play-btn">Открыть →</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <img src="https://picsum.photos/id/1016/800/400" alt="МегаРисовалка">
+                <div style="padding: 1.5rem;">
+                    <h3>МегаРисовалка</h3>
+                    <p>Креативный редактор</p>
+                    <a href="https://daniilpogorelov238-lang.github.io/mega-resovalka/" target="_blank" class="play-btn">Открыть →</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <img src="https://picsum.photos/id/870/800/400" alt="Rootlab">
+                <div style="padding: 1.5rem;">
+                    <h3>Rootlab</h3>
+                    <p>Интерактивная лаборатория</p>
+                    <a href="https://daniilpogorelov238-lang.github.io/RootLab2/" target="_blank" class="play-btn">Открыть →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Связаться -->
+    <section id="contact" class="contact-section">
+        <h2 class="section-title">Связаться со мной</h2>
+        <p style="margin-bottom: 2.5rem; opacity: 0.9;">Буду рад новым знакомствам и идеям!</p>
+        
+        <div class="contact-links">
+            <a href="https://t.me/твоя_ссылка" target="_blank" class="contact-card">
+                <span style="font-size: 2.8rem;">✈️</span><br>
+                <strong>Telegram</strong>
+            </a>
+            <a href="https://rossims.ru/c/daniil_pogorelov/" target="_blank" class="contact-card">
+                <span style="font-size: 2.8rem; color: var(--accent);">R</span><br>
+                <strong>Rossi</strong>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="logo" style="font-size: 2.3rem; margin-bottom: 0.8rem;">DevLife</div>
+        <p>Создано с ❤️ для удовольствия от программирования</p>
+        <p style="margin-top: 1.5rem; opacity: 0.6;">2026 DevLife</p>
+    </footer>
 
     <script>
         const themeToggle = document.getElementById('themeToggle');
         const body = document.body;
 
-        // Загрузка сохранённой темы
-        function loadTheme() {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') {
-                body.classList.add('light-theme');
-                themeToggle.textContent = '☀️';
-            } else {
-                body.classList.remove('light-theme');
-                themeToggle.textContent = '🌙';
-            }
+        // Загрузка темы
+        if (localStorage.getItem('theme') === 'light') {
+            body.classList.add('light-theme');
+            themeToggle.textContent = '☀️';
+        } else {
+            themeToggle.textContent = '🌙';
         }
 
-        // Переключение темы
+        // Переключение
         themeToggle.addEventListener('click', () => {
-            if (body.classList.contains('light-theme')) {
-                body.classList.remove('light-theme');
-                localStorage.setItem('theme', 'dark');
-                themeToggle.textContent = '🌙';
-            } else {
-                body.classList.add('light-theme');
-                localStorage.setItem('theme', 'light');
-                themeToggle.textContent = '☀️';
-            }
+            body.classList.toggle('light-theme');
+            const isLight = body.classList.contains('light-theme');
+            themeToggle.textContent = isLight ? '☀️' : '🌙';
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
         });
 
-        // Инициализация
-        loadTheme();
-
-        // Бургер-меню и прокрутка (без изменений)
+        // Мобильное меню
         document.getElementById('hamburger').addEventListener('click', () => {
             document.getElementById('navLinks').classList.toggle('active');
         });
 
+        // Плавная прокрутка
         document.querySelectorAll('a[href^="#"]').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
