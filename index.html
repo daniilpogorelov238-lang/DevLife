@@ -45,50 +45,31 @@
         .nav-links a { color: var(--text); text-decoration: none; font-weight: 500; }
         .nav-links a:hover { color: var(--accent); }
 
+        .admin-btn {
+            background: #ff8800;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+
         .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
         .hamburger span { width: 30px; height: 3px; background: var(--accent); }
 
-        .hero {
-            height: 100vh;
-            min-height: 650px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            background: linear-gradient(rgba(15,15,26,0.85), rgba(15,15,26,0.85)), url('https://picsum.photos/1920/1080?random=42') center/cover;
-        }
+        .hero { height: 100vh; min-height: 620px; display: flex; align-items: center; justify-content: center; text-align: center;
+                 background: linear-gradient(rgba(15,15,26,0.85), rgba(15,15,26,0.85)), url('https://picsum.photos/1920/1080?random=42') center/cover; }
 
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 5.5rem);
-            color: var(--accent);
-        }
+        .hero h1 { font-size: clamp(3rem, 8vw, 5.5rem); color: var(--accent); }
 
         .section { padding: 100px 5%; max-width: 1300px; margin: 0 auto; }
         .section-title { text-align: center; font-size: 2.8rem; margin-bottom: 3.5rem; color: var(--accent); }
 
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            background: var(--card);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: all 0.4s;
-        }
-
-        .project-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 20px 40px rgba(0, 255, 157, 0.3);
-        }
-
-        .project-card img {
-            width: 100%;
-            height: 230px;
-            object-fit: cover;
-        }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+        .project-card { background: var(--card); border-radius: 20px; overflow: hidden; transition: all 0.4s; }
+        .project-card:hover { transform: translateY(-12px); box-shadow: 0 20px 40px rgba(0, 255, 157, 0.3); }
+        .project-card img { width: 100%; height: 230px; object-fit: cover; }
 
         .play-btn {
             background: var(--accent);
@@ -98,10 +79,40 @@
             text-decoration: none;
             font-weight: 600;
             display: inline-block;
-            margin: 15px 0;
+            margin-top: 12px;
         }
 
         .contact-section { text-align: center; padding: 90px 5%; background: rgba(26, 26, 46, 0.6); }
+
+        /* Модальные окна */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .modal input, .modal textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--accent);
+            border-radius: 10px;
+            color: var(--text);
+        }
 
         @media (max-width: 768px) {
             .hamburger { display: flex; }
@@ -123,6 +134,7 @@
                 <a href="#about">Обо мне</a>
                 <a href="#projects">Мои проекты</a>
                 <a href="#contact">Связаться</a>
+                <button class="admin-btn" id="adminBtn">Админ панель</button>
             </div>
             <div class="hamburger" id="hamburger">
                 <span></span><span></span><span></span>
@@ -149,43 +161,7 @@
 
     <section id="projects" class="section">
         <h2 class="section-title">Мои проекты</h2>
-        <div class="projects-grid">
-            <div class="project-card">
-                <img src="https://picsum.photos/id/1015/800/400" alt="Тетрис">
-                <div style="padding: 1.6rem; text-align: center;">
-                    <h3>Тетрис</h3>
-                    <p>Классическая аркада</p>
-                    <a href="https://daniilpogorelov238-lang.github.io/Tetris/" target="_blank" class="play-btn">Открыть →</a>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <img src="https://picsum.photos/id/201/800/400" alt="Змейка">
-                <div style="padding: 1.6rem; text-align: center;">
-                    <h3>Змейка</h3>
-                    <p>Классическая змейка</p>
-                    <a href="https://daniilpogorelov238-lang.github.io/SnakeGame/" target="_blank" class="play-btn">Открыть →</a>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <img src="https://picsum.photos/id/1016/800/400" alt="МегаРисовалка">
-                <div style="padding: 1.6rem; text-align: center;">
-                    <h3>МегаРисовалка</h3>
-                    <p>Креативный редактор</p>
-                    <a href="https://daniilpogorelov238-lang.github.io/mega-resovalka/" target="_blank" class="play-btn">Открыть →</a>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <img src="https://picsum.photos/id/870/800/400" alt="Rootlab">
-                <div style="padding: 1.6rem; text-align: center;">
-                    <h3>Rootlab</h3>
-                    <p>Интерактивная лаборатория</p>
-                    <a href="https://daniilpogorelov238-lang.github.io/RootLab2/" target="_blank" class="play-btn">Открыть →</a>
-                </div>
-            </div>
-        </div>
+        <div class="projects-grid" id="projectsGrid"></div>
     </section>
 
     <section id="contact" class="contact-section">
@@ -198,22 +174,124 @@
     </section>
 
     <footer>
-        <p>2026 DevLife • Создано с ❤️</p>
+        <p> 2026 DevLife • Создано с ❤️</p>
     </footer>
 
+    <!-- Админское модальное окно -->
+    <div class="modal" id="adminModal">
+        <div class="modal-content">
+            <h3>Админ панель</h3>
+            <input type="password" id="adminPassword" placeholder="Введите пароль" style="margin-bottom:15px;">
+            <button onclick="checkPassword()" class="play-btn" style="width:100%;">Войти</button>
+            <button onclick="closeAdminModal()" style="width:100%; margin-top:10px; background:#666;">Отмена</button>
+        </div>
+    </div>
+
+    <!-- Форма добавления проекта -->
+    <div class="modal" id="projectModal">
+        <div class="modal-content">
+            <h3>Добавить проект</h3>
+            <input type="text" id="projTitle" placeholder="Название проекта">
+            <input type="text" id="projDesc" placeholder="Краткое описание">
+            <input type="text" id="projImg" placeholder="Ссылка на картинку">
+            <input type="text" id="projUrl" placeholder="Ссылка на проект">
+            
+            <button onclick="saveProject()" class="play-btn" style="width:100%; margin-top:15px;">Сохранить проект</button>
+            <button onclick="closeProjectModal()" style="width:100%; margin-top:10px; background:#666;">Отмена</button>
+        </div>
+    </div>
+
     <script>
+        let projects = JSON.parse(localStorage.getItem('myProjects')) || [
+            { id: 1, title: "Тетрис", desc: "Классическая аркада", img: "https://picsum.photos/id/1015/800/400", url: "https://daniilpogorelov238-lang.github.io/Tetris/" },
+            { id: 2, title: "Змейка", desc: "Классическая змейка", img: "https://picsum.photos/id/201/800/400", url: "https://daniilpogorelov238-lang.github.io/SnakeGame/" },
+            { id: 3, title: "МегаРисовалка", desc: "Креативный редактор", img: "https://picsum.photos/id/1016/800/400", url: "https://daniilpogorelov238-lang.github.io/mega-resovalka/" },
+            { id: 4, title: "Rootlab", desc: "Интерактивная лаборатория", img: "https://picsum.photos/id/870/800/400", url: "https://daniilpogorelov238-lang.github.io/RootLab2/" }
+        ];
+
+        function renderProjects() {
+            const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = '';
+            projects.forEach(project => {
+                const card = document.createElement('div');
+                card.className = 'project-card';
+                card.innerHTML = `
+                    <img src="${project.img}" alt="${project.title}">
+                    <div style="padding: 1.5rem; text-align: center;">
+                        <h3>${project.title}</h3>
+                        <p>${project.desc}</p>
+                        <a href="${project.url}" target="_blank" class="play-btn">Открыть →</a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Админ панель
+        let isAdmin = false;
+        const ADMIN_PASSWORD = "admin123";   // ← Измени пароль здесь
+
+        document.getElementById('adminBtn').addEventListener('click', () => {
+            document.getElementById('adminModal').style.display = 'flex';
+        });
+
+        window.checkPassword = function() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                isAdmin = true;
+                closeAdminModal();
+                alert("✅ Доступ разрешён! Теперь вы можете добавлять проекты.");
+                showAddProjectModal();
+            } else {
+                alert("❌ Неверный пароль!");
+            }
+        };
+
+        window.closeAdminModal = function() {
+            document.getElementById('adminModal').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        };
+
+        function showAddProjectModal() {
+            document.getElementById('projectModal').style.display = 'flex';
+        }
+
+        window.closeProjectModal = function() {
+            document.getElementById('projectModal').style.display = 'none';
+        };
+
+        window.saveProject = function() {
+            const title = document.getElementById('projTitle').value.trim();
+            const desc = document.getElementById('projDesc').value.trim();
+            const img = document.getElementById('projImg').value.trim();
+            const url = document.getElementById('projUrl').value.trim();
+
+            if (!title || !desc || !img || !url) {
+                alert("Заполните все поля!");
+                return;
+            }
+
+            projects.push({
+                id: Date.now(),
+                title,
+                desc,
+                img,
+                url
+            });
+
+            localStorage.setItem('myProjects', JSON.stringify(projects));
+            renderProjects();
+            closeProjectModal();
+            alert("Проект успешно добавлен!");
+        };
+
         // Мобильное меню
         document.getElementById('hamburger').addEventListener('click', () => {
             document.getElementById('navLinks').classList.toggle('active');
         });
 
-        // Плавная прокрутка
-        document.querySelectorAll('a[href^="#"]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                document.querySelector(link.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
-            });
-        });
+        // Инициализация
+        renderProjects();
     </script>
 </body>
 </html>
