@@ -12,13 +12,6 @@
             --card: rgba(26, 26, 46, 0.95);
         }
 
-        .light-theme {
-            --bg: #f4f6f9;
-            --accent: #00b36b;
-            --text: #1a1a2e;
-            --card: rgba(255, 255, 255, 0.98);
-        }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -26,7 +19,6 @@
             background: var(--bg);
             color: var(--text);
             line-height: 1.65;
-            transition: all 0.4s ease;
         }
 
         header {
@@ -47,28 +39,18 @@
             align-items: center;
         }
 
-        .logo { font-size: 2.2rem; font-weight: 700; color: var(--accent); }
+        .logo { font-size: 2.3rem; font-weight: 700; color: var(--accent); }
+
         .nav-links { display: flex; gap: 2rem; align-items: center; }
         .nav-links a { color: var(--text); text-decoration: none; font-weight: 500; }
         .nav-links a:hover { color: var(--accent); }
-
-        .theme-toggle { background: none; border: none; font-size: 1.7rem; cursor: pointer; }
-        .admin-btn, .suggest-btn {
-            background: var(--accent);
-            color: #0f0f1a;
-            padding: 8px 18px;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-        }
 
         .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
         .hamburger span { width: 30px; height: 3px; background: var(--accent); }
 
         .hero {
             height: 100vh;
-            min-height: 620px;
+            min-height: 650px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -77,35 +59,17 @@
         }
 
         .hero h1 {
-            font-size: clamp(2.8rem, 8vw, 5rem);
-            background: linear-gradient(90deg, var(--accent), #00ccff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            color: var(--accent);
         }
 
         .section { padding: 100px 5%; max-width: 1300px; margin: 0 auto; }
-        .section-title { text-align: center; font-size: clamp(2.2rem, 6vw, 2.8rem); margin-bottom: 3rem; color: var(--accent); }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 1.2rem;
-            text-align: center;
-        }
-
-        .skill-card {
-            background: var(--card);
-            padding: 1.5rem 1rem;
-            border-radius: 16px;
-            transition: 0.3s;
-        }
-
-        .skill-card:hover { transform: translateY(-8px); }
+        .section-title { text-align: center; font-size: 2.8rem; margin-bottom: 3.5rem; color: var(--accent); }
 
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.8rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
         }
 
         .project-card {
@@ -115,8 +79,16 @@
             transition: all 0.4s;
         }
 
-        .project-card:hover { transform: translateY(-15px); box-shadow: 0 25px 50px rgba(0, 255, 157, 0.25); }
-        .project-card img { width: 100%; height: 210px; object-fit: cover; }
+        .project-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(0, 255, 157, 0.3);
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+        }
 
         .play-btn {
             background: var(--accent);
@@ -126,48 +98,17 @@
             text-decoration: none;
             font-weight: 600;
             display: inline-block;
-            margin-top: 12px;
+            margin: 15px 0;
         }
 
         .contact-section { text-align: center; padding: 90px 5%; background: rgba(26, 26, 46, 0.6); }
-        .contact-links { display: flex; justify-content: center; gap: 1.8rem; flex-wrap: wrap; }
-        .contact-card { background: var(--card); padding: 22px 30px; border-radius: 18px; text-decoration: none; color: var(--text); min-width: 160px; }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background: var(--card);
-            padding: 2rem;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
-        }
-
-        .modal input, .modal textarea {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid var(--accent);
-            border-radius: 10px;
-            color: var(--text);
-        }
 
         @media (max-width: 768px) {
             .hamburger { display: flex; }
             .nav-links {
                 position: fixed; top: 70px; left: -100%; width: 100%; height: calc(100vh - 70px);
                 background: var(--bg); flex-direction: column; padding-top: 50px; gap: 2.5rem;
-                font-size: 1.35rem; transition: 0.4s; z-index: 999;
+                transition: 0.4s;
             }
             .nav-links.active { left: 0; }
         }
@@ -180,12 +121,8 @@
             <div class="logo">DevLife</div>
             <div class="nav-links" id="navLinks">
                 <a href="#about">Обо мне</a>
-                <a href="#skills">Навыки</a>
                 <a href="#projects">Мои проекты</a>
                 <a href="#contact">Связаться</a>
-                <button class="theme-toggle" id="themeToggle">🌙</button>
-                <button class="admin-btn" id="adminBtn">Добавить проект</button>
-                <button class="suggest-btn" id="suggestBtn">Предложить проект</button>
             </div>
             <div class="hamburger" id="hamburger">
                 <span></span><span></span><span></span>
@@ -194,9 +131,9 @@
     </header>
 
     <section class="hero">
-        <div style="text-align: center; z-index: 2; position: relative;">
+        <div style="text-align: center; z-index: 2;">
             <h1>DevLife</h1>
-            <p style="font-size: 1.35rem; margin: 1rem 0 2rem;">Разрабатывай. Играй. Живи.</p>
+            <p style="font-size: 1.4rem; margin: 1rem 0;">Разрабатывай. Играй. Живи.</p>
             <a href="#projects" class="play-btn">Посмотреть проекты</a>
         </div>
     </section>
@@ -210,215 +147,72 @@
         </div>
     </section>
 
-    <section id="skills" class="section">
-        <h2 class="section-title">Мои навыки</h2>
-        <div class="skills-grid">
-            <div class="skill-card">HTML5</div>
-            <div class="skill-card">CSS3</div>
-            <div class="skill-card">JavaScript</div>
-            <div class="skill-card">Git</div>
-            <div class="skill-card">Game Development</div>
-            <div class="skill-card">UI/UX Basics</div>
-        </div>
-    </section>
-
     <section id="projects" class="section">
         <h2 class="section-title">Мои проекты</h2>
-        <div class="projects-grid" id="projectsGrid"></div>
+        <div class="projects-grid">
+            <div class="project-card">
+                <img src="https://picsum.photos/id/1015/800/400" alt="Тетрис">
+                <div style="padding: 1.6rem; text-align: center;">
+                    <h3>Тетрис</h3>
+                    <p>Классическая аркада</p>
+                    <a href="https://daniilpogorelov238-lang.github.io/Tetris/" target="_blank" class="play-btn">Открыть →</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <img src="https://picsum.photos/id/201/800/400" alt="Змейка">
+                <div style="padding: 1.6rem; text-align: center;">
+                    <h3>Змейка</h3>
+                    <p>Классическая змейка</p>
+                    <a href="https://daniilpogorelov238-lang.github.io/SnakeGame/" target="_blank" class="play-btn">Открыть →</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <img src="https://picsum.photos/id/1016/800/400" alt="МегаРисовалка">
+                <div style="padding: 1.6rem; text-align: center;">
+                    <h3>МегаРисовалка</h3>
+                    <p>Креативный редактор</p>
+                    <a href="https://daniilpogorelov238-lang.github.io/mega-resovalka/" target="_blank" class="play-btn">Открыть →</a>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <img src="https://picsum.photos/id/870/800/400" alt="Rootlab">
+                <div style="padding: 1.6rem; text-align: center;">
+                    <h3>Rootlab</h3>
+                    <p>Интерактивная лаборатория</p>
+                    <a href="https://daniilpogorelov238-lang.github.io/RootLab2/" target="_blank" class="play-btn">Открыть →</a>
+                </div>
+            </div>
+        </div>
     </section>
 
     <section id="contact" class="contact-section">
         <h2 class="section-title">Связаться со мной</h2>
-        <p style="margin-bottom: 2.5rem; opacity: 0.9;">Буду рад новым знакомствам и предложениям!</p>
+        <p style="margin-bottom: 2.5rem;">Буду рад новым знакомствам!</p>
         <div class="contact-links">
-            <a href="https://t.me/forum_deflive" target="_blank" class="contact-card">
-                <span style="font-size: 2.8rem;">✈️</span><br><strong>Telegram</strong>
-            </a>
-            <a href="https://rossims.ru/c/daniil_pogorelov" target="_blank" class="contact-card">
-                <span style="font-size: 2.8rem; color: var(--accent);">R</span><br><strong>Rossi</strong>
-            </a>
+            <a href="https://t.me/твоя_ссылка" target="_blank" class="play-btn" style="background:#229ED9;">Telegram</a>
+            <a href="https://rossims.ru/c/daniil_pogorelov/" target="_blank" class="play-btn">Rossi</a>
         </div>
     </section>
 
     <footer>
-        <div class="logo" style="font-size: 2.3rem; margin-bottom: 0.8rem;">DevLife</div>
-        <p>Создано с ❤️ для удовольствия от программирования</p>
-        <p style="margin-top: 1.5rem; opacity: 0.6;"></p>
+        <p>2026 DevLife • Создано с ❤️</p>
     </footer>
 
-    <!-- Модальное окно добавления/редактирования -->
-    <div class="modal" id="projectModal">
-        <div class="modal-content">
-            <h3 id="modalTitle">Добавить проект</h3>
-            <input type="text" id="projTitle" placeholder="Название проекта" required>
-            <input type="text" id="projDesc" placeholder="Краткое описание" required>
-            <input type="text" id="projImg" placeholder="URL изображения" required>
-            <input type="text" id="projUrl" placeholder="Ссылка на проект" required>
-            <input type="hidden" id="projId">
-
-            <button class="play-btn" id="saveProject" style="width:100%; margin-top:15px;">Сохранить</button>
-            <button onclick="closeModal()" style="width:100%; margin-top:10px; background:#666;">Отмена</button>
-        </div>
-    </div>
-
-    <!-- Модальное окно предложения проекта -->
-    <div class="modal" id="suggestModal">
-        <div class="modal-content">
-            <h3>Предложить проект</h3>
-            <input type="text" id="suggestTitle" placeholder="Название проекта" required>
-            <input type="text" id="suggestDesc" placeholder="Краткое описание" required>
-            <input type="text" id="suggestUrl" placeholder="Ссылка на проект" required>
-            <input type="text" id="suggestImg" placeholder="Ссылка на картинку (необязательно)">
-            <textarea id="suggestComment" rows="3" placeholder="Комментарий (необязательно)"></textarea>
-
-            <button class="play-btn" id="sendSuggest" style="width:100%; margin-top:15px;">Отправить в Telegram</button>
-            <button onclick="closeSuggestModal()" style="width:100%; margin-top:10px; background:#666;">Отмена</button>
-        </div>
-    </div>
-
     <script>
-        let projects = JSON.parse(localStorage.getItem('myProjects')) || [
-            { id: 1, title: "Тетрис", desc: "Классическая аркада", img: "https://picsum.photos/id/1015/800/400", url: "https://daniilpogorelov238-lang.github.io/Tetris/" },
-            { id: 2, title: "Змейка", desc: "Классическая змейка", img: "https://picsum.photos/id/201/800/400", url: "https://daniilpogorelov238-lang.github.io/SnakeGame/" },
-            { id: 3, title: "МегаРисовалка", desc: "Креативный редактор рисунков", img: "https://picsum.photos/id/1016/800/400", url: "https://daniilpogorelov238-lang.github.io/mega-resovalka/" },
-            { id: 4, title: "Rootlab", desc: "Интерактивная лаборатория", img: "https://picsum.photos/id/870/800/400", url: "https://daniilpogorelov238-lang.github.io/RootLab2/" }
-        ];
-
-        function renderProjects() {
-            const grid = document.getElementById('projectsGrid');
-            grid.innerHTML = '';
-
-            projects.forEach(project => {
-                const card = document.createElement('div');
-                card.className = 'project-card';
-                card.innerHTML = `
-                    <img src="${project.img}" alt="${project.title}">
-                    <div style="padding: 1.5rem;">
-                        <h3>${project.title}</h3>
-                        <p>${project.desc}</p>
-                        <a href="${project.url}" target="_blank" class="play-btn">Открыть →</a>
-                        <br><br>
-                        <button onclick="editProject(${project.id})" style="background:#00ccff; padding:8px 14px; border:none; border-radius:8px; margin-right:8px;">✏️</button>
-                        <button onclick="deleteProject(${project.id})" style="background:#ff4444; padding:8px 14px; border:none; border-radius:8px;">🗑️</button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        // === Добавление / Редактирование ===
-        let editingId = null;
-
-        document.getElementById('adminBtn').addEventListener('click', () => {
-            editingId = null;
-            document.getElementById('modalTitle').textContent = 'Добавить проект';
-            document.getElementById('projTitle').value = '';
-            document.getElementById('projDesc').value = '';
-            document.getElementById('projImg').value = '';
-            document.getElementById('projUrl').value = '';
-            document.getElementById('projectModal').style.display = 'flex';
-        });
-
-        window.closeModal = function() {
-            document.getElementById('projectModal').style.display = 'none';
-        };
-
-        document.getElementById('saveProject').addEventListener('click', () => {
-            const title = document.getElementById('projTitle').value.trim();
-            const desc = document.getElementById('projDesc').value.trim();
-            const img = document.getElementById('projImg').value.trim();
-            const url = document.getElementById('projUrl').value.trim();
-
-            if (!title || !desc || !img || !url) {
-                alert("Заполните все поля!");
-                return;
-            }
-
-            if (editingId) {
-                const p = projects.find(x => x.id === editingId);
-                if (p) {
-                    p.title = title;
-                    p.desc = desc;
-                    p.img = img;
-                    p.url = url;
-                }
-            } else {
-                projects.push({ id: Date.now(), title, desc, img, url });
-            }
-
-            localStorage.setItem('myProjects', JSON.stringify(projects));
-            renderProjects();
-            closeModal();
-        });
-
-        window.editProject = function(id) {
-            const project = projects.find(p => p.id === id);
-            if (!project) return;
-            editingId = id;
-            document.getElementById('modalTitle').textContent = 'Редактировать проект';
-            document.getElementById('projTitle').value = project.title;
-            document.getElementById('projDesc').value = project.desc;
-            document.getElementById('projImg').value = project.img;
-            document.getElementById('projUrl').value = project.url;
-            document.getElementById('projectModal').style.display = 'flex';
-        };
-
-        window.deleteProject = function(id) {
-            if (confirm("Удалить проект?")) {
-                projects = projects.filter(p => p.id !== id);
-                localStorage.setItem('myProjects', JSON.stringify(projects));
-                renderProjects();
-            }
-        };
-
-        // === Предложить проект ===
-        document.getElementById('suggestBtn').addEventListener('click', () => {
-            document.getElementById('suggestModal').style.display = 'flex';
-        });
-
-        window.closeSuggestModal = function() {
-            document.getElementById('suggestModal').style.display = 'none';
-        };
-
-        document.getElementById('sendSuggest').addEventListener('click', () => {
-            const title = document.getElementById('suggestTitle').value.trim();
-            const desc = document.getElementById('suggestDesc').value.trim();
-            const url = document.getElementById('suggestUrl').value.trim();
-
-            if (!title || !desc || !url) {
-                alert("Заполните обязательные поля!");
-                return;
-            }
-
-            const message = `*Новый проект от посетителя*\n\n` +
-                `🎮 Название: ${title}\n` +
-                `📝 Описание: ${desc}\n` +
-                `🔗 Ссылка: ${url}\n\n` +
-                `Отправлено с сайта DevLife`;
-
-            window.open(`https://t.me/твоя_ссылка?text=${encodeURIComponent(message)}`, '_blank');
-            closeSuggestModal();
-        });
-
-        // Инициализация
-        renderProjects();
-
-        // Тема + Мобильное меню
-        const themeToggle = document.getElementById('themeToggle');
-        if (localStorage.getItem('theme') === 'light') {
-            body.classList.add('light-theme');
-            themeToggle.textContent = '☀️';
-        }
-
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('light-theme');
-            const isLight = body.classList.contains('light-theme');
-            themeToggle.textContent = isLight ? '☀️' : '🌙';
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        });
-
+        // Мобильное меню
         document.getElementById('hamburger').addEventListener('click', () => {
             document.getElementById('navLinks').classList.toggle('active');
+        });
+
+        // Плавная прокрутка
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelector(link.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
         });
     </script>
 </body>
