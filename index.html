@@ -58,18 +58,63 @@
         .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
         .hamburger span { width: 30px; height: 3px; background: var(--accent); }
 
-        .hero { height: 100vh; min-height: 620px; display: flex; align-items: center; justify-content: center; text-align: center;
-                 background: linear-gradient(rgba(15,15,26,0.85), rgba(15,15,26,0.85)), url('https://picsum.photos/1920/1080?random=42') center/cover; }
-
-        .hero h1 { font-size: clamp(3rem, 8vw, 5.5rem); color: var(--accent); }
+        .hero { 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center;
+            background: linear-gradient(rgba(15,15,26,0.85), rgba(15,15,26,0.85)), 
+                        url('https://picsum.photos/1920/1080?random=42') center/cover;
+        }
 
         .section { padding: 100px 5%; max-width: 1300px; margin: 0 auto; }
         .section-title { text-align: center; font-size: 2.8rem; margin-bottom: 3.5rem; color: var(--accent); }
 
-        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
-        .project-card { background: var(--card); border-radius: 20px; overflow: hidden; transition: all 0.4s; }
-        .project-card:hover { transform: translateY(-12px); box-shadow: 0 20px 40px rgba(0, 255, 157, 0.3); }
-        .project-card img { width: 100%; height: 230px; object-fit: cover; }
+        /* Projects */
+        .projects-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 2rem; 
+        }
+        .project-card { 
+            background: var(--card); 
+            border-radius: 20px; 
+            overflow: hidden; 
+            transition: all 0.4s; 
+        }
+        .project-card:hover { 
+            transform: translateY(-12px); 
+            box-shadow: 0 20px 40px rgba(0, 255, 157, 0.3); 
+        }
+        .project-card img { 
+            width: 100%; 
+            height: 220px; 
+            object-fit: cover; 
+        }
+
+        /* Posts */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+        .post-card {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.4s;
+        }
+        .post-card:hover {
+            transform: translateY(-8px);
+        }
+        .post-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
 
         .play-btn {
             background: var(--accent);
@@ -82,9 +127,20 @@
             margin-top: 12px;
         }
 
-        .contact-section { text-align: center; padding: 90px 5%; background: rgba(26, 26, 46, 0.6); }
+        .contact-section { 
+            text-align: center; 
+            padding: 90px 5%; 
+            background: rgba(26, 26, 46, 0.6); 
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
 
-        /* Модальные окна */
+        /* Modals */
         .modal {
             display: none;
             position: fixed;
@@ -95,15 +151,15 @@
             align-items: center;
             justify-content: center;
         }
-
         .modal-content {
             background: var(--card);
             padding: 2rem;
             border-radius: 20px;
             width: 90%;
-            max-width: 500px;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
-
         .modal input, .modal textarea {
             width: 100%;
             padding: 12px;
@@ -132,7 +188,8 @@
             <div class="logo">DevLife</div>
             <div class="nav-links" id="navLinks">
                 <a href="#about">Обо мне</a>
-                <a href="#projects">Мои проекты</a>
+                <a href="#projects">Проекты</a>
+                <a href="#posts">Посты</a>
                 <a href="#contact">Связаться</a>
                 <button class="admin-btn" id="adminBtn">Админ панель</button>
             </div>
@@ -159,49 +216,68 @@
         </div>
     </section>
 
+    <!-- Projects -->
     <section id="projects" class="section">
         <h2 class="section-title">Мои проекты</h2>
         <div class="projects-grid" id="projectsGrid"></div>
     </section>
 
-    <section id="contact" class="contact-section">
-        <h2 class="section-title">Связаться со мной</h2>
-        <p style="margin-bottom: 2.5rem;">Буду рад новым знакомствам!</p>
-        <div class="contact-links">
-            <a href="https://t.me/твоя_ссылка" target="_blank" class="play-btn" style="background:#229ED9;">Telegram</a>
-            <a href="https://rossims.ru/c/daniil_pogorelov/" target="_blank" class="play-btn">Rossi</a>
-        </div>
+    <!-- Posts -->
+    <section id="posts" class="section">
+        <h2 class="section-title">Посты</h2>
+        <div class="posts-grid" id="postsGrid"></div>
     </section>
 
-    <footer>
-        <p> 2026 DevLife • Создано с ❤️</p>
+    <!-- Contact -->
+    <section id="contact" class="contact-section">
+        <h2 class="section-title">Связаться со мной</h2>
+        <p style="margin-bottom: 2rem;">Буду рад новым знакомствам!</p>
+        <div class="social-links" id="socialLinks"></div>
+    </section>
+
+    <footer style="text-align:center; padding: 3rem; opacity: 0.7;">
+        <p>© 2026 DevLife • Создано с ❤️</p>
     </footer>
 
-    <!-- Админское модальное окно -->
+    <!-- Admin Modal -->
     <div class="modal" id="adminModal">
         <div class="modal-content">
             <h3>Админ панель</h3>
-            <input type="password" id="adminPassword" placeholder="Введите пароль" style="margin-bottom:15px;">
-            <button onclick="checkPassword()" class="play-btn" style="width:100%;">Войти</button>
-            <button onclick="closeAdminModal()" style="width:100%; margin-top:10px; background:#666;">Отмена</button>
+            <input type="password" id="adminPassword" placeholder="Введите пароль">
+            <button onclick="checkPassword()" class="play-btn" style="width:100%; margin:15px 0;">Войти</button>
+            <button onclick="closeAdminModal()" style="width:100%; background:#666;">Отмена</button>
         </div>
     </div>
 
-    <!-- Форма добавления проекта -->
+    <!-- Add Project Modal -->
     <div class="modal" id="projectModal">
         <div class="modal-content">
             <h3>Добавить проект</h3>
-            <input type="text" id="projTitle" placeholder="Название проекта">
+            <input type="text" id="projTitle" placeholder="Название">
             <input type="text" id="projDesc" placeholder="Краткое описание">
             <input type="text" id="projImg" placeholder="Ссылка на картинку">
             <input type="text" id="projUrl" placeholder="Ссылка на проект">
-            
-            <button onclick="saveProject()" class="play-btn" style="width:100%; margin-top:15px;">Сохранить проект</button>
+            <button onclick="saveProject()" class="play-btn" style="width:100%; margin-top:15px;">Сохранить</button>
             <button onclick="closeProjectModal()" style="width:100%; margin-top:10px; background:#666;">Отмена</button>
         </div>
     </div>
 
+    <!-- Add Post Modal -->
+    <div class="modal" id="postModal">
+        <div class="modal-content">
+            <h3>Новый пост</h3>
+            <input type="text" id="postTitle" placeholder="Заголовок поста">
+            <textarea id="postText" rows="6" placeholder="Текст поста"></textarea>
+            <input type="text" id="postImg" placeholder="Ссылка на картинку (необязательно)">
+            <button onclick="savePost()" class="play-btn" style="width:100%; margin-top:15px;">Опубликовать</button>
+            <button onclick="closePostModal()" style="width:100%; margin-top:10px; background:#666;">Отмена</button>
+        </div>
+    </div>
+
     <script>
+        const ADMIN_PASSWORD = "admin123"; // ← Поменяй пароль здесь
+
+        // === ТВОИ ОРИГИНАЛЬНЫЕ ПРОЕКТЫ ===
         let projects = JSON.parse(localStorage.getItem('myProjects')) || [
             { id: 1, title: "Тетрис", desc: "Классическая аркада", img: "https://picsum.photos/id/1015/800/400", url: "https://daniilpogorelov238-lang.github.io/Tetris/" },
             { id: 2, title: "Змейка", desc: "Классическая змейка", img: "https://picsum.photos/id/201/800/400", url: "https://daniilpogorelov238-lang.github.io/SnakeGame/" },
@@ -209,89 +285,143 @@
             { id: 4, title: "Rootlab", desc: "Интерактивная лаборатория", img: "https://picsum.photos/id/870/800/400", url: "https://daniilpogorelov238-lang.github.io/RootLab2/" }
         ];
 
+        let posts = JSON.parse(localStorage.getItem('myPosts')) || [];
+
+        let socials = JSON.parse(localStorage.getItem('mySocials')) || [
+            { name: "Telegram", url: "https://t.me/твоя_ссылка", color: "#229ED9" },
+            { name: "Rossi", url: "https://rossims.ru/c/daniil_pogorelov/", color: "#00ff9d" }
+        ];
+
         function renderProjects() {
             const grid = document.getElementById('projectsGrid');
             grid.innerHTML = '';
-            projects.forEach(project => {
+            projects.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'project-card';
                 card.innerHTML = `
-                    <img src="${project.img}" alt="${project.title}">
+                    <img src="${p.img}" alt="${p.title}" loading="lazy">
                     <div style="padding: 1.5rem; text-align: center;">
-                        <h3>${project.title}</h3>
-                        <p>${project.desc}</p>
-                        <a href="${project.url}" target="_blank" class="play-btn">Открыть →</a>
+                        <h3>${p.title}</h3>
+                        <p>${p.desc}</p>
+                        <a href="${p.url}" target="_blank" class="play-btn">Открыть →</a>
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        // Админ панель
+        function renderPosts() {
+            const grid = document.getElementById('postsGrid');
+            grid.innerHTML = '';
+            if (posts.length === 0) {
+                grid.innerHTML = '<p style="text-align:center; grid-column:1/-1; opacity:0.6;">Пока нет постов. Добавь первый через админ-панель!</p>';
+                return;
+            }
+            posts.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'post-card';
+                card.innerHTML = `
+                    ${p.img ? `<img src="${p.img}" alt="${p.title}" loading="lazy">` : ''}
+                    <h3>${p.title}</h3>
+                    <p style="margin: 12px 0; opacity: 0.9;">${p.text}</p>
+                    <small>${p.date}</small>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderSocials() {
+            const container = document.getElementById('socialLinks');
+            container.innerHTML = '';
+            socials.forEach(s => {
+                const a = document.createElement('a');
+                a.href = s.url;
+                a.target = "_blank";
+                a.className = "play-btn";
+                a.style.background = s.color || "#00ff9d";
+                a.textContent = s.name;
+                container.appendChild(a);
+            });
+        }
+
+        // Admin
         let isAdmin = false;
-        const ADMIN_PASSWORD = "admin123";   // ← Измени пароль здесь
 
         document.getElementById('adminBtn').addEventListener('click', () => {
             document.getElementById('adminModal').style.display = 'flex';
         });
 
         window.checkPassword = function() {
-            const password = document.getElementById('adminPassword').value;
-            if (password === ADMIN_PASSWORD) {
+            if (document.getElementById('adminPassword').value === ADMIN_PASSWORD) {
                 isAdmin = true;
                 closeAdminModal();
-                alert("✅ Доступ разрешён! Теперь вы можете добавлять проекты.");
-                showAddProjectModal();
+                alert("✅ Доступ разрешён!");
+                if (confirm("Добавить новый проект?")) {
+                    document.getElementById('projectModal').style.display = 'flex';
+                } else if (confirm("Добавить пост?")) {
+                    document.getElementById('postModal').style.display = 'flex';
+                }
             } else {
                 alert("❌ Неверный пароль!");
             }
         };
 
-        window.closeAdminModal = function() {
+        window.closeAdminModal = () => {
             document.getElementById('adminModal').style.display = 'none';
             document.getElementById('adminPassword').value = '';
         };
 
-        function showAddProjectModal() {
-            document.getElementById('projectModal').style.display = 'flex';
-        }
-
-        window.closeProjectModal = function() {
-            document.getElementById('projectModal').style.display = 'none';
-        };
-
+        // Project
         window.saveProject = function() {
             const title = document.getElementById('projTitle').value.trim();
             const desc = document.getElementById('projDesc').value.trim();
             const img = document.getElementById('projImg').value.trim();
             const url = document.getElementById('projUrl').value.trim();
 
-            if (!title || !desc || !img || !url) {
-                alert("Заполните все поля!");
-                return;
-            }
+            if (!title || !desc || !url) return alert("Заполните обязательные поля!");
 
-            projects.push({
-                id: Date.now(),
-                title,
-                desc,
-                img,
-                url
-            });
-
+            projects.push({ id: Date.now(), title, desc, img, url });
             localStorage.setItem('myProjects', JSON.stringify(projects));
             renderProjects();
             closeProjectModal();
             alert("Проект успешно добавлен!");
         };
 
-        // Мобильное меню
+        window.closeProjectModal = () => document.getElementById('projectModal').style.display = 'none';
+
+        // Post
+        window.savePost = function() {
+            const title = document.getElementById('postTitle').value.trim();
+            const text = document.getElementById('postText').value.trim();
+            const img = document.getElementById('postImg').value.trim();
+
+            if (!title || !text) return alert("Заголовок и текст обязательны!");
+
+            posts.unshift({
+                id: Date.now(),
+                title,
+                text,
+                img: img || null,
+                date: new Date().toLocaleDateString('ru-RU')
+            });
+
+            localStorage.setItem('myPosts', JSON.stringify(posts));
+            renderPosts();
+            closePostModal();
+            alert("Пост опубликован!");
+        };
+
+        window.closePostModal = () => document.getElementById('postModal').style.display = 'none';
+
+        // Mobile menu
         document.getElementById('hamburger').addEventListener('click', () => {
             document.getElementById('navLinks').classList.toggle('active');
         });
 
         // Инициализация
         renderProjects();
+        renderPosts();
+        renderSocials();
     </script>
 </body>
 </html>
