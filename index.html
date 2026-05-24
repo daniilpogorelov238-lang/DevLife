@@ -40,7 +40,6 @@
         }
 
         .logo { font-size: 2.3rem; font-weight: 700; color: var(--accent); }
-
         .nav-links { display: flex; gap: 2rem; align-items: center; }
         .nav-links a { color: var(--text); text-decoration: none; font-weight: 500; }
         .nav-links a:hover { color: var(--accent); }
@@ -71,49 +70,27 @@
         .section { padding: 100px 5%; max-width: 1300px; margin: 0 auto; }
         .section-title { text-align: center; font-size: 2.8rem; margin-bottom: 3.5rem; color: var(--accent); }
 
-        /* Projects */
-        .projects-grid { 
+        .projects-grid, .posts-grid, .media-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
             gap: 2rem; 
         }
-        .project-card { 
+
+        .project-card, .post-card, .media-card { 
             background: var(--card); 
             border-radius: 20px; 
             overflow: hidden; 
             transition: all 0.4s; 
         }
-        .project-card:hover { 
-            transform: translateY(-12px); 
-            box-shadow: 0 20px 40px rgba(0, 255, 157, 0.3); 
+        .project-card:hover, .post-card:hover, .media-card:hover { 
+            transform: translateY(-10px); 
+            box-shadow: 0 20px 40px rgba(0, 255, 157, 0.2); 
         }
-        .project-card img { 
+
+        .project-card img, .post-card img, .media-card img { 
             width: 100%; 
             height: 220px; 
             object-fit: cover; 
-        }
-
-        /* Posts */
-        .posts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-        .post-card {
-            background: var(--card);
-            border-radius: 20px;
-            padding: 1.5rem;
-            transition: all 0.4s;
-        }
-        .post-card:hover {
-            transform: translateY(-8px);
-        }
-        .post-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 1rem;
         }
 
         .play-btn {
@@ -140,7 +117,28 @@
             margin-top: 1.5rem;
         }
 
-        /* Modals */
+        /* Admin Tabs */
+        .admin-tabs { 
+            display: flex; 
+            gap: 8px; 
+            flex-wrap: wrap; 
+            margin: 20px 0; 
+        }
+        .admin-tab {
+            padding: 10px 18px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .admin-tab.active { 
+            background: var(--accent); 
+            color: #0f0f1a; 
+            font-weight: 600; 
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -156,8 +154,8 @@
             padding: 2rem;
             border-radius: 20px;
             width: 90%;
-            max-width: 520px;
-            max-height: 90vh;
+            max-width: 560px;
+            max-height: 92vh;
             overflow-y: auto;
         }
         .modal input, .modal textarea {
@@ -173,8 +171,15 @@
         @media (max-width: 768px) {
             .hamburger { display: flex; }
             .nav-links {
-                position: fixed; top: 70px; left: -100%; width: 100%; height: calc(100vh - 70px);
-                background: var(--bg); flex-direction: column; padding-top: 50px; gap: 2.5rem;
+                position: fixed; 
+                top: 70px; 
+                left: -100%; 
+                width: 100%; 
+                height: calc(100vh - 70px);
+                background: var(--bg); 
+                flex-direction: column; 
+                padding-top: 50px; 
+                gap: 2.5rem;
                 transition: 0.4s;
             }
             .nav-links.active { left: 0; }
@@ -190,6 +195,7 @@
                 <a href="#about">Обо мне</a>
                 <a href="#projects">Проекты</a>
                 <a href="#posts">Посты</a>
+                <a href="#media">Медиа</a>
                 <a href="#contact">Связаться</a>
                 <button class="admin-btn" id="adminBtn">Админ панель</button>
             </div>
@@ -216,19 +222,25 @@
         </div>
     </section>
 
-    <!-- Projects -->
+    <!-- Проекты -->
     <section id="projects" class="section">
         <h2 class="section-title">Мои проекты</h2>
         <div class="projects-grid" id="projectsGrid"></div>
     </section>
 
-    <!-- Posts -->
+    <!-- Посты -->
     <section id="posts" class="section">
         <h2 class="section-title">Посты</h2>
         <div class="posts-grid" id="postsGrid"></div>
     </section>
 
-    <!-- Contact -->
+    <!-- Медиа -->
+    <section id="media" class="section">
+        <h2 class="section-title">Медиа</h2>
+        <div class="media-grid" id="mediaGrid"></div>
+    </section>
+
+    <!-- Контакты -->
     <section id="contact" class="contact-section">
         <h2 class="section-title">Связаться со мной</h2>
         <p style="margin-bottom: 2rem;">Буду рад новым знакомствам!</p>
@@ -239,43 +251,56 @@
         <p>© 2026 DevLife • Создано с ❤️</p>
     </footer>
 
-    <!-- Admin Modal -->
+    <!-- Админ Панель -->
     <div class="modal" id="adminModal">
         <div class="modal-content">
             <h3>Админ панель</h3>
-            <input type="password" id="adminPassword" placeholder="Введите пароль">
-            <button onclick="checkPassword()" class="play-btn" style="width:100%; margin:15px 0;">Войти</button>
-            <button onclick="closeAdminModal()" style="width:100%; background:#666;">Отмена</button>
-        </div>
-    </div>
+            <input type="password" id="adminPassword" placeholder="Введите пароль" style="margin-bottom:15px;">
+            <button onclick="checkPassword()" class="play-btn" style="width:100%;">Войти</button>
+            <button onclick="closeAdminModal()" style="width:100%; margin-top:10px; background:#666;">Отмена</button>
 
-    <!-- Add Project Modal -->
-    <div class="modal" id="projectModal">
-        <div class="modal-content">
-            <h3>Добавить проект</h3>
-            <input type="text" id="projTitle" placeholder="Название">
-            <input type="text" id="projDesc" placeholder="Краткое описание">
-            <input type="text" id="projImg" placeholder="Ссылка на картинку">
-            <input type="text" id="projUrl" placeholder="Ссылка на проект">
-            <button onclick="saveProject()" class="play-btn" style="width:100%; margin-top:15px;">Сохранить</button>
-            <button onclick="closeProjectModal()" style="width:100%; margin-top:10px; background:#666;">Отмена</button>
-        </div>
-    </div>
+            <div id="adminPanel" style="display:none; margin-top:25px;">
+                <div class="admin-tabs">
+                    <button class="admin-tab active" onclick="switchAdminTab(0)">Пост</button>
+                    <button class="admin-tab" onclick="switchAdminTab(1)">Музыка</button>
+                    <button class="admin-tab" onclick="switchAdminTab(2)">Видео</button>
+                    <button class="admin-tab" onclick="switchAdminTab(3)">Фото</button>
+                </div>
 
-    <!-- Add Post Modal -->
-    <div class="modal" id="postModal">
-        <div class="modal-content">
-            <h3>Новый пост</h3>
-            <input type="text" id="postTitle" placeholder="Заголовок поста">
-            <textarea id="postText" rows="6" placeholder="Текст поста"></textarea>
-            <input type="text" id="postImg" placeholder="Ссылка на картинку (необязательно)">
-            <button onclick="savePost()" class="play-btn" style="width:100%; margin-top:15px;">Опубликовать</button>
-            <button onclick="closePostModal()" style="width:100%; margin-top:10px; background:#666;">Отмена</button>
+                <!-- Пост -->
+                <div id="tab-post">
+                    <input type="text" id="postTitle" placeholder="Заголовок поста">
+                    <textarea id="postText" rows="5" placeholder="Текст поста"></textarea>
+                    <input type="text" id="postImg" placeholder="Ссылка на картинку (необязательно)">
+                    <button onclick="savePost()" class="play-btn" style="width:100%; margin-top:10px;">Опубликовать пост</button>
+                </div>
+
+                <!-- Музыка -->
+                <div id="tab-music" style="display:none;">
+                    <input type="text" id="musicTitle" placeholder="Название трека">
+                    <input type="text" id="musicUrl" placeholder="Ссылка на музыку">
+                    <button onclick="saveMusic()" class="play-btn" style="width:100%; margin-top:10px;">Добавить музыку</button>
+                </div>
+
+                <!-- Видео -->
+                <div id="tab-video" style="display:none;">
+                    <input type="text" id="videoTitle" placeholder="Название видео">
+                    <input type="text" id="videoUrl" placeholder="Ссылка на YouTube">
+                    <button onclick="saveVideo()" class="play-btn" style="width:100%; margin-top:10px;">Добавить видео</button>
+                </div>
+
+                <!-- Фото -->
+                <div id="tab-photo" style="display:none;">
+                    <input type="text" id="photoTitle" placeholder="Название / описание">
+                    <input type="text" id="photoUrl" placeholder="Прямая ссылка на фото">
+                    <button onclick="savePhoto()" class="play-btn" style="width:100%; margin-top:10px;">Добавить фото</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        const ADMIN_PASSWORD = "admin123"; // ← Поменяй пароль здесь
+        const ADMIN_PASSWORD = "admin123"; // ← Поменяй на свой
 
         // === ТВОИ ОРИГИНАЛЬНЫЕ ПРОЕКТЫ ===
         let projects = JSON.parse(localStorage.getItem('myProjects')) || [
@@ -286,7 +311,7 @@
         ];
 
         let posts = JSON.parse(localStorage.getItem('myPosts')) || [];
-
+        let mediaItems = JSON.parse(localStorage.getItem('myMedia')) || [];
         let socials = JSON.parse(localStorage.getItem('mySocials')) || [
             { name: "Telegram", url: "https://t.me/твоя_ссылка", color: "#229ED9" },
             { name: "Rossi", url: "https://rossims.ru/c/daniil_pogorelov/", color: "#00ff9d" }
@@ -312,20 +337,37 @@
 
         function renderPosts() {
             const grid = document.getElementById('postsGrid');
-            grid.innerHTML = '';
-            if (posts.length === 0) {
-                grid.innerHTML = '<p style="text-align:center; grid-column:1/-1; opacity:0.6;">Пока нет постов. Добавь первый через админ-панель!</p>';
-                return;
-            }
+            grid.innerHTML = posts.length === 0 ? 
+                '<p style="grid-column:1/-1; text-align:center; opacity:0.6;">Пока нет постов...</p>' : '';
+
             posts.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'post-card';
                 card.innerHTML = `
                     ${p.img ? `<img src="${p.img}" alt="${p.title}" loading="lazy">` : ''}
-                    <h3>${p.title}</h3>
-                    <p style="margin: 12px 0; opacity: 0.9;">${p.text}</p>
-                    <small>${p.date}</small>
+                    <div style="padding:1.5rem;">
+                        <h3>${p.title}</h3>
+                        <p style="margin:12px 0;">${p.text}</p>
+                        <small>${p.date}</small>
+                    </div>
                 `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderMedia() {
+            const grid = document.getElementById('mediaGrid');
+            grid.innerHTML = '';
+            mediaItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'media-card';
+                if (item.type === 'photo') {
+                    card.innerHTML = `<img src="${item.url}" alt="${item.title}"><div style="padding:1rem;"><h3>${item.title}</h3></div>`;
+                } else if (item.type === 'video') {
+                    card.innerHTML = `<iframe width="100%" height="220" src="${item.url}" frameborder="0" allowfullscreen></iframe><div style="padding:1rem;"><h3>${item.title}</h3></div>`;
+                } else if (item.type === 'music') {
+                    card.innerHTML = `<div style="padding:1.5rem;text-align:center;"><h3>${item.title}</h3><a href="${item.url}" target="_blank" class="play-btn">Слушать</a></div>`;
+                }
                 grid.appendChild(card);
             });
         }
@@ -335,8 +377,7 @@
             container.innerHTML = '';
             socials.forEach(s => {
                 const a = document.createElement('a');
-                a.href = s.url;
-                a.target = "_blank";
+                a.href = s.url; a.target = "_blank";
                 a.className = "play-btn";
                 a.style.background = s.color || "#00ff9d";
                 a.textContent = s.name;
@@ -344,83 +385,79 @@
             });
         }
 
-        // Admin
-        let isAdmin = false;
-
-        document.getElementById('adminBtn').addEventListener('click', () => {
-            document.getElementById('adminModal').style.display = 'flex';
-        });
-
+        // Админ функции
         window.checkPassword = function() {
             if (document.getElementById('adminPassword').value === ADMIN_PASSWORD) {
-                isAdmin = true;
-                closeAdminModal();
-                alert("✅ Доступ разрешён!");
-                if (confirm("Добавить новый проект?")) {
-                    document.getElementById('projectModal').style.display = 'flex';
-                } else if (confirm("Добавить пост?")) {
-                    document.getElementById('postModal').style.display = 'flex';
-                }
+                document.getElementById('adminPanel').style.display = 'block';
             } else {
                 alert("❌ Неверный пароль!");
             }
         };
 
-        window.closeAdminModal = () => {
-            document.getElementById('adminModal').style.display = 'none';
-            document.getElementById('adminPassword').value = '';
+        window.switchAdminTab = function(n) {
+            document.querySelectorAll('#tab-post, #tab-music, #tab-video, #tab-photo').forEach(el => el.style.display = 'none');
+            document.getElementById(['tab-post','tab-music','tab-video','tab-photo'][n]).style.display = 'block';
+            document.querySelectorAll('.admin-tab').forEach((el, i) => el.classList.toggle('active', i === n));
         };
 
-        // Project
-        window.saveProject = function() {
-            const title = document.getElementById('projTitle').value.trim();
-            const desc = document.getElementById('projDesc').value.trim();
-            const img = document.getElementById('projImg').value.trim();
-            const url = document.getElementById('projUrl').value.trim();
-
-            if (!title || !desc || !url) return alert("Заполните обязательные поля!");
-
-            projects.push({ id: Date.now(), title, desc, img, url });
-            localStorage.setItem('myProjects', JSON.stringify(projects));
-            renderProjects();
-            closeProjectModal();
-            alert("Проект успешно добавлен!");
-        };
-
-        window.closeProjectModal = () => document.getElementById('projectModal').style.display = 'none';
-
-        // Post
         window.savePost = function() {
             const title = document.getElementById('postTitle').value.trim();
             const text = document.getElementById('postText').value.trim();
             const img = document.getElementById('postImg').value.trim();
-
             if (!title || !text) return alert("Заголовок и текст обязательны!");
 
-            posts.unshift({
-                id: Date.now(),
-                title,
-                text,
-                img: img || null,
-                date: new Date().toLocaleDateString('ru-RU')
-            });
-
+            posts.unshift({ id: Date.now(), title, text, img: img || null, date: new Date().toLocaleDateString('ru-RU') });
             localStorage.setItem('myPosts', JSON.stringify(posts));
             renderPosts();
-            closePostModal();
             alert("Пост опубликован!");
         };
 
-        window.closePostModal = () => document.getElementById('postModal').style.display = 'none';
+        window.saveMusic = function() {
+            const title = document.getElementById('musicTitle').value.trim();
+            const url = document.getElementById('musicUrl').value.trim();
+            if (!title || !url) return alert("Заполните все поля!");
+            mediaItems.unshift({id: Date.now(), type:'music', title, url});
+            localStorage.setItem('myMedia', JSON.stringify(mediaItems));
+            renderMedia();
+            alert("Музыка добавлена!");
+        };
 
-        // Mobile menu
+        window.saveVideo = function() {
+            let url = document.getElementById('videoUrl').value.trim();
+            const title = document.getElementById('videoTitle').value.trim();
+            if (url.includes('youtube.com/watch?v=')) url = url.replace('watch?v=', 'embed/');
+            if (!title || !url) return alert("Заполните все поля!");
+            mediaItems.unshift({id: Date.now(), type:'video', title, url});
+            localStorage.setItem('myMedia', JSON.stringify(mediaItems));
+            renderMedia();
+            alert("Видео добавлено!");
+        };
+
+        window.savePhoto = function() {
+            const title = document.getElementById('photoTitle').value.trim();
+            const url = document.getElementById('photoUrl').value.trim();
+            if (!title || !url) return alert("Заполните все поля!");
+            mediaItems.unshift({id: Date.now(), type:'photo', title, url});
+            localStorage.setItem('myMedia', JSON.stringify(mediaItems));
+            renderMedia();
+            alert("Фото добавлено!");
+        };
+
+        window.closeAdminModal = function() {
+            document.getElementById('adminModal').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        };
+
+        document.getElementById('adminBtn').addEventListener('click', () => document.getElementById('adminModal').style.display = 'flex');
+
         document.getElementById('hamburger').addEventListener('click', () => {
             document.getElementById('navLinks').classList.toggle('active');
         });
 
-        // Инициализация
+        // Запуск сайта
         renderProjects();
         renderPosts();
+        renderMedia();
         renderSocials();
     </script>
 </body>
