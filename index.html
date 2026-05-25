@@ -233,7 +233,7 @@
     <div class="modal" id="adminModal">
         <div class="modal-content">
             <h3>Админ панель</h3>
-            <button onclick="closeAdminModal()" style="width:100%; background:#666; margin-bottom:15px;">Закрыть</button>
+            <button onclick="closeAdminModal()" style="width:100%; background:#666; margin-bottom:15px;">✕ Закрыть</button>
 
             <div class="admin-tabs">
                 <button class="admin-tab" onclick="switchAdminTab(0)">Пост</button>
@@ -291,16 +291,91 @@
         let posts = JSON.parse(localStorage.getItem('myPosts')) || [];
         let mediaItems = JSON.parse(localStorage.getItem('myMedia')) || [];
 
-        function renderProjects() { /* ... */ }
-        function renderPosts() { /* ... */ }
-        function renderMedia() { /* ... */ }
-        function renderManageList() { /* ... */ }
+        function renderProjects() {
+            const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = '';
+            projects.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'project-card';
+                card.innerHTML = `
+                    <img src="${p.img}" alt="${p.title}">
+                    <div style="padding: 1.5rem; text-align: center;">
+                        <h3>${p.title}</h3>
+                        <p>${p.desc}</p>
+                        <a href="${p.url}" target="_blank" class="play-btn">Открыть →</a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderPosts() {
+            const grid = document.getElementById('postsGrid');
+            grid.innerHTML = posts.length === 0 ? '<p style="text-align:center; opacity:0.6; grid-column:1/-1;">Пока нет постов...</p>' : '';
+            posts.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'post-card';
+                card.innerHTML = `
+                    ${p.img ? `<img src="${p.img}">` : ''}
+                    <div style="padding:1.5rem;">
+                        <h3>${p.title}</h3>
+                        <p>${p.text}</p>
+                        <small>${p.date}</small>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderMedia() {
+            const grid = document.getElementById('mediaGrid');
+            grid.innerHTML = '';
+            mediaItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'media-card';
+                if (item.type === 'photo') {
+                    card.innerHTML = `<img src="${item.data}" alt="${item.title}"><div style="padding:1rem;"><h3>${item.title}</h3></div>`;
+                } else if (item.type === 'video') {
+                    card.innerHTML = `<video width="100%" height="220" controls><source src="${item.data}"></video><div style="padding:1rem;"><h3>${item.title}</h3></div>`;
+                } else if (item.type === 'music') {
+                    card.innerHTML = `
+                        <div style="padding:1.5rem; text-align:center;">
+                            <h3>${item.title}</h3>
+                            <audio controls style="width:100%; margin-top:10px;">
+                                <source src="${item.data}">
+                            </audio>
+                        </div>`;
+                }
+                grid.appendChild(card);
+            });
+        }
+
+        function renderManageList() {
+            const container = document.getElementById('manageList');
+            container.innerHTML = '<h4>Посты</h4>';
+            posts.forEach((post, i) => {
+                const div = document.createElement('div');
+                div.style = 'background:rgba(255,255,255,0.05); padding:12px; margin:8px 0; border-radius:12px;';
+                div.innerHTML = `<strong>${post.title}</strong><br><small>${post.text.substring(0,80)}...</small><br>
+                                 <button onclick="deletePost(${i})" class="delete-btn">Удалить</button>`;
+                container.appendChild(div);
+            });
+
+            container.innerHTML += '<h4 style="margin-top:20px;">Медиа</h4>';
+            mediaItems.forEach((item, i) => {
+                const div = document.createElement('div');
+                div.style = 'background:rgba(255,255,255,0.05); padding:12px; margin:8px 0; border-radius:12px;';
+                div.innerHTML = `<strong>${item.title} (${item.type})</strong><br>
+                                 <button onclick="deleteMedia(${i})" class="delete-btn">Удалить</button>`;
+                container.appendChild(div);
+            });
+        }
 
         function fileToBase64(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = () => resolve(reader.result);
-                reader.onerror = () => reject("Ошибка");
+                reader.onerror = () => reject("Ошибка чтения");
                 reader.readAsDataURL(file);
             });
         }
@@ -314,18 +389,48 @@
                 mediaItems.unshift({id: Date.now(), type: 'music', title, data});
                 localStorage.setItem('myMedia', JSON.stringify(mediaItems));
                 renderMedia();
-                alert("✅ Музыка загружена!");
+                alert("✅ Музыка успешно загружена!");
                 document.getElementById('musicTitle').value = '';
                 document.getElementById('musicFile').value = '';
             } catch (e) {
-                alert("Ошибка загрузки файла");
+                alert("❌ Ошибка загрузки файла");
             }
         };
 
-        // Добавь аналогично savePost, saveVideo, savePhoto, deletePost, deleteMedia
+        // Другие функции (savePost, saveVideo, savePhoto, delete и т.д.)
+        window.savePost = function() {
+            const title = document.getElementById('postTitle').value.trim();
+            const text = document.getElementById('postText').value.trim();
+            if (!title || !text) return alert("Заполните заголовок и текст!");
+            posts.unshift({id: Date.now(), title, text, img: document.getElementById('postImg').value || null, date: new Date().toLocaleDateString('ru-RU')});
+            localStorage.setItem('myPosts', JSON.stringify(posts));
+            renderPosts();
+            alert("Пост опубликован!");
+        };
+
+        window.saveVideo = async function() { /* аналогично */ };
+        window.savePhoto = async function() { /* аналогично */ };
+
+        window.deletePost = function(i) {
+            if (confirm("Удалить пост?")) {
+                posts.splice(i, 1);
+                localStorage.setItem('myPosts', JSON.stringify(posts));
+                renderPosts();
+                renderManageList();
+            }
+        };
+
+        window.deleteMedia = function(i) {
+            if (confirm("Удалить медиа?")) {
+                mediaItems.splice(i, 1);
+                localStorage.setItem('myMedia', JSON.stringify(mediaItems));
+                renderMedia();
+                renderManageList();
+            }
+        };
 
         window.switchAdminTab = function(n) {
-            document.querySelectorAll('#tab-post, #tab-music, #tab-video, #tab-photo, #tab-manage').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('#tab-post,#tab-music,#tab-video,#tab-photo,#tab-manage').forEach(el => el.style.display = 'none');
             document.getElementById(['tab-post','tab-music','tab-video','tab-photo','tab-manage'][n]).style.display = 'block';
             document.querySelectorAll('.admin-tab').forEach((el,i) => el.classList.toggle('active', i === n));
             if (n === 4) renderManageList();
@@ -337,14 +442,14 @@
 
         document.getElementById('adminBtn').addEventListener('click', () => {
             document.getElementById('adminModal').style.display = 'flex';
-            switchAdminTab(1); // открывает сразу вкладку Музыка
+            switchAdminTab(1); // открывает вкладку Музыка
         });
 
         document.getElementById('hamburger').addEventListener('click', () => {
             document.getElementById('navLinks').classList.toggle('active');
         });
 
-        // Инициализация
+        // Запуск сайта
         renderProjects();
         renderPosts();
         renderMedia();
