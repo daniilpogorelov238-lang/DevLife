@@ -75,13 +75,6 @@
                         url('https://picsum.photos/1920/1080?random=42') center/cover;
         }
 
-        .hero h1 {
-            font-size: clamp(4rem, 9vw, 7rem);
-            background: linear-gradient(90deg, #00ff9d, #00d0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
         .section { padding: 120px 5%; max-width: 1450px; margin: 0 auto; }
         .section-title {
             text-align: center;
@@ -100,10 +93,10 @@
             background: var(--card);
             border-radius: 26px;
             overflow: hidden;
-            transition: all 0.5s;
+            transition: all 0.4s;
         }
         .project-card:hover, .post-card:hover, .media-card:hover {
-            transform: translateY(-18px);
+            transform: translateY(-15px);
         }
 
         .project-card img, .media-card img, .media-card video {
@@ -121,7 +114,6 @@
             text-decoration: none;
         }
 
-        /* Админ панель */
         .modal {
             display: none;
             position: fixed; top: 0; left: 0;
@@ -137,7 +129,7 @@
             border-radius: 28px;
             width: 92%;
             max-width: 560px;
-            max-height: 94vh;
+            max-height: 92vh;
             overflow-y: auto;
         }
 
@@ -209,7 +201,8 @@
     <!-- Админ панель -->
     <div class="modal" id="adminModal">
         <div class="modal-content">
-            <h3 style="text-align:center; margin-bottom:20px;">Админ панель</h3>
+            <h3 style="text-align:center; margin-bottom:20px; color:var(--accent);">Админ панель</h3>
+            
             <input type="password" id="adminPassword" placeholder="Введите пароль">
             <button onclick="checkPassword()" class="play-btn" style="width:100%; margin:15px 0;">Войти</button>
             <button onclick="closeAdminModal()" style="width:100%; background:#666;">Отмена</button>
@@ -223,13 +216,15 @@
                     <button class="admin-tab" onclick="switchAdminTab(4)">Управление</button>
                 </div>
 
+                <!-- Пост -->
                 <div id="tab-post">
                     <input type="text" id="postTitle" placeholder="Заголовок поста">
                     <textarea id="postText" rows="5" placeholder="Текст поста"></textarea>
                     <input type="text" id="postImg" placeholder="Ссылка на картинку">
-                    <button onclick="savePost()" class="play-btn" style="width:100%;">Опубликовать</button>
+                    <button onclick="savePost()" class="play-btn" style="width:100%;">Опубликовать пост</button>
                 </div>
 
+                <!-- Музыка -->
                 <div id="tab-music" style="display:none;">
                     <input type="text" id="musicTitle" placeholder="Название трека">
                     <input type="file" id="musicFile" accept="audio/*">
@@ -237,18 +232,21 @@
                     <button onclick="saveMusic()" class="play-btn" style="width:100%; margin-top:10px;">Загрузить музыку</button>
                 </div>
 
+                <!-- Видео -->
                 <div id="tab-video" style="display:none;">
                     <input type="text" id="videoTitle" placeholder="Название видео">
                     <input type="file" id="videoFile" accept="video/*">
                     <button onclick="saveVideo()" class="play-btn" style="width:100%; margin-top:10px;">Загрузить видео</button>
                 </div>
 
+                <!-- Фото -->
                 <div id="tab-photo" style="display:none;">
                     <input type="text" id="photoTitle" placeholder="Описание фото">
                     <input type="file" id="photoFile" accept="image/*">
                     <button onclick="savePhoto()" class="play-btn" style="width:100%; margin-top:10px;">Загрузить фото</button>
                 </div>
 
+                <!-- Управление -->
                 <div id="tab-manage" style="display:none;">
                     <h3>Управление контентом</h3>
                     <div id="manageList"></div>
@@ -344,7 +342,7 @@
             const file = document.getElementById('musicFile').files[0];
             const url = document.getElementById('musicUrl').value.trim();
 
-            if (!title) return alert("Введите название!");
+            if (!title) return alert("Введите название трека!");
             if (!file && !url) return alert("Выберите файл или вставьте ссылку!");
 
             try {
@@ -358,8 +356,13 @@
             }
         };
 
-        document.getElementById('adminBtn').addEventListener('click', () => document.getElementById('adminModal').style.display = 'flex');
-        document.getElementById('hamburger').addEventListener('click', () => document.getElementById('navLinks').classList.toggle('active'));
+        document.getElementById('adminBtn').addEventListener('click', () => {
+            document.getElementById('adminModal').style.display = 'flex';
+        });
+
+        document.getElementById('hamburger').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
 
         // Запуск
         renderProjects();
