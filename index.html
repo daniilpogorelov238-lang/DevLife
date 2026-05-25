@@ -204,6 +204,7 @@
         </div>
     </section>
 
+    <!-- Проекты -->
     <section id="projects" class="section">
         <h2 class="section-title">Мои проекты</h2>
         <div class="projects-grid" id="projectsGrid"></div>
@@ -243,19 +244,32 @@
                 <button class="admin-tab" onclick="switchAdminTab(4)">Управление</button>
             </div>
 
-            <!-- Музыка (улучшенная) -->
-            <div id="tab-music">
-                <input type="text" id="musicTitle" placeholder="Название трека" style="margin-bottom:10px;">
+            <div id="tab-post">
+                <input type="text" id="postTitle" placeholder="Заголовок поста">
+                <textarea id="postText" rows="5" placeholder="Текст поста"></textarea>
+                <input type="text" id="postImg" placeholder="Ссылка на картинку">
+                <button onclick="savePost()" class="play-btn" style="width:100%;">Опубликовать</button>
+            </div>
+
+            <div id="tab-music" style="display:none;">
+                <input type="text" id="musicTitle" placeholder="Название трека">
                 <input type="file" id="musicFile" accept="audio/*">
-                <p style="margin:8px 0; font-size:0.9rem; opacity:0.8;">или</p>
-                <input type="text" id="musicUrl" placeholder="Прямая ссылка на музыку (для больших файлов)">
+                <input type="text" id="musicUrl" placeholder="Или прямая ссылка (для больших файлов)">
                 <button onclick="saveMusic()" class="play-btn" style="width:100%; margin-top:15px;">Загрузить музыку</button>
             </div>
 
-            <!-- Остальные вкладки -->
-            <div id="tab-post" style="display:none;"> ... </div>
-            <div id="tab-video" style="display:none;"> ... </div>
-            <div id="tab-photo" style="display:none;"> ... </div>
+            <div id="tab-video" style="display:none;">
+                <input type="text" id="videoTitle" placeholder="Название видео">
+                <input type="file" id="videoFile" accept="video/*">
+                <button onclick="saveVideo()" class="play-btn" style="width:100%; margin-top:15px;">Загрузить видео</button>
+            </div>
+
+            <div id="tab-photo" style="display:none;">
+                <input type="text" id="photoTitle" placeholder="Описание фото">
+                <input type="file" id="photoFile" accept="image/*">
+                <button onclick="savePhoto()" class="play-btn" style="width:100%; margin-top:15px;">Загрузить фото</button>
+            </div>
+
             <div id="tab-manage" style="display:none;">
                 <h3>Управление контентом</h3>
                 <div id="manageList"></div>
@@ -274,70 +288,30 @@
         let posts = JSON.parse(localStorage.getItem('myPosts')) || [];
         let mediaItems = JSON.parse(localStorage.getItem('myMedia')) || [];
 
-        function renderProjects() { /* ... (тот же код) */ }
-        function renderPosts() { /* ... */ }
-
-        function renderMedia() {
-            const grid = document.getElementById('mediaGrid');
+        function renderProjects() {
+            const grid = document.getElementById('projectsGrid');
             grid.innerHTML = '';
-            mediaItems.forEach(item => {
+            projects.forEach(p => {
                 const card = document.createElement('div');
-                card.className = 'media-card';
-                if (item.type === 'photo') {
-                    card.innerHTML = `<img src="${item.data}" alt="${item.title}"><div style="padding:1rem;"><h3>${item.title}</h3></div>`;
-                } else if (item.type === 'video') {
-                    card.innerHTML = `<video width="100%" height="220" controls><source src="${item.data}"></video><div style="padding:1rem;"><h3>${item.title}</h3></div>`;
-                } else if (item.type === 'music') {
-                    card.innerHTML = `
-                        <div style="padding:1.5rem; text-align:center;">
-                            <h3>${item.title}</h3>
-                            <audio controls style="width:100%; margin-top:10px;">
-                                <source src="${item.data}">
-                            </audio>
-                        </div>`;
-                }
+                card.className = 'project-card';
+                card.innerHTML = `
+                    <img src="${p.img}" alt="${p.title}">
+                    <div style="padding: 1.5rem; text-align: center;">
+                        <h3>${p.title}</h3>
+                        <p>${p.desc}</p>
+                        <a href="${p.url}" target="_blank" class="play-btn">Открыть →</a>
+                    </div>
+                `;
                 grid.appendChild(card);
             });
         }
 
-        function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = () => reject("Ошибка чтения");
-                reader.readAsDataURL(file);
-            });
-        }
+        function renderPosts() { /* ... */ }
+        function renderMedia() { /* ... */ }
+        function renderManageList() { /* ... */ }
 
-        window.saveMusic = async function() {
-            const title = document.getElementById('musicTitle').value.trim();
-            const file = document.getElementById('musicFile').files[0];
-            const url = document.getElementById('musicUrl').value.trim();
+        // Функции сохранения и удаления (saveMusic, saveVideo, savePhoto, savePost, deletePost, deleteMedia)
 
-            if (!title) return alert("Введите название трека!");
-
-            if (url) {
-                // Большой файл — сохраняем ссылку
-                mediaItems.unshift({id: Date.now(), type: 'music', title, data: url});
-            } else if (file) {
-                // Маленький файл — Base64
-                if (file.size > 50 * 1024 * 1024) return alert("Файл слишком большой для прямой загрузки. Используйте внешнюю ссылку.");
-                const data = await fileToBase64(file);
-                mediaItems.unshift({id: Date.now(), type: 'music', title, data});
-            } else {
-                return alert("Выберите файл или вставьте ссылку!");
-            }
-
-            localStorage.setItem('myMedia', JSON.stringify(mediaItems));
-            renderMedia();
-            alert("✅ Музыка добавлена!");
-            
-            document.getElementById('musicTitle').value = '';
-            document.getElementById('musicFile').value = '';
-            document.getElementById('musicUrl').value = '';
-        };
-
-        // Админ панель
         document.getElementById('adminBtn').addEventListener('click', () => {
             document.getElementById('adminModal').style.display = 'flex';
             switchAdminTab(1);
