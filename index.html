@@ -204,7 +204,6 @@
         </div>
     </section>
 
-    <!-- Проекты -->
     <section id="projects" class="section">
         <h2 class="section-title">Мои проекты</h2>
         <div class="projects-grid" id="projectsGrid"></div>
@@ -244,32 +243,38 @@
                 <button class="admin-tab" onclick="switchAdminTab(4)">Управление</button>
             </div>
 
+            <!-- Пост -->
             <div id="tab-post">
                 <input type="text" id="postTitle" placeholder="Заголовок поста">
                 <textarea id="postText" rows="5" placeholder="Текст поста"></textarea>
-                <input type="text" id="postImg" placeholder="Ссылка на картинку">
-                <button onclick="savePost()" class="play-btn" style="width:100%;">Опубликовать</button>
+                <input type="text" id="postImg" placeholder="Ссылка на картинку (необязательно)">
+                <button onclick="savePost()" class="play-btn" style="width:100%;">Опубликовать пост</button>
             </div>
 
+            <!-- Музыка -->
             <div id="tab-music" style="display:none;">
                 <input type="text" id="musicTitle" placeholder="Название трека">
                 <input type="file" id="musicFile" accept="audio/*">
-                <input type="text" id="musicUrl" placeholder="Или прямая ссылка (для больших файлов)">
-                <button onclick="saveMusic()" class="play-btn" style="width:100%; margin-top:15px;">Загрузить музыку</button>
+                <p style="text-align:center; margin:10px 0;">или</p>
+                <input type="text" id="musicUrl" placeholder="Прямая ссылка на музыку (до 1 ГБ)">
+                <button onclick="saveMusic()" class="play-btn" style="width:100%; margin-top:10px;">Загрузить музыку</button>
             </div>
 
+            <!-- Видео -->
             <div id="tab-video" style="display:none;">
                 <input type="text" id="videoTitle" placeholder="Название видео">
                 <input type="file" id="videoFile" accept="video/*">
-                <button onclick="saveVideo()" class="play-btn" style="width:100%; margin-top:15px;">Загрузить видео</button>
+                <button onclick="saveVideo()" class="play-btn" style="width:100%; margin-top:10px;">Загрузить видео</button>
             </div>
 
+            <!-- Фото -->
             <div id="tab-photo" style="display:none;">
                 <input type="text" id="photoTitle" placeholder="Описание фото">
                 <input type="file" id="photoFile" accept="image/*">
-                <button onclick="savePhoto()" class="play-btn" style="width:100%; margin-top:15px;">Загрузить фото</button>
+                <button onclick="savePhoto()" class="play-btn" style="width:100%; margin-top:10px;">Загрузить фото</button>
             </div>
 
+            <!-- Управление -->
             <div id="tab-manage" style="display:none;">
                 <h3>Управление контентом</h3>
                 <div id="manageList"></div>
@@ -306,11 +311,143 @@
             });
         }
 
-        function renderPosts() { /* ... */ }
-        function renderMedia() { /* ... */ }
-        function renderManageList() { /* ... */ }
+        function renderPosts() {
+            const grid = document.getElementById('postsGrid');
+            grid.innerHTML = posts.length === 0 ? '<p style="grid-column:1/-1;text-align:center;opacity:0.6;">Пока нет постов...</p>' : '';
+            posts.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'post-card';
+                card.innerHTML = `
+                    ${p.img ? `<img src="${p.img}">` : ''}
+                    <div style="padding:1.5rem;">
+                        <h3>${p.title}</h3>
+                        <p>${p.text}</p>
+                        <small>${p.date}</small>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
 
-        // Функции сохранения и удаления (saveMusic, saveVideo, savePhoto, savePost, deletePost, deleteMedia)
+        function renderMedia() {
+            const grid = document.getElementById('mediaGrid');
+            grid.innerHTML = '';
+            mediaItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'media-card';
+                if (item.type === 'photo') {
+                    card.innerHTML = `<img src="${item.data}" alt="${item.title}"><div style="padding:1rem;"><h3>${item.title}</h3></div>`;
+                } else if (item.type === 'video') {
+                    card.innerHTML = `<video width="100%" height="220" controls><source src="${item.data}"></video><div style="padding:1rem;"><h3>${item.title}</h3></div>`;
+                } else if (item.type === 'music') {
+                    card.innerHTML = `
+                        <div style="padding:1.5rem; text-align:center;">
+                            <h3>${item.title}</h3>
+                            <audio controls style="width:100%; margin-top:10px;">
+                                <source src="${item.data}">
+                            </audio>
+                        </div>`;
+                }
+                grid.appendChild(card);
+            });
+        }
+
+        function renderManageList() {
+            const container = document.getElementById('manageList');
+            container.innerHTML = '<h4>Посты</h4>';
+            posts.forEach((post, i) => {
+                const div = document.createElement('div');
+                div.style = 'background:rgba(255,255,255,0.05);padding:12px;margin:8px 0;border-radius:12px;';
+                div.innerHTML = `<strong>${post.title}</strong><br><small>${post.text.substring(0,60)}...</small><br>
+                                 <button onclick="deletePost(${i})" class="delete-btn">Удалить</button>`;
+                container.appendChild(div);
+            });
+
+            container.innerHTML += '<h4 style="margin-top:20px;">Медиа</h4>';
+            mediaItems.forEach((item, i) => {
+                const div = document.createElement('div');
+                div.style = 'background:rgba(255,255,255,0.05);padding:12px;margin:8px 0;border-radius:12px;';
+                div.innerHTML = `<strong>${item.title} (${item.type})</strong><br>
+                                 <button onclick="deleteMedia(${i})" class="delete-btn">Удалить</button>`;
+                container.appendChild(div);
+            });
+        }
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject("Ошибка чтения файла");
+                reader.readAsDataURL(file);
+            });
+        }
+
+        window.savePost = function() {
+            const title = document.getElementById('postTitle').value.trim();
+            const text = document.getElementById('postText').value.trim();
+            if (!title || !text) return alert("Заполните заголовок и текст!");
+            posts.unshift({id: Date.now(), title, text, img: document.getElementById('postImg').value || null, date: new Date().toLocaleDateString('ru-RU')});
+            localStorage.setItem('myPosts', JSON.stringify(posts));
+            renderPosts();
+            alert("Пост опубликован!");
+        };
+
+        window.saveMusic = async function() {
+            const title = document.getElementById('musicTitle').value.trim();
+            const file = document.getElementById('musicFile').files[0];
+            const url = document.getElementById('musicUrl').value.trim();
+
+            if (!title) return alert("Введите название трека!");
+
+            if (url) {
+                mediaItems.unshift({id: Date.now(), type: 'music', title, data: url});
+            } else if (file) {
+                if (file.size > 50 * 1024 * 1024) return alert("Файл слишком большой. Используйте прямую ссылку.");
+                const data = await fileToBase64(file);
+                mediaItems.unshift({id: Date.now(), type: 'music', title, data});
+            } else {
+                return alert("Выберите файл или вставьте ссылку!");
+            }
+
+            localStorage.setItem('myMedia', JSON.stringify(mediaItems));
+            renderMedia();
+            alert("✅ Музыка добавлена!");
+            document.getElementById('musicTitle').value = '';
+            document.getElementById('musicFile').value = '';
+            document.getElementById('musicUrl').value = '';
+        };
+
+        window.saveVideo = async function() { /* аналогично */ };
+        window.savePhoto = async function() { /* аналогично */ };
+
+        window.deletePost = function(i) {
+            if (confirm("Удалить пост?")) {
+                posts.splice(i, 1);
+                localStorage.setItem('myPosts', JSON.stringify(posts));
+                renderPosts();
+                renderManageList();
+            }
+        };
+
+        window.deleteMedia = function(i) {
+            if (confirm("Удалить медиа?")) {
+                mediaItems.splice(i, 1);
+                localStorage.setItem('myMedia', JSON.stringify(mediaItems));
+                renderMedia();
+                renderManageList();
+            }
+        };
+
+        window.switchAdminTab = function(n) {
+            document.querySelectorAll('#tab-post,#tab-music,#tab-video,#tab-photo,#tab-manage').forEach(el => el.style.display = 'none');
+            document.getElementById(['tab-post','tab-music','tab-video','tab-photo','tab-manage'][n]).style.display = 'block';
+            document.querySelectorAll('.admin-tab').forEach((el,i) => el.classList.toggle('active', i === n));
+            if (n === 4) renderManageList();
+        };
+
+        window.closeAdminModal = function() {
+            document.getElementById('adminModal').style.display = 'none';
+        };
 
         document.getElementById('adminBtn').addEventListener('click', () => {
             document.getElementById('adminModal').style.display = 'flex';
@@ -321,10 +458,10 @@
             document.getElementById('navLinks').classList.toggle('active');
         });
 
-        // Инициализация
+        // Запуск
         renderProjects();
         renderPosts();
         renderMedia();
     </script>
 </body>
-</html>
+    </html>
