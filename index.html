@@ -8,8 +8,8 @@
         :root {
             --bg: #0a0a14;
             --accent: #00ff9d;
-            --accent2: #00d0ff;
-            --card: rgba(15, 15, 35, 0.97);
+            --accent2: #00b8ff;
+            --card: rgba(18, 18, 38, 0.97);
             --text: #e0e0ff;
         }
 
@@ -24,15 +24,16 @@
 
         header {
             background: rgba(10, 10, 20, 0.98);
-            backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.25);
         }
 
         .navbar {
-            max-width: 1400px;
+            max-width: 1450px;
             margin: 0 auto;
             padding: 1.2rem 5%;
             display: flex;
@@ -40,83 +41,117 @@
             align-items: center;
         }
 
-        .logo { 
-            font-size: 2.8rem; 
-            font-weight: 900; 
+        .logo {
+            font-size: 2.9rem;
+            font-weight: 900;
             background: linear-gradient(90deg, var(--accent), var(--accent2));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .nav-links { display: flex; gap: 2.5rem; align-items: center; }
-        .nav-links a { color: var(--text); text-decoration: none; font-weight: 500; }
-        .nav-links a:hover { color: var(--accent); }
+        .nav-links {
+            display: flex;
+            gap: 2.8rem;
+            align-items: center;
+        }
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+            text-shadow: 0 0 12px var(--accent);
+        }
 
         .admin-btn {
             background: linear-gradient(45deg, #ff3366, #ff8800);
             color: white;
-            padding: 12px 24px;
+            padding: 12px 26px;
             border-radius: 50px;
             font-weight: 700;
             cursor: pointer;
             border: none;
+            transition: 0.3s;
         }
+        .admin-btn:hover { transform: scale(1.08); }
 
         .hamburger { display: none; flex-direction: column; gap: 6px; cursor: pointer; }
-        .hamburger span { width: 32px; height: 3px; background: var(--accent); }
+        .hamburger span { width: 34px; height: 3.5px; background: var(--accent); }
 
-        .hero { 
-            min-height: 100vh; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            background: linear-gradient(rgba(10,10,20,0.85), rgba(10,10,20,0.9)), 
+            background: linear-gradient(rgba(10,10,20,0.75), rgba(10,10,20,0.85)), 
                         url('https://picsum.photos/1920/1080?random=42') center/cover;
         }
 
-        .section { padding: 120px 5%; max-width: 1400px; margin: 0 auto; }
-        .section-title { 
-            text-align: center; 
-            font-size: 3rem; 
-            margin-bottom: 4rem; 
+        .hero h1 {
+            font-size: clamp(3.8rem, 9vw, 7rem);
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #00ff9d, #00d0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section {
+            padding: 120px 5%;
+            max-width: 1450px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3.2rem;
+            margin-bottom: 4.5rem;
             color: var(--accent);
+            text-shadow: 0 0 30px rgba(0, 255, 157, 0.4);
         }
 
-        .projects-grid, .posts-grid, .media-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); 
-            gap: 2.5rem; 
+        .projects-grid, .posts-grid, .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 2.5rem;
         }
 
-        .project-card, .post-card, .media-card { 
-            background: var(--card); 
-            border-radius: 24px; 
-            overflow: hidden; 
-            transition: all 0.4s; 
+        .project-card, .post-card, .media-card {
+            background: var(--card);
+            border-radius: 26px;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            border: 1px solid rgba(0, 255, 157, 0.15);
         }
-        .project-card:hover, .post-card:hover, .media-card:hover { 
-            transform: translateY(-15px); 
+        .project-card:hover, .post-card:hover, .media-card:hover {
+            transform: translateY(-18px);
+            box-shadow: 0 30px 70px rgba(0, 255, 157, 0.35);
         }
 
         .project-card img, .media-card img, .media-card video {
             width: 100%;
-            height: 230px;
+            height: 245px;
             object-fit: cover;
         }
 
         .play-btn {
             background: var(--accent);
             color: #0a0a14;
-            padding: 14px 34px;
+            padding: 14px 36px;
             border-radius: 50px;
-            text-decoration: none;
             font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            margin: 15px 0;
         }
 
+        /* Админ панель */
         .modal {
             display: none;
-            position: fixed; top: 0; left: 0;
+            position: fixed;
+            top: 0; left: 0;
             width: 100%; height: 100%;
             background: rgba(0,0,0,0.95);
             z-index: 3000;
@@ -125,11 +160,11 @@
         }
         .modal-content {
             background: var(--card);
-            padding: 2.5rem;
-            border-radius: 24px;
-            width: 90%;
-            max-width: 580px;
-            max-height: 92vh;
+            padding: 2.8rem;
+            border-radius: 28px;
+            width: 92%;
+            max-width: 600px;
+            max-height: 94vh;
             overflow-y: auto;
         }
 
@@ -165,17 +200,17 @@
     <section class="hero">
         <div style="text-align: center; z-index: 2;">
             <h1>DevLife</h1>
-            <p style="font-size: 1.6rem; margin: 1rem 0;">Разрабатывай. Играй. Живи.</p>
-            <a href="#projects" class="play-btn">Мои проекты</a>
+            <p style="font-size: 1.7rem; margin: 1.2rem 0;">Разрабатывай. Играй. Живи.</p>
+            <a href="#projects" class="play-btn">Посмотреть проекты</a>
         </div>
     </section>
 
     <section id="about" class="section">
         <h2 class="section-title">Обо мне</h2>
-        <div style="max-width: 720px; margin: 0 auto; text-align: center;">
+        <div style="max-width: 780px; margin: 0 auto; text-align: center; font-size: 1.2rem;">
             <p>Меня зовут Даниил. Я начинающий программист, разработчик игр и многого другого.</p>
-            <p style="margin: 1.2rem 0;">Моё желание работать в сфере разработки появилось благодаря владельцу мессенджера <strong>«Rossi»</strong>.</p>
-            <p><strong>Надеюсь, вам понравятся мои проекты.</strong></p>
+            <p style="margin: 1.5rem 0;">Моё желание работать в сфере разработки появилось благодаря владельцу мессенджера <strong>«Rossi»</strong>.</p>
+            <p><strong>Создаю с душой.</strong></p>
         </div>
     </section>
 
@@ -194,7 +229,7 @@
         <div class="media-grid" id="mediaGrid"></div>
     </section>
 
-    <footer style="text-align:center; padding: 4rem 5%; background: rgba(10,10,20,0.9);">
+    <footer style="text-align:center; padding: 5rem 5%; background: rgba(10,10,20,0.9);">
         <p>© 2026 DevLife • Создано с ❤️</p>
     </footer>
 
@@ -202,9 +237,9 @@
     <div class="modal" id="adminModal">
         <div class="modal-content">
             <h3>Админ панель</h3>
-            <input type="password" id="adminPassword" placeholder="Введите пароль">
-            <button onclick="checkPassword()" class="play-btn" style="width:100%; margin:15px 0;">Войти</button>
-            <button onclick="closeAdminModal()" style="width:100%; background:#666;">Отмена</button>
+            <input type="password" id="adminPassword" placeholder="Введите пароль" style="margin-bottom:15px;">
+            <button onclick="checkPassword()" class="play-btn" style="width:100%;">Войти</button>
+            <button onclick="closeAdminModal()" style="width:100%; margin-top:10px; background:#666;">Отмена</button>
 
             <div id="adminPanel" style="display:none; margin-top:25px;">
                 <div class="admin-tabs">
@@ -227,7 +262,7 @@
                 <div id="tab-music" style="display:none;">
                     <input type="text" id="musicTitle" placeholder="Название трека">
                     <input type="file" id="musicFile" accept="audio/*">
-                    <input type="text" id="musicUrl" placeholder="Или прямая ссылка">
+                    <input type="text" id="musicUrl" placeholder="Прямая ссылка (для больших файлов)">
                     <button onclick="saveMusic()" class="play-btn" style="width:100%; margin-top:10px;">Загрузить музыку</button>
                 </div>
 
@@ -275,7 +310,7 @@
                 card.className = 'project-card';
                 card.innerHTML = `
                     <img src="${p.img}" alt="${p.title}">
-                    <div style="padding: 1.5rem; text-align: center;">
+                    <div style="padding: 1.8rem; text-align: center;">
                         <h3>${p.title}</h3>
                         <p>${p.desc}</p>
                         <a href="${p.url}" target="_blank" class="play-btn">Открыть →</a>
@@ -293,39 +328,18 @@
                 card.className = 'media-card';
                 if (item.type === 'music') {
                     card.innerHTML = `
-                        <div style="padding:1.5rem; text-align:center;">
+                        <div style="padding:1.8rem; text-align:center;">
                             <h3>${item.title}</h3>
-                            <audio controls style="width:100%; margin-top:12px;">
+                            <audio controls style="width:100%; margin-top:15px;">
                                 <source src="${item.data}">
                             </audio>
                         </div>`;
                 } else if (item.type === 'video') {
-                    card.innerHTML = `<video width="100%" height="230" controls><source src="${item.data}"></video><div style="padding:1rem;"><h3>${item.title}</h3></div>`;
+                    card.innerHTML = `<video width="100%" height="240" controls><source src="${item.data}"></video><div style="padding:1rem;"><h3>${item.title}</h3></div>`;
                 } else if (item.type === 'photo') {
                     card.innerHTML = `<img src="${item.data}" alt="${item.title}"><div style="padding:1rem;"><h3>${item.title}</h3></div>`;
                 }
                 grid.appendChild(card);
-            });
-        }
-
-        function renderManageList() {
-            const container = document.getElementById('manageList');
-            container.innerHTML = '<h4>Посты</h4>';
-            posts.forEach((post, i) => {
-                const div = document.createElement('div');
-                div.style = 'background:rgba(255,255,255,0.05);padding:12px;margin:8px 0;border-radius:12px;';
-                div.innerHTML = `<strong>${post.title}</strong><br><small>${post.text.substring(0,70)}...</small><br>
-                                 <button onclick="deletePost(${i})" class="delete-btn">Удалить</button>`;
-                container.appendChild(div);
-            });
-
-            container.innerHTML += '<h4 style="margin-top:20px;">Медиа</h4>';
-            mediaItems.forEach((item, i) => {
-                const div = document.createElement('div');
-                div.style = 'background:rgba(255,255,255,0.05);padding:12px;margin:8px 0;border-radius:12px;';
-                div.innerHTML = `<strong>${item.title} (${item.type})</strong><br>
-                                 <button onclick="deleteMedia(${i})" class="delete-btn">Удалить</button>`;
-                container.appendChild(div);
             });
         }
 
@@ -355,7 +369,6 @@
             document.querySelectorAll('#tab-post,#tab-music,#tab-video,#tab-photo,#tab-manage').forEach(el => el.style.display = 'none');
             document.getElementById(['tab-post','tab-music','tab-video','tab-photo','tab-manage'][n]).style.display = 'block';
             document.querySelectorAll('.admin-tab').forEach((el,i) => el.classList.toggle('active', i === n));
-            if (n === 4) renderManageList();
         };
 
         window.saveMusic = async function() {
@@ -377,11 +390,11 @@
             }
         };
 
-        // Добавь аналогично savePost, saveVideo, savePhoto, deletePost, deleteMedia
-
+        // Открытие админки
         document.getElementById('adminBtn').addEventListener('click', () => document.getElementById('adminModal').style.display = 'flex');
         document.getElementById('hamburger').addEventListener('click', () => document.getElementById('navLinks').classList.toggle('active'));
 
+        // Запуск
         renderProjects();
         renderMedia();
     </script>
