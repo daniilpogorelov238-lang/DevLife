@@ -9,7 +9,7 @@
             --bg: #0a0a14;
             --accent: #00ff9d;
             --accent2: #00b8ff;
-            --card: rgba(18, 18, 38, 0.97);
+            --card: rgba(20, 20, 45, 0.97);
             --text: #e0e0ff;
         }
 
@@ -29,7 +29,6 @@
             width: 100%;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(0, 255, 157, 0.25);
         }
 
         .navbar {
@@ -49,21 +48,9 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 2.8rem;
-            align-items: center;
-        }
-        .nav-links a {
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 500;
-            transition: 0.3s;
-        }
-        .nav-links a:hover {
-            color: var(--accent);
-            text-shadow: 0 0 12px var(--accent);
-        }
+        .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+        .nav-links a { color: var(--text); text-decoration: none; font-weight: 500; }
+        .nav-links a:hover { color: var(--accent); }
 
         .admin-btn {
             background: linear-gradient(45deg, #ff3366, #ff8800);
@@ -73,9 +60,7 @@
             font-weight: 700;
             cursor: pointer;
             border: none;
-            transition: 0.3s;
         }
-        .admin-btn:hover { transform: scale(1.08); }
 
         .hamburger { display: none; flex-direction: column; gap: 6px; cursor: pointer; }
         .hamburger span { width: 34px; height: 3.5px; background: var(--accent); }
@@ -86,30 +71,23 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            background: linear-gradient(rgba(10,10,20,0.75), rgba(10,10,20,0.85)), 
+            background: linear-gradient(rgba(10,10,20,0.8), rgba(10,10,20,0.9)), 
                         url('https://picsum.photos/1920/1080?random=42') center/cover;
         }
 
         .hero h1 {
-            font-size: clamp(3.8rem, 9vw, 7rem);
-            margin-bottom: 1rem;
+            font-size: clamp(4rem, 9vw, 7rem);
             background: linear-gradient(90deg, #00ff9d, #00d0ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .section {
-            padding: 120px 5%;
-            max-width: 1450px;
-            margin: 0 auto;
-        }
-
+        .section { padding: 120px 5%; max-width: 1450px; margin: 0 auto; }
         .section-title {
             text-align: center;
             font-size: 3.2rem;
-            margin-bottom: 4.5rem;
+            margin-bottom: 4rem;
             color: var(--accent);
-            text-shadow: 0 0 30px rgba(0, 255, 157, 0.4);
         }
 
         .projects-grid, .posts-grid, .media-grid {
@@ -122,12 +100,10 @@
             background: var(--card);
             border-radius: 26px;
             overflow: hidden;
-            transition: all 0.5s ease;
-            border: 1px solid rgba(0, 255, 157, 0.15);
+            transition: all 0.5s;
         }
         .project-card:hover, .post-card:hover, .media-card:hover {
             transform: translateY(-18px);
-            box-shadow: 0 30px 70px rgba(0, 255, 157, 0.35);
         }
 
         .project-card img, .media-card img, .media-card video {
@@ -143,15 +119,12 @@
             border-radius: 50px;
             font-weight: 700;
             text-decoration: none;
-            display: inline-block;
-            margin: 15px 0;
         }
 
         /* Админ панель */
         .modal {
             display: none;
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
             background: rgba(0,0,0,0.95);
             z-index: 3000;
@@ -163,7 +136,7 @@
             padding: 2.8rem;
             border-radius: 28px;
             width: 92%;
-            max-width: 600px;
+            max-width: 560px;
             max-height: 94vh;
             overflow-y: auto;
         }
@@ -207,10 +180,10 @@
 
     <section id="about" class="section">
         <h2 class="section-title">Обо мне</h2>
-        <div style="max-width: 780px; margin: 0 auto; text-align: center; font-size: 1.2rem;">
+        <div style="max-width: 780px; margin: 0 auto; text-align: center;">
             <p>Меня зовут Даниил. Я начинающий программист, разработчик игр и многого другого.</p>
             <p style="margin: 1.5rem 0;">Моё желание работать в сфере разработки появилось благодаря владельцу мессенджера <strong>«Rossi»</strong>.</p>
-            <p><strong>Создаю с душой.</strong></p>
+            <p><strong>Надеюсь, вам понравятся мои проекты.</strong></p>
         </div>
     </section>
 
@@ -236,10 +209,10 @@
     <!-- Админ панель -->
     <div class="modal" id="adminModal">
         <div class="modal-content">
-            <h3>Админ панель</h3>
-            <input type="password" id="adminPassword" placeholder="Введите пароль" style="margin-bottom:15px;">
-            <button onclick="checkPassword()" class="play-btn" style="width:100%;">Войти</button>
-            <button onclick="closeAdminModal()" style="width:100%; margin-top:10px; background:#666;">Отмена</button>
+            <h3 style="text-align:center; margin-bottom:20px;">Админ панель</h3>
+            <input type="password" id="adminPassword" placeholder="Введите пароль">
+            <button onclick="checkPassword()" class="play-btn" style="width:100%; margin:15px 0;">Войти</button>
+            <button onclick="closeAdminModal()" style="width:100%; background:#666;">Отмена</button>
 
             <div id="adminPanel" style="display:none; margin-top:25px;">
                 <div class="admin-tabs">
@@ -250,37 +223,32 @@
                     <button class="admin-tab" onclick="switchAdminTab(4)">Управление</button>
                 </div>
 
-                <!-- Пост -->
                 <div id="tab-post">
                     <input type="text" id="postTitle" placeholder="Заголовок поста">
                     <textarea id="postText" rows="5" placeholder="Текст поста"></textarea>
                     <input type="text" id="postImg" placeholder="Ссылка на картинку">
-                    <button onclick="savePost()" class="play-btn" style="width:100%;">Опубликовать пост</button>
+                    <button onclick="savePost()" class="play-btn" style="width:100%;">Опубликовать</button>
                 </div>
 
-                <!-- Музыка -->
                 <div id="tab-music" style="display:none;">
                     <input type="text" id="musicTitle" placeholder="Название трека">
                     <input type="file" id="musicFile" accept="audio/*">
-                    <input type="text" id="musicUrl" placeholder="Прямая ссылка (для больших файлов)">
+                    <input type="text" id="musicUrl" placeholder="Или прямая ссылка">
                     <button onclick="saveMusic()" class="play-btn" style="width:100%; margin-top:10px;">Загрузить музыку</button>
                 </div>
 
-                <!-- Видео -->
                 <div id="tab-video" style="display:none;">
                     <input type="text" id="videoTitle" placeholder="Название видео">
                     <input type="file" id="videoFile" accept="video/*">
                     <button onclick="saveVideo()" class="play-btn" style="width:100%; margin-top:10px;">Загрузить видео</button>
                 </div>
 
-                <!-- Фото -->
                 <div id="tab-photo" style="display:none;">
                     <input type="text" id="photoTitle" placeholder="Описание фото">
                     <input type="file" id="photoFile" accept="image/*">
                     <button onclick="savePhoto()" class="play-btn" style="width:100%; margin-top:10px;">Загрузить фото</button>
                 </div>
 
-                <!-- Управление -->
                 <div id="tab-manage" style="display:none;">
                     <h3>Управление контентом</h3>
                     <div id="manageList"></div>
@@ -376,7 +344,7 @@
             const file = document.getElementById('musicFile').files[0];
             const url = document.getElementById('musicUrl').value.trim();
 
-            if (!title) return alert("Введите название трека!");
+            if (!title) return alert("Введите название!");
             if (!file && !url) return alert("Выберите файл или вставьте ссылку!");
 
             try {
@@ -390,7 +358,6 @@
             }
         };
 
-        // Открытие админки
         document.getElementById('adminBtn').addEventListener('click', () => document.getElementById('adminModal').style.display = 'flex');
         document.getElementById('hamburger').addEventListener('click', () => document.getElementById('navLinks').classList.toggle('active'));
 
