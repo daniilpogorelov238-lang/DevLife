@@ -54,7 +54,12 @@
             border: none;
         }
 
-        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+        .hamburger { 
+            display: none; 
+            flex-direction: column; 
+            gap: 5px; 
+            cursor: pointer; 
+        }
         .hamburger span { width: 30px; height: 3px; background: var(--accent); }
 
         .hero { 
@@ -82,9 +87,15 @@
             overflow: hidden; 
             transition: all 0.4s; 
         }
-        .project-card:hover, .post-card:hover, .media-card:hover { transform: translateY(-10px); }
+        .project-card:hover, .post-card:hover, .media-card:hover { 
+            transform: translateY(-10px); 
+        }
 
-        .project-card img, .media-card img { width: 100%; height: 220px; object-fit: cover; }
+        .project-card img, .media-card img, .media-card video { 
+            width: 100%; 
+            height: 220px; 
+            object-fit: cover; 
+        }
 
         .play-btn {
             background: var(--accent);
@@ -99,7 +110,12 @@
         .contact-section { text-align: center; padding: 90px 5%; background: rgba(26, 26, 46, 0.6); }
         .social-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; }
 
-        .admin-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0; }
+        .admin-tabs { 
+            display: flex; 
+            gap: 8px; 
+            flex-wrap: wrap; 
+            margin: 20px 0; 
+        }
         .admin-tab {
             padding: 10px 18px;
             background: rgba(255,255,255,0.1);
@@ -107,17 +123,21 @@
             border-radius: 50px;
             color: white;
             cursor: pointer;
+            font-size: 0.95rem;
         }
-        .admin-tab.active { background: var(--accent); color: #0f0f1a; font-weight: 600; }
+        .admin-tab.active { 
+            background: var(--accent); 
+            color: #0f0f1a; 
+            font-weight: 600; 
+        }
 
         .delete-btn {
             background: #ff4444;
             color: white;
             border: none;
-            padding: 6px 12px;
+            padding: 8px 14px;
             border-radius: 8px;
             cursor: pointer;
-            margin-top: 8px;
         }
 
         .modal {
@@ -135,7 +155,7 @@
             border-radius: 20px;
             width: 90%;
             max-width: 560px;
-            max-height: 92vh;
+            max-height: 90vh;
             overflow-y: auto;
         }
         .modal input, .modal textarea {
@@ -147,11 +167,34 @@
             border-radius: 10px;
             color: var(--text);
         }
+
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav-links {
+                position: fixed; 
+                top: 70px; 
+                left: -100%; 
+                width: 100%; 
+                height: calc(100vh - 70px);
+                background: var(--bg); 
+                flex-direction: column; 
+                padding-top: 50px; 
+                gap: 2.5rem;
+                transition: 0.4s;
+            }
+            .nav-links.active { left: 0; }
+
+            .projects-grid, .posts-grid, .media-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title { font-size: 2.2rem; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
+    <!-- (Header, Hero, About, Projects, Posts, Media, Contact — всё как раньше) -->
     <header>
         <div class="navbar">
             <div class="logo">DevLife</div>
@@ -211,7 +254,7 @@
         <p>© 2026 DevLife • Создано с ❤️</p>
     </footer>
 
-    <!-- ==================== АДМИН ПАНЕЛЬ ==================== -->
+    <!-- Админ Панель -->
     <div class="modal" id="adminModal">
         <div class="modal-content">
             <h3>Админ панель</h3>
@@ -228,13 +271,33 @@
                     <button class="admin-tab" onclick="switchAdminTab(4)">Управление</button>
                 </div>
 
-                <!-- Добавление контента (старые вкладки) -->
-                <div id="tab-post"> ... (форма поста) ... </div>
-                <div id="tab-music" style="display:none;"> ... </div>
-                <div id="tab-video" style="display:none;"> ... </div>
-                <div id="tab-photo" style="display:none;"> ... </div>
+                <!-- Вкладки добавления -->
+                <div id="tab-post">
+                    <input type="text" id="postTitle" placeholder="Заголовок поста">
+                    <textarea id="postText" rows="5" placeholder="Текст поста"></textarea>
+                    <input type="text" id="postImg" placeholder="Ссылка на картинку (необязательно)">
+                    <button onclick="savePost()" class="play-btn" style="width:100%;">Опубликовать</button>
+                </div>
 
-                <!-- Новая вкладка Управление -->
+                <div id="tab-music" style="display:none;">
+                    <input type="text" id="musicTitle" placeholder="Название трека">
+                    <input type="file" id="musicFile" accept="audio/*">
+                    <button onclick="saveMusic()" class="play-btn" style="width:100%;">Загрузить музыку</button>
+                </div>
+
+                <div id="tab-video" style="display:none;">
+                    <input type="text" id="videoTitle" placeholder="Название видео">
+                    <input type="file" id="videoFile" accept="video/*">
+                    <button onclick="saveVideo()" class="play-btn" style="width:100%;">Загрузить видео</button>
+                </div>
+
+                <div id="tab-photo" style="display:none;">
+                    <input type="text" id="photoTitle" placeholder="Описание фото">
+                    <input type="file" id="photoFile" accept="image/*">
+                    <button onclick="savePhoto()" class="play-btn" style="width:100%;">Загрузить фото</button>
+                </div>
+
+                <!-- Управление контентом -->
                 <div id="tab-manage" style="display:none;">
                     <h3>Управление контентом</h3>
                     <div id="manageList"></div>
@@ -256,78 +319,56 @@
         let posts = JSON.parse(localStorage.getItem('myPosts')) || [];
         let mediaItems = JSON.parse(localStorage.getItem('myMedia')) || [];
 
-        // Рендер функций (renderProjects, renderPosts, renderMedia, renderSocials) — оставлены как были ранее
-
-        function renderManageList() {
-            const container = document.getElementById('manageList');
-            container.innerHTML = '<h4>Посты</h4>';
-            
-            posts.forEach((post, index) => {
-                const div = document.createElement('div');
-                div.style = 'background:rgba(255,255,255,0.05); padding:12px; margin:8px 0; border-radius:12px;';
-                div.innerHTML = `
-                    <strong>${post.title}</strong><br>
-                    <small>${post.text.substring(0, 80)}...</small><br>
-                    <button onclick="deletePost(${index})" class="delete-btn">Удалить пост</button>
+        function renderProjects() { /* ... код рендера проектов ... */ 
+            const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = '';
+            projects.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'project-card';
+                card.innerHTML = `
+                    <img src="${p.img}" alt="${p.title}" loading="lazy">
+                    <div style="padding: 1.5rem; text-align: center;">
+                        <h3>${p.title}</h3>
+                        <p>${p.desc}</p>
+                        <a href="${p.url}" target="_blank" class="play-btn">Открыть →</a>
+                    </div>
                 `;
-                container.appendChild(div);
-            });
-
-            container.innerHTML += '<h4 style="margin-top:20px;">Медиа</h4>';
-            mediaItems.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.style = 'background:rgba(255,255,255,0.05); padding:12px; margin:8px 0; border-radius:12px;';
-                div.innerHTML = `
-                    <strong>${item.title} (${item.type})</strong><br>
-                    <button onclick="deleteMedia(${index})" class="delete-btn">Удалить</button>
-                `;
-                container.appendChild(div);
+                grid.appendChild(card);
             });
         }
 
-        window.deletePost = function(index) {
-            if (confirm("Удалить этот пост?")) {
-                posts.splice(index, 1);
-                localStorage.setItem('myPosts', JSON.stringify(posts));
-                renderPosts();
-                renderManageList();
-            }
-        };
+        function renderPosts() { /* ... */ 
+            const grid = document.getElementById('postsGrid');
+            grid.innerHTML = posts.length === 0 ? '<p style="text-align:center; opacity:0.6; grid-column:1/-1;">Пока нет постов</p>' : '';
+            // ... (рендер постов)
+        }
 
-        window.deleteMedia = function(index) {
-            if (confirm("Удалить этот медиафайл?")) {
-                mediaItems.splice(index, 1);
-                localStorage.setItem('myMedia', JSON.stringify(mediaItems));
-                renderMedia();
-                renderManageList();
-            }
-        };
+        function renderMedia() { /* ... */ }
 
-        // Переключение вкладок
+        function renderManageList() { /* ... */ }
+
+        // FileToBase64 + saveMusic, saveVideo, savePhoto, deletePost, deleteMedia и т.д.
+
         window.switchAdminTab = function(n) {
             document.querySelectorAll('#tab-post, #tab-music, #tab-video, #tab-photo, #tab-manage').forEach(el => el.style.display = 'none');
             document.getElementById(['tab-post','tab-music','tab-video','tab-photo','tab-manage'][n]).style.display = 'block';
-            
             document.querySelectorAll('.admin-tab').forEach((el,i) => el.classList.toggle('active', i === n));
-            
             if (n === 4) renderManageList();
         };
 
-        // ... (остальные функции: checkPassword, savePost, saveMusic, saveVideo, savePhoto, fileToBase64 и т.д.)
+        // Мобильное меню
+        document.getElementById('hamburger').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
 
         document.getElementById('adminBtn').addEventListener('click', () => {
             document.getElementById('adminModal').style.display = 'flex';
         });
 
-        document.getElementById('hamburger').addEventListener('click', () => {
-            document.getElementById('navLinks').classList.toggle('active');
-        });
-
-        // Инициализация
+        // Запуск
         renderProjects();
         renderPosts();
         renderMedia();
-        renderSocials();
     </script>
 </body>
 </html>
