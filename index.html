@@ -243,7 +243,6 @@
                 <button class="admin-tab" onclick="switchAdminTab(4)">Управление</button>
             </div>
 
-            <!-- Пост -->
             <div id="tab-post">
                 <input type="text" id="postTitle" placeholder="Заголовок поста">
                 <textarea id="postText" rows="5" placeholder="Текст поста"></textarea>
@@ -251,30 +250,26 @@
                 <button onclick="savePost()" class="play-btn" style="width:100%;">Опубликовать пост</button>
             </div>
 
-            <!-- Музыка -->
             <div id="tab-music" style="display:none;">
                 <input type="text" id="musicTitle" placeholder="Название трека">
                 <input type="file" id="musicFile" accept="audio/*">
-                <p style="text-align:center; margin:10px 0;">или</p>
-                <input type="text" id="musicUrl" placeholder="Прямая ссылка на музыку (до 1 ГБ)">
+                <p style="text-align:center; margin:10px 0; opacity:0.8;">или прямая ссылка (до 1 ГБ)</p>
+                <input type="text" id="musicUrl" placeholder="https://...">
                 <button onclick="saveMusic()" class="play-btn" style="width:100%; margin-top:10px;">Загрузить музыку</button>
             </div>
 
-            <!-- Видео -->
             <div id="tab-video" style="display:none;">
                 <input type="text" id="videoTitle" placeholder="Название видео">
                 <input type="file" id="videoFile" accept="video/*">
                 <button onclick="saveVideo()" class="play-btn" style="width:100%; margin-top:10px;">Загрузить видео</button>
             </div>
 
-            <!-- Фото -->
             <div id="tab-photo" style="display:none;">
                 <input type="text" id="photoTitle" placeholder="Описание фото">
                 <input type="file" id="photoFile" accept="image/*">
                 <button onclick="savePhoto()" class="play-btn" style="width:100%; margin-top:10px;">Загрузить фото</button>
             </div>
 
-            <!-- Управление -->
             <div id="tab-manage" style="display:none;">
                 <h3>Управление контентом</h3>
                 <div id="manageList"></div>
@@ -292,6 +287,10 @@
 
         let posts = JSON.parse(localStorage.getItem('myPosts')) || [];
         let mediaItems = JSON.parse(localStorage.getItem('myMedia')) || [];
+        let socials = JSON.parse(localStorage.getItem('mySocials')) || [
+            { name: "Telegram", url: "https://t.me/твоя_ссылка", color: "#229ED9" },
+            { name: "Rossi", url: "https://rossims.ru/c/daniil_pogorelov/", color: "#00ff9d" }
+        ];
 
         function renderProjects() {
             const grid = document.getElementById('projectsGrid');
@@ -352,6 +351,20 @@
             });
         }
 
+        function renderSocials() {
+            const container = document.getElementById('socialLinks');
+            container.innerHTML = '';
+            socials.forEach(s => {
+                const a = document.createElement('a');
+                a.href = s.url;
+                a.target = "_blank";
+                a.className = "play-btn";
+                a.style.background = s.color;
+                a.textContent = s.name;
+                container.appendChild(a);
+            });
+        }
+
         function renderManageList() {
             const container = document.getElementById('manageList');
             container.innerHTML = '<h4>Посты</h4>';
@@ -402,7 +415,7 @@
             if (url) {
                 mediaItems.unshift({id: Date.now(), type: 'music', title, data: url});
             } else if (file) {
-                if (file.size > 50 * 1024 * 1024) return alert("Файл слишком большой. Используйте прямую ссылку.");
+                if (file.size > 50*1024*1024) return alert("Файл слишком большой. Используйте прямую ссылку.");
                 const data = await fileToBase64(file);
                 mediaItems.unshift({id: Date.now(), type: 'music', title, data});
             } else {
@@ -417,7 +430,7 @@
             document.getElementById('musicUrl').value = '';
         };
 
-        window.saveVideo = async function() { /* аналогично */ };
+        window.saveVideo = async function() { /* аналогично saveMusic */ };
         window.savePhoto = async function() { /* аналогично */ };
 
         window.deletePost = function(i) {
@@ -458,10 +471,11 @@
             document.getElementById('navLinks').classList.toggle('active');
         });
 
-        // Запуск
+        // Инициализация
         renderProjects();
         renderPosts();
         renderMedia();
+        renderSocials();
     </script>
 </body>
-    </html>
+</html>
