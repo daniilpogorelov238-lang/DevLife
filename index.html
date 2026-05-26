@@ -136,12 +136,14 @@ button:hover { transform:scale(1.03); }
 <div class="admin-panel" id="adminPanel">
     <div class="admin-box">
         <h2>Админ-панель</h2>
+        
         <div class="admin-tabs">
             <div class="tab" onclick="switchTab(0)">Создать пост</div>
             <div class="tab active" onclick="switchTab(1)">Управление постами</div>
             <div class="tab" onclick="switchTab(2)">Настройки сайта</div>
         </div>
 
+        <!-- Создать / Редактировать пост -->
         <div id="tabContent0" style="display:none;">
             <input type="password" id="password" placeholder="Введите пароль">
             <button onclick="loginAdmin()" style="width:100%; margin-bottom:20px;">Войти</button>
@@ -157,10 +159,11 @@ button:hover { transform:scale(1.03); }
                 <input type="text" id="mediaUrl" placeholder="Ссылка на медиа (опционально)">
                 <p style="text-align:center;margin:10px 0; color:#777;">— или загрузите файл —</p>
                 <input type="file" id="mediaFile" accept="image/*,video/*">
-                <button onclick="addPost()" style="width:100%;">Опубликовать пост</button>
+                <button id="publishBtn" onclick="addPost()" style="width:100%;">Опубликовать пост</button>
             </div>
         </div>
 
+        <!-- Управление постами -->
         <div id="tabContent1">
             <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
                 <h3>Мои публикации (<span id="postCount">0</span>)</h3>
@@ -169,6 +172,7 @@ button:hover { transform:scale(1.03); }
             <div id="adminPostsList"></div>
         </div>
 
+        <!-- Настройки -->
         <div id="tabContent2" style="display:none;">
             <h3 style="margin:20px 0 15px;">Сменить иконку сайта</h3>
             <input type="file" id="iconFile" accept="image/*">
@@ -206,25 +210,30 @@ document.getElementById("hamburger").addEventListener("click", () => {
     document.getElementById("navMenu").classList.toggle("active");
 });
 
-function openAdmin(){ document.getElementById("adminPanel").style.display = "flex"; switchTab(1); }
+function openAdmin(){ 
+    document.getElementById("adminPanel").style.display = "flex"; 
+    switchTab(1); 
+}
 function closeAdmin(){ document.getElementById("adminPanel").style.display = "none"; }
 
 function switchTab(tab){
     document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===tab));
     for(let i=0;i<3;i++){
         const el = document.getElementById('tabContent'+i);
-        if(el) el.style.display = (i===tab)?'block':'none';
+        if(el) el.style.display = (i===tab) ? 'block' : 'none';
     }
-    if(tab===1) renderAdminPosts();
+    if(tab === 1) renderAdminPosts();
 }
 
 function loginAdmin(){
     if(document.getElementById("password").value === ADMIN_PASSWORD){
         document.getElementById("adminContent").style.display = "block";
-    } else alert("Неверный пароль!");
+    } else {
+        alert("Неверный пароль!");
+    }
 }
 
-// Главная страница постов
+// Рендер постов на главной
 function renderPosts(){
     const container = document.getElementById("postsContainer");
     container.innerHTML = "";
@@ -248,7 +257,7 @@ function renderPosts(){
     });
 }
 
-// Создание поста
+// Добавление нового поста
 function addPost(){
     const title = document.getElementById("title").value.trim();
     const description = document.getElementById("description").value.trim();
@@ -261,7 +270,7 @@ function addPost(){
     let media = mediaUrl;
     if(fileInput.files.length > 0){
         const reader = new FileReader();
-        reader.onload = e => { saveNewPost(title, description, type, e.target.result); };
+        reader.onload = e => saveNewPost(title, description, type, e.target.result);
         reader.readAsDataURL(fileInput.files[0]);
         return;
     }
@@ -301,8 +310,8 @@ function renderAdminPosts(filtered = posts){
             <h3>${post.title}</h3>
             <p>${post.description}</p>
             <div style="display:flex; gap:10px; margin-top:12px;">
-                <button onclick="editPost(${idx})" style="background:#00b4d8;flex:1;">Редактировать</button>
-                <button onclick="deletePost(${idx})" style="background:#ff3c6f;flex:1;">Удалить</button>
+                <button onclick="editPost(${idx})" style="background:#00b4d8; flex:1;">Редактировать</button>
+                <button onclick="deletePost(${idx})" style="background:#ff3c6f; flex:1;">Удалить</button>
             </div>
         `;
         container.appendChild(div);
@@ -310,25 +319,97 @@ function renderAdminPosts(filtered = posts){
 }
 
 function filterAdminPosts(){
-    const q = document.getElementById("searchInput").value.toLowerCase();
-    const filtered = posts.filter(p => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
+    const query = document.getElementById("searchInput").value.toLowerCase();
+    const filtered = posts.filter(p => 
+        p.title.toLowerCase().includes(query) || p.description.toLowerCase().includes(query)
+    );
     renderAdminPosts(filtered);
 }
 
-function editPost(index){ /* ... */ }
-function saveEditedPost(){ /* ... */ }
+// Редактирование поста
+function editPost(index){
+    editingIndex = index;
+    const post = posts[index];
+
+    document.getElementById("title").value = post.title;
+    document.getElementById("description").value = post.description;
+    document.getElementById("type").value = post.type || "text";
+    document.getElementById("mediaUrl").value = post.media || "";
+
+    switchTab(0);
+    document.getElementById("adminContent").style.display = "block";
+
+    const btn = document.getElementById("publishBtn");
+    btn.textContent = "Сохранить изменения";
+    btn.onclick = saveEditedPost;
+}
+
+function saveEditedPost(){
+    if(editingIndex === -1) return;
+
+    posts[editingIndex].title = document.getElementById("title").value.trim();
+    posts[editingIndex].description = document.getElementById("description").value.trim();
+    posts[editingIndex].type = document.getElementById("type").value;
+    posts[editingIndex].media = document.getElementById("mediaUrl").value.trim();
+
+    localStorage.setItem("devlife_posts", JSON.stringify(posts));
+    alert("Пост успешно обновлён!");
+
+    // Сброс
+    editingIndex = -1;
+    const btn = document.getElementById("publishBtn");
+    btn.textContent = "Опубликовать пост";
+    btn.onclick = addPost;
+
+    renderPosts();
+    renderAdminPosts();
+    switchTab(1);
+}
+
 function deletePost(index){
-    if(confirm("Удалить пост?")){
-        posts.splice(index,1);
+    if(confirm("Удалить этот пост навсегда?")){
+        posts.splice(index, 1);
         localStorage.setItem("devlife_posts", JSON.stringify(posts));
         renderPosts();
         renderAdminPosts();
     }
 }
 
-function changeFavicon(){ /* ... */ }
-function sendMessage(){ /* ... */ }
+function changeFavicon(){
+    const fileInput = document.getElementById("iconFile");
+    if(!fileInput.files.length) return alert("Выберите файл!");
 
+    const reader = new FileReader();
+    reader.onload = e => {
+        document.getElementById("favicon").href = e.target.result;
+        localStorage.setItem("devlife_favicon", e.target.result);
+        alert("Иконка изменена!");
+    };
+    reader.readAsDataURL(fileInput.files[0]);
+}
+
+if(localStorage.getItem("devlife_favicon")){
+    document.getElementById("favicon").href = localStorage.getItem("devlife_favicon");
+}
+
+function sendMessage(){
+    const name = document.getElementById("contactName").value.trim();
+    const email = document.getElementById("contactEmail").value.trim();
+    const message = document.getElementById("contactMessage").value.trim();
+
+    if(!name || !email || !message) return alert("Заполните все поля!");
+
+    const params = { from_name: name, from_email: email, message: message };
+
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params)
+        .then(() => {
+            alert(`Спасибо, ${name}! Сообщение отправлено!`);
+            document.getElementById("contactName").value = "";
+            document.getElementById("contactEmail").value = "";
+            document.getElementById("contactMessage").value = "";
+        })
+        .catch(() => alert("Ошибка отправки. Попробуйте позже."));
+}
 </script>
 </body>
 </html>
