@@ -134,7 +134,7 @@ nav a:hover{color:#00ffe1;}
     box-shadow:0 0 30px rgba(0,255,225,.2);
 }
 
-.post img, .post video, .post audio{
+.post img, .post video{
     width:100%; max-height:280px; object-fit:cover;
 }
 
@@ -160,7 +160,7 @@ footer{
     color:white; font-size:30px; cursor:pointer; z-index:999; box-shadow:0 0 25px rgba(0,255,225,.6);
 }
 
-/* ==================== НОВАЯ АДМИН-ПАНЕЛЬ ==================== */
+/* Admin Panel */
 .admin-panel{
     position:fixed; inset:0; background:rgba(0,0,0,.95);
     display:none; justify-content:center; align-items:center; z-index:9999; padding:15px;
@@ -194,7 +194,6 @@ footer{
     font-weight:bold;
 }
 
-/* Стили форм */
 input, textarea, select{
     width:100%; padding:14px; margin-bottom:15px;
     background:#1a2542; border:none; border-radius:12px;
@@ -216,27 +215,16 @@ button:hover{transform:scale(1.03);}
 /* Мобильная адаптация */
 @media (max-width: 768px){
     nav{
-        display:none; /* будет показываться через hamburger */
+        display:none;
         position:absolute; top:70px; left:0; right:0;
         background:#050816; flex-direction:column; padding:20px; gap:15px;
         border-top:1px solid rgba(255,255,255,0.1);
     }
-    
     nav.active{display:flex;}
-    
     .hamburger{display:block;}
-    
-    .container{
-        padding:80px 5%;
-    }
-    
-    .posts{
-        grid-template-columns:1fr;
-    }
-    
-    .admin-box{
-        padding:20px;
-    }
+    .container{padding:80px 5%;}
+    .posts{grid-template-columns:1fr;}
+    .admin-box{padding:20px;}
 }
 </style>
 </head>
@@ -255,13 +243,11 @@ button:hover{transform:scale(1.03);}
 
 <header>
     <div class="logo">DevLife</div>
-    
     <nav id="navMenu">
         <a href="#about">Обо мне</a>
         <a href="#posts">Проекты</a>
         <a href="#contact">Связаться</a>
     </nav>
-    
     <div class="hamburger" id="hamburger">☰</div>
 </header>
 
@@ -273,7 +259,6 @@ button:hover{transform:scale(1.03);}
     </button>
 </section>
 
-<!-- Обо мне -->
 <section class="container" id="about">
     <h1 class="section-title">Обо мне</h1>
     <p style="max-width:800px;margin:0 auto;text-align:center;font-size:19px;line-height:1.8;color:#ddd;">
@@ -288,14 +273,13 @@ button:hover{transform:scale(1.03);}
     <div class="posts" id="postsContainer"></div>
 </section>
 
-<!-- Связаться -->
 <section class="container" id="contact">
     <h1 class="section-title">Связаться со мной</h1>
     <div class="contact-form">
         <p style="text-align:center;margin-bottom:25px;">Напиши мне, и я отвечу в ближайшее время</p>
-        <input type="text" id="contactName" placeholder="Ваше имя">
-        <input type="email" id="contactEmail" placeholder="Email">
-        <textarea id="contactMessage" placeholder="Сообщение" rows="6"></textarea>
+        <input type="text" id="contactName" placeholder="Ваше имя" required>
+        <input type="email" id="contactEmail" placeholder="Email" required>
+        <textarea id="contactMessage" placeholder="Сообщение" rows="6" required></textarea>
         <button onclick="sendMessage()" style="width:100%;">Отправить сообщение</button>
     </div>
 </section>
@@ -306,7 +290,7 @@ button:hover{transform:scale(1.03);}
 
 <button class="admin-btn" onclick="openAdmin()">⚡</button>
 
-<!-- ==================== УЛУЧШЕННАЯ АДМИН-ПАНЕЛЬ ==================== -->
+<!-- Admin Panel -->
 <div class="admin-panel" id="adminPanel">
     <div class="admin-box">
         <h2>Админ-панель</h2>
@@ -316,7 +300,6 @@ button:hover{transform:scale(1.03);}
             <div class="tab" onclick="switchTab(1)">Настройки сайта</div>
         </div>
 
-        <!-- Вкладка 1: Создать пост -->
         <div id="tabContent0">
             <input type="password" id="password" placeholder="Введите пароль">
             <button onclick="loginAdmin()" style="width:100%; margin-bottom:20px;">Войти</button>
@@ -325,23 +308,21 @@ button:hover{transform:scale(1.03);}
                 <input type="text" id="title" placeholder="Название поста">
                 <textarea id="description" placeholder="Описание" rows="4"></textarea>
                 
-                <select id="type" onchange="toggleMediaInput()">
+                <select id="type">
                     <option value="image">Фото</option>
                     <option value="video">Видео</option>
-                    <option value="audio">Аудио</option>
                     <option value="text">Только текст</option>
                     <option value="link">Ссылка</option>
                 </select>
 
                 <input type="text" id="mediaUrl" placeholder="Ссылка на медиа (опционально)">
                 <p style="text-align:center;margin:10px 0; color:#777;">— или загрузите файл —</p>
-                <input type="file" id="mediaFile" accept="image/*,video/*,audio/*">
+                <input type="file" id="mediaFile" accept="image/*,video/*">
 
                 <button onclick="addPost()" style="width:100%; margin-top:10px;">Опубликовать пост</button>
             </div>
         </div>
 
-        <!-- Вкладка 2: Настройки сайта -->
         <div id="tabContent1" style="display:none;">
             <h3 style="margin:20px 0 15px;">Сменить иконку сайта</h3>
             <input type="file" id="iconFile" accept="image/*">
@@ -352,40 +333,40 @@ button:hover{transform:scale(1.03);}
     </div>
 </div>
 
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <script>
 // === Основные переменные ===
 const ADMIN_PASSWORD = "devlife";
 let posts = JSON.parse(localStorage.getItem("devlife_posts")) || [];
 
-// Preloader
+// EmailJS — полностью настроено
+const EMAILJS_SERVICE_ID = "service_h6n4lct";
+const EMAILJS_TEMPLATE_ID = "template_6gv5xy7";
+const EMAILJS_PUBLIC_KEY = "qSIirtj_Vo7il0v23";
+
+// Preloader + EmailJS init
 window.onload = () => {
     setTimeout(() => {
         document.getElementById("preloader").style.opacity = "0";
         setTimeout(() => document.getElementById("preloader").style.display = "none", 1000);
     }, 1200);
+
+    emailjs.init(EMAILJS_PUBLIC_KEY);
 };
 
 // Hamburger Menu
-const hamburger = document.getElementById("hamburger");
-const navMenu = document.getElementById("navMenu");
-
-hamburger.addEventListener("click", () => {
-    navMenu.classList.toggle("active");
+document.getElementById("hamburger").addEventListener("click", () => {
+    document.getElementById("navMenu").classList.toggle("active");
 });
 
 // Admin Panel
-function openAdmin(){ 
-    document.getElementById("adminPanel").style.display = "flex"; 
-}
-
-function closeAdmin(){ 
-    document.getElementById("adminPanel").style.display = "none"; 
-}
+function openAdmin(){ document.getElementById("adminPanel").style.display = "flex"; }
+function closeAdmin(){ document.getElementById("adminPanel").style.display = "none"; }
 
 function switchTab(tab){
-    document.querySelectorAll('.tab').forEach((t, i) => {
-        t.classList.toggle('active', i === tab);
-    });
+    document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === tab));
     document.getElementById('tabContent0').style.display = tab === 0 ? 'block' : 'none';
     document.getElementById('tabContent1').style.display = tab === 1 ? 'block' : 'none';
 }
@@ -398,7 +379,7 @@ function loginAdmin(){
     }
 }
 
-// Добавление поста (осталось без изменений)
+// Добавление поста
 function addPost(){
     const title = document.getElementById("title").value;
     const description = document.getElementById("description").value;
@@ -415,9 +396,7 @@ function addPost(){
 
     if(fileInput.files.length > 0){
         const reader = new FileReader();
-        reader.onload = function(e){
-            saveNewPost(title, description, type, e.target.result);
-        };
+        reader.onload = (e) => saveNewPost(title, description, type, e.target.result);
         reader.readAsDataURL(fileInput.files[0]);
         return;
     }
@@ -432,7 +411,6 @@ function saveNewPost(title, description, type, media){
     alert("Пост успешно опубликован!");
 }
 
-// Рендер постов
 function renderPosts(){
     const container = document.getElementById("postsContainer");
     container.innerHTML = "";
@@ -444,8 +422,6 @@ function renderPosts(){
             mediaHTML = `<img src="${post.media}" alt="">`;
         } else if(post.type === "video" && post.media){
             mediaHTML = `<video controls src="${post.media}"></video>`;
-        } else if(post.type === "audio" && post.media){
-            mediaHTML = `<audio controls src="${post.media}"></audio>`;
         } else if(post.type === "link" && post.media){
             mediaHTML = `<a href="${post.media}" target="_blank" style="color:#00ffe1;">Перейти по ссылке →</a>`;
         }
@@ -474,13 +450,12 @@ function deletePost(index){
     }
 }
 
-// Favicon
 function changeFavicon(){
     const fileInput = document.getElementById("iconFile");
-    if(fileInput.files.length === 0) return alert("Выберите файл!");
+    if(!fileInput.files.length) return alert("Выберите файл!");
 
     const reader = new FileReader();
-    reader.onload = function(e){
+    reader.onload = (e) => {
         document.getElementById("favicon").href = e.target.result;
         localStorage.setItem("devlife_favicon", e.target.result);
         alert("Иконка сайта изменена!");
@@ -492,16 +467,34 @@ if(localStorage.getItem("devlife_favicon")){
     document.getElementById("favicon").href = localStorage.getItem("devlife_favicon");
 }
 
+// Реальная отправка сообщения
 function sendMessage(){
-    const name = document.getElementById("contactName").value;
-    if(name){
-        alert(`Спасибо, ${name}! Сообщение отправлено (симуляция)`);
-        document.getElementById("contactName").value = "";
-        document.getElementById("contactEmail").value = "";
-        document.getElementById("contactMessage").value = "";
-    } else {
-        alert("Введите ваше имя");
+    const name = document.getElementById("contactName").value.trim();
+    const email = document.getElementById("contactEmail").value.trim();
+    const message = document.getElementById("contactMessage").value.trim();
+
+    if(!name || !email || !message){
+        alert("Пожалуйста, заполните все поля!");
+        return;
     }
+
+    const templateParams = {
+        from_name: name,
+        from_email: email,
+        message: message
+    };
+
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+        .then(() => {
+            alert(`Спасибо, ${name}! Сообщение успешно отправлено!`);
+            document.getElementById("contactName").value = "";
+            document.getElementById("contactEmail").value = "";
+            document.getElementById("contactMessage").value = "";
+        })
+        .catch((error) => {
+            console.error(error);
+            alert("Ошибка отправки сообщения. Попробуйте позже.");
+        });
 }
 
 // Инициализация
