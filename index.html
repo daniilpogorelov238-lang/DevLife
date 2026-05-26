@@ -259,12 +259,12 @@ button:hover{transform:scale(1.03);}
     </button>
 </section>
 
+<!-- Обо мне - обновлённый текст -->
 <section class="container" id="about">
     <h1 class="section-title">Обо мне</h1>
     <p style="max-width:800px;margin:0 auto;text-align:center;font-size:19px;line-height:1.8;color:#ddd;">
-        Привет! Я — <strong>Kreatin</strong>, full-stack разработчик из Далласа. 
-        Люблю создавать красивые и функциональные продукты. 
-        Этот сайт сделан как демонстрация моих навыков работы с frontend и современными веб-технологиями.
+        Здравствуйте, меня зовут <strong>Даниил</strong>. Я начинающий программист, разработчик плагинов и приложений с сайтами. 
+        Хочу больше учиться, узнавать новое и создавать для вас интересное.
     </p>
 </section>
 
@@ -273,13 +273,17 @@ button:hover{transform:scale(1.03);}
     <div class="posts" id="postsContainer"></div>
 </section>
 
+<!-- Связаться со мной - обновлённая форма -->
 <section class="container" id="contact">
     <h1 class="section-title">Связаться со мной</h1>
     <div class="contact-form">
-        <p style="text-align:center;margin-bottom:25px;">Напиши мне, и я отвечу в ближайшее время</p>
+        <p style="text-align:center;margin-bottom:25px;">
+            Напишите мне свои предложения по улучшению сайта, идеи для новых функций 
+            или просто поделитесь мыслями. Буду рад любому фидбеку!
+        </p>
         <input type="text" id="contactName" placeholder="Ваше имя" required>
         <input type="email" id="contactEmail" placeholder="Email" required>
-        <textarea id="contactMessage" placeholder="Сообщение" rows="6" required></textarea>
+        <textarea id="contactMessage" placeholder="Ваше предложение, идея или сообщение..." rows="6" required></textarea>
         <button onclick="sendMessage()" style="width:100%;">Отправить сообщение</button>
     </div>
 </section>
@@ -341,7 +345,7 @@ button:hover{transform:scale(1.03);}
 const ADMIN_PASSWORD = "devlife";
 let posts = JSON.parse(localStorage.getItem("devlife_posts")) || [];
 
-// EmailJS — полностью настроено
+// EmailJS
 const EMAILJS_SERVICE_ID = "service_h6n4lct";
 const EMAILJS_TEMPLATE_ID = "template_6gv5xy7";
 const EMAILJS_PUBLIC_KEY = "qSIirtj_Vo7il0v23";
@@ -356,7 +360,7 @@ window.onload = () => {
     emailjs.init(EMAILJS_PUBLIC_KEY);
 };
 
-// Hamburger Menu
+// Hamburger
 document.getElementById("hamburger").addEventListener("click", () => {
     document.getElementById("navMenu").classList.toggle("active");
 });
@@ -379,7 +383,6 @@ function loginAdmin(){
     }
 }
 
-// Добавление поста
 function addPost(){
     const title = document.getElementById("title").value;
     const description = document.getElementById("description").value;
@@ -467,7 +470,6 @@ if(localStorage.getItem("devlife_favicon")){
     document.getElementById("favicon").href = localStorage.getItem("devlife_favicon");
 }
 
-// Реальная отправка сообщения
 function sendMessage(){
     const name = document.getElementById("contactName").value.trim();
     const email = document.getElementById("contactEmail").value.trim();
@@ -497,7 +499,6 @@ function sendMessage(){
         });
 }
 
-// Инициализация
 renderPosts();
 </script>
 </body>
