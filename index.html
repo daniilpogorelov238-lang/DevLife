@@ -21,11 +21,7 @@ body { background:#050816; color:white; overflow-x:hidden; line-height:1.6; }
 .circle2 { width:500px;height:500px;background:#7a5cff;bottom:-100px;right:-100px; }
 @keyframes float { from{transform:translateY(0)} to{transform:translateY(80px)} }
 
-header { 
-    padding:18px 5%; display:flex; justify-content:space-between; align-items:center; 
-    position:sticky; top:0; backdrop-filter:blur(20px); background:rgba(5,8,22,0.85); z-index:1000; 
-    border-bottom:1px solid rgba(255,255,255,0.08);
-}
+header { padding:18px 5%; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; backdrop-filter:blur(20px); background:rgba(5,8,22,0.85); z-index:1000; border-bottom:1px solid rgba(255,255,255,0.08); }
 .logo { font-size:32px; font-weight:bold; background:linear-gradient(45deg,#00ffe1,#7a5cff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 
 nav { display:flex; gap:25px; align-items:center; }
@@ -34,11 +30,10 @@ nav a:hover { color:#00ffe1; }
 
 .hamburger { display:none; font-size:28px; cursor:pointer; z-index:1001; }
 
-/* Hero, Sections и т.д. */
 .hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:40px 5%; }
 .hero h1 { font-size: clamp(42px, 8vw, 75px); max-width:900px; line-height:1.1; margin-bottom:20px; }
 .hero p { font-size: clamp(18px, 4vw, 22px); color:#ccc; max-width:700px; }
-.hero button { margin-top:40px; padding:18px 45px; border:none; border-radius:20px; background:linear-gradient(45deg,#00ffe1,#7a5cff); color:white; font-size:18px; cursor:pointer; box-shadow:0 0 30px rgba(0,255,225,.5); }
+.hero button { margin-top:40px; padding:18px 45px; border:none; border-radius:20px; background:linear-gradient(45deg,#00ffe1,#7a5cff); color:white; font-size:18px; cursor:pointer; box-shadow:0 0 30px rgba(0,255,225,.5); transition:.4s; }
 .hero button:hover { transform:scale(1.07); }
 
 .container { width:100%; padding:100px 5%; }
@@ -52,7 +47,7 @@ nav a:hover { color:#00ffe1; }
 
 .contact-form { max-width:600px; margin:0 auto; background:rgba(255,255,255,.05); padding:40px; border-radius:25px; }
 
-/* Админ-панель */
+/* Админ */
 .admin-panel { position:fixed; inset:0; background:rgba(0,0,0,.95); display:none; justify-content:center; align-items:center; z-index:9999; padding:15px; }
 .admin-box { width:100%; max-width:760px; background:#0f1729; border-radius:28px; padding:30px; max-height:92vh; overflow-y:auto; }
 
@@ -69,11 +64,7 @@ button:hover { transform:scale(1.03); }
 .post-item img, .post-item video { width:100%; max-height:220px; object-fit:cover; border-radius:10px; margin-bottom:10px; }
 
 @media (max-width: 768px) {
-    nav { 
-        display:none; position:absolute; top:70px; left:0; right:0; 
-        background:#050816; flex-direction:column; padding:20px; gap:15px; 
-        border-top:1px solid rgba(255,255,255,0.1);
-    }
+    nav { display:none; position:absolute; top:70px; left:0; right:0; background:#050816; flex-direction:column; padding:20px; gap:15px; }
     nav.active { display:flex; }
     .hamburger { display:block; }
     .container { padding:80px 5%; }
@@ -100,7 +91,7 @@ button:hover { transform:scale(1.03); }
         <a href="#about">Обо мне</a>
         <a href="#posts">Проекты</a>
         <a href="#contact">Связаться</a>
-        <a href="#" onclick="openAdmin(); return false;" style="color:#00ffe1; font-weight:bold;">Админ-панель</a>
+        <a href="#" onclick="openAdmin(); return false;" style="color:#00ffe1; font-weight:bold;">Админ</a>
     </nav>
     <div class="hamburger" id="hamburger">☰</div>
 </header>
@@ -128,8 +119,7 @@ button:hover { transform:scale(1.03); }
     <h1 class="section-title">Связаться со мной</h1>
     <div class="contact-form">
         <p style="text-align:center;margin-bottom:25px;">
-            Напишите мне свои предложения по улучшению сайта, идеи для новых функций 
-            или просто поделитесь мыслями. Буду рад любому фидбеку!
+            Напишите мне свои предложения по улучшению сайта, идеи или просто поделитесь мыслями.
         </p>
         <input type="text" id="contactName" placeholder="Ваше имя" required>
         <input type="email" id="contactEmail" placeholder="Email" required>
@@ -146,14 +136,12 @@ button:hover { transform:scale(1.03); }
 <div class="admin-panel" id="adminPanel">
     <div class="admin-box">
         <h2>Админ-панель</h2>
-        
         <div class="admin-tabs">
             <div class="tab" onclick="switchTab(0)">Создать пост</div>
             <div class="tab active" onclick="switchTab(1)">Управление постами</div>
             <div class="tab" onclick="switchTab(2)">Настройки сайта</div>
         </div>
 
-        <!-- Создать пост -->
         <div id="tabContent0" style="display:none;">
             <input type="password" id="password" placeholder="Введите пароль">
             <button onclick="loginAdmin()" style="width:100%; margin-bottom:20px;">Войти</button>
@@ -173,16 +161,14 @@ button:hover { transform:scale(1.03); }
             </div>
         </div>
 
-        <!-- Управление постами -->
         <div id="tabContent1">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
                 <h3>Мои публикации (<span id="postCount">0</span>)</h3>
             </div>
             <input type="text" id="searchInput" placeholder="Поиск..." onkeyup="filterAdminPosts()">
             <div id="adminPostsList"></div>
         </div>
 
-        <!-- Настройки -->
         <div id="tabContent2" style="display:none;">
             <h3 style="margin:20px 0 15px;">Сменить иконку сайта</h3>
             <input type="file" id="iconFile" accept="image/*">
@@ -220,48 +206,50 @@ document.getElementById("hamburger").addEventListener("click", () => {
     document.getElementById("navMenu").classList.toggle("active");
 });
 
-// Admin
-function openAdmin(){ 
-    document.getElementById("adminPanel").style.display = "flex"; 
-    switchTab(1);
-}
+function openAdmin(){ document.getElementById("adminPanel").style.display = "flex"; switchTab(1); }
 function closeAdmin(){ document.getElementById("adminPanel").style.display = "none"; }
 
 function switchTab(tab){
-    document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === tab));
-    for(let i=0; i<3; i++){
+    document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===tab));
+    for(let i=0;i<3;i++){
         const el = document.getElementById('tabContent'+i);
-        if(el) el.style.display = (i===tab) ? 'block' : 'none';
+        if(el) el.style.display = (i===tab)?'block':'none';
     }
-    if(tab === 1) renderAdminPosts();
+    if(tab===1) renderAdminPosts();
 }
 
 function loginAdmin(){
     if(document.getElementById("password").value === ADMIN_PASSWORD){
         document.getElementById("adminContent").style.display = "block";
-    } else {
-        alert("Неверный пароль!");
-    }
+    } else alert("Неверный пароль!");
 }
 
-// === Посты (все функции) ===
-function renderPosts() {
+// Главная страница постов
+function renderPosts(){
     const container = document.getElementById("postsContainer");
     container.innerHTML = "";
+
     posts.slice().reverse().forEach(post => {
         let mediaHTML = '';
-        if (post.type === "image" && post.media) mediaHTML = `<img src="${post.media}" alt="">`;
-        else if (post.type === "video" && post.media) mediaHTML = `<video controls src="${post.media}"></video>`;
-        else if (post.type === "link" && post.media) mediaHTML = `<a href="${post.media}" target="_blank" style="color:#00ffe1;">Перейти по ссылке →</a>`;
+        if(post.type === "image" && post.media) mediaHTML = `<img src="${post.media}" alt="">`;
+        else if(post.type === "video" && post.media) mediaHTML = `<video controls src="${post.media}"></video>`;
+        else if(post.type === "link" && post.media) mediaHTML = `<a href="${post.media}" target="_blank" style="color:#00ffe1;">Перейти по ссылке →</a>`;
 
         const div = document.createElement("div");
         div.className = "post";
-        div.innerHTML = `\( {mediaHTML}<div class="post-content"><h2> \){post.title}</h2><p>${post.description}</p></div>`;
+        div.innerHTML = `
+            ${mediaHTML}
+            <div class="post-content">
+                <h2>${post.title}</h2>
+                <p>${post.description}</p>
+            </div>
+        `;
         container.appendChild(div);
     });
 }
 
-function addPost() { /* ... та же функция */ 
+// Создание поста
+function addPost(){
     const title = document.getElementById("title").value.trim();
     const description = document.getElementById("description").value.trim();
     const type = document.getElementById("type").value;
@@ -273,7 +261,7 @@ function addPost() { /* ... та же функция */
     let media = mediaUrl;
     if(fileInput.files.length > 0){
         const reader = new FileReader();
-        reader.onload = e => saveNewPost(title, description, type, e.target.result);
+        reader.onload = e => { saveNewPost(title, description, type, e.target.result); };
         reader.readAsDataURL(fileInput.files[0]);
         return;
     }
@@ -284,16 +272,59 @@ function saveNewPost(title, description, type, media){
     posts.push({title, description, type, media});
     localStorage.setItem("devlife_posts", JSON.stringify(posts));
     renderPosts();
-    alert("Пост опубликован!");
+    alert("Пост успешно опубликован!");
     renderAdminPosts();
 }
 
-// Управление постами, редактирование, удаление, поиск — все функции оставлены
-function renderAdminPosts(filtered = posts){ /* ... */ }
-function filterAdminPosts(){ /* ... */ }
+// Управление постами
+function renderAdminPosts(filtered = posts){
+    const container = document.getElementById("adminPostsList");
+    container.innerHTML = "";
+    document.getElementById("postCount").textContent = filtered.length;
+
+    if(filtered.length === 0){
+        container.innerHTML = "<p style='text-align:center;color:#777;'>Постов не найдено</p>";
+        return;
+    }
+
+    filtered.slice().reverse().forEach(post => {
+        const idx = posts.indexOf(post);
+        let mediaHTML = '';
+        if(post.type === "image" && post.media) mediaHTML = `<img src="${post.media}" alt="">`;
+        else if(post.type === "video" && post.media) mediaHTML = `<video controls src="${post.media}"></video>`;
+        else if(post.type === "link" && post.media) mediaHTML = `<a href="${post.media}" target="_blank">Ссылка</a>`;
+
+        const div = document.createElement("div");
+        div.className = "post-item";
+        div.innerHTML = `
+            ${mediaHTML}
+            <h3>${post.title}</h3>
+            <p>${post.description}</p>
+            <div style="display:flex; gap:10px; margin-top:12px;">
+                <button onclick="editPost(${idx})" style="background:#00b4d8;flex:1;">Редактировать</button>
+                <button onclick="deletePost(${idx})" style="background:#ff3c6f;flex:1;">Удалить</button>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function filterAdminPosts(){
+    const q = document.getElementById("searchInput").value.toLowerCase();
+    const filtered = posts.filter(p => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q));
+    renderAdminPosts(filtered);
+}
+
 function editPost(index){ /* ... */ }
 function saveEditedPost(){ /* ... */ }
-function deletePost(index){ /* ... */ }
+function deletePost(index){
+    if(confirm("Удалить пост?")){
+        posts.splice(index,1);
+        localStorage.setItem("devlife_posts", JSON.stringify(posts));
+        renderPosts();
+        renderAdminPosts();
+    }
+}
 
 function changeFavicon(){ /* ... */ }
 function sendMessage(){ /* ... */ }
