@@ -66,6 +66,7 @@ button:hover { transform:scale(1.03); }
 .close { background:#ff3c6f !important; width:100%; margin-top:20px; }
 
 .post-item { background:rgba(255,255,255,0.05); padding:15px; border-radius:15px; margin-bottom:15px; }
+.post-item img, .post-item video { width:100%; max-height:180px; object-fit:cover; border-radius:10px; margin-bottom:10px; }
 
 @media (max-width: 768px) {
     nav { display:none; position:absolute; top:70px; left:0; right:0; background:#050816; flex-direction:column; padding:20px; gap:15px; }
@@ -133,7 +134,7 @@ button:hover { transform:scale(1.03); }
 </section>
 
 <footer>
-    © 2026 DevLife — Все права защищены | Сделано с ❤️ в Далласе
+    © 2026 DevLife | Сделано с ❤️
 </footer>
 
 <!-- Админ-панель -->
@@ -216,10 +217,7 @@ document.getElementById("hamburger").addEventListener("click", () => {
     document.getElementById("navMenu").classList.toggle("active");
 });
 
-function openAdmin(){ 
-    document.getElementById("adminPanel").style.display = "flex"; 
-    switchTab(1); 
-}
+function openAdmin(){ document.getElementById("adminPanel").style.display = "flex"; switchTab(1); }
 function closeAdmin(){ document.getElementById("adminPanel").style.display = "none"; }
 
 function switchTab(tab){
@@ -242,11 +240,15 @@ function renderPosts(){
     const container = document.getElementById("postsContainer");
     container.innerHTML = "";
 
-    posts.slice().reverse().forEach((post, idx) => {
+    posts.slice().reverse().forEach(post => {
         let mediaHTML = '';
         if(post.type === "image" && post.media) mediaHTML = `<img src="${post.media}" alt="">`;
         else if(post.type === "video" && post.media) mediaHTML = `<video controls src="${post.media}"></video>`;
         else if(post.type === "link" && post.media) mediaHTML = `<a href="${post.media}" target="_blank" style="color:#00ffe1;">Перейти по ссылке →</a>`;
+
+        const shortDesc = post.description.length > 100 
+            ? post.description.substring(0, 100) + '...' 
+            : post.description;
 
         const div = document.createElement("div");
         div.className = "post";
@@ -258,7 +260,7 @@ function renderPosts(){
                     <span>${new Date(post.date || Date.now()).toLocaleDateString('ru-RU')}</span>
                 </div>
                 <h2>${post.title}</h2>
-                <p>${post.description}</p>
+                <p>${shortDesc}</p>
             </div>
         `;
         container.appendChild(div);
@@ -306,23 +308,27 @@ function renderAdminPosts(){
     container.innerHTML = "";
 
     if(posts.length === 0){
-        container.innerHTML = "<p style='text-align:center;color:#777;padding:20px;'>Пока нет публикаций</p>";
+        container.innerHTML = "<p style='text-align:center;color:#777;padding:30px;'>Пока нет публикаций</p>";
         return;
     }
 
     posts.slice().reverse().forEach((post, idx) => {
         const realIndex = posts.length - 1 - idx;
         let mediaHTML = '';
-        if(post.type === "image" && post.media) mediaHTML = `<img src="${post.media}" style="max-height:180px; width:100%; object-fit:cover; border-radius:10px;">`;
-        else if(post.type === "video" && post.media) mediaHTML = `<video controls src="${post.media}" style="max-height:180px; width:100%; border-radius:10px;"></video>`;
+        if(post.type === "image" && post.media) mediaHTML = `<img src="${post.media}" style="max-height:180px;width:100%;object-fit:cover;border-radius:10px;">`;
+        else if(post.type === "video" && post.media) mediaHTML = `<video controls src="${post.media}" style="max-height:180px;width:100%;border-radius:10px;"></video>`;
+
+        const shortDesc = post.description.length > 100 
+            ? post.description.substring(0, 100) + '...' 
+            : post.description;
 
         const div = document.createElement("div");
         div.className = "post-item";
         div.innerHTML = `
             ${mediaHTML}
             <h3>${post.title}</h3>
-            <p>\( {post.description.substring(0, 100)} \){post.description.length > 100 ? '...' : ''}</p>
-            <div style="display:flex; gap:10px; margin-top:10px;">
+            <p>${shortDesc}</p>
+            <div style="display:flex; gap:10px; margin-top:12px;">
                 <button onclick="editPost(${realIndex})" style="background:#00b4d8; flex:1;">Редактировать</button>
                 <button onclick="deletePost(${realIndex})" style="background:#ff3c6f; flex:1;">Удалить</button>
             </div>
@@ -337,11 +343,10 @@ function deletePost(index){
         localStorage.setItem("devlife_posts", JSON.stringify(posts));
         renderPosts();
         renderAdminPosts();
-        alert("Пост удалён");
     }
 }
 
-function editPost(index){ /* можно добавить позже */ }
+function editPost(index){ alert("Редактирование пока в разработке"); }
 function filterAdminPosts(){ /* можно добавить позже */ }
 function changeFavicon(){ /* можно добавить позже */ }
 function sendMessage(){ /* можно добавить позже */ }
