@@ -65,6 +65,22 @@ button:hover { transform:scale(1.03); }
 .post-item { background:rgba(255,255,255,0.05); padding:15px; border-radius:15px; margin-bottom:15px; }
 .post-item img, .post-item video { width:100%; max-height:180px; object-fit:cover; border-radius:10px; margin-bottom:10px; }
 
+.twitch-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #9146FF;
+    object-fit: cover;
+    display: block;
+    margin: 20px auto;
+    transition: all 0.3s;
+}
+
+.twitch-avatar:hover {
+    transform: scale(1.08);
+    border-color: #00ffe1;
+}
+
 @media (max-width: 768px) {
     nav { display:none; position:absolute; top:70px; left:0; right:0; background:#050816; flex-direction:column; padding:20px; gap:15px; }
     nav.active { display:flex; }
@@ -106,14 +122,16 @@ button:hover { transform:scale(1.03); }
 
 <section class="container" id="about">
     <h1 class="section-title">Обо мне</h1>
+    
+    <a href="https://www.twitch.tv/daniil_pogorelov_9" target="_blank">
+        <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/0b0b0b0b-0b0b-0b0b-0b0b-0b0b0b0b0b0b-profile_image-300x300.png" 
+             class="twitch-avatar" 
+             alt="Daniil Pogorelov Twitch Avatar">
+    </a>
+
     <p style="max-width:800px;margin:0 auto;text-align:center;font-size:19px;line-height:1.8;color:#ddd;">
         Здравствуйте, меня зовут <strong>Даниил</strong>. Я начинающий программист, разработчик плагинов и приложений с сайтами. 
-        Хочу больше учиться, узнавать новое и создавать для вас интересное.<br><br>
-        
-        <strong>Мой Twitch-канал:</strong> 
-        <a href="https://www.twitch.tv/daniil_pogorelov_9" target="_blank" style="color:#00ffe1; text-decoration:underline;">
-            twitch.tv/daniil_pogorelov_9
-        </a>
+        Хочу больше учиться, узнавать новое и создавать для вас интересное.
     </p>
 </section>
 
@@ -136,7 +154,7 @@ button:hover { transform:scale(1.03); }
 </section>
 
 <footer>
-    © 2026 DevLife — Все права защищены | Сделано с ❤️ в Далласе
+     Сделано с ❤️   
 </footer>
 
 <!-- Админ-панель -->
@@ -237,12 +255,12 @@ function loginAdmin(){
     } else alert("Неверный пароль!");
 }
 
-// Главная страница
+// Главная страница постов
 function renderPosts(){
     const container = document.getElementById("postsContainer");
     container.innerHTML = "";
 
-    posts.slice().reverse().forEach((post, realIndex) => {
+    posts.slice().reverse().forEach(post => {
         let mediaHTML = '';
         if(post.type === "image" && post.media) mediaHTML = `<img src="${post.media}" alt="">`;
         else if(post.type === "video" && post.media) mediaHTML = `<video controls src="${post.media}"></video>`;
@@ -304,7 +322,6 @@ function saveNewPost(title, description, type, media){
     alert("Пост успешно опубликован!");
 }
 
-// Управление постами
 function renderAdminPosts(){
     const container = document.getElementById("adminPostsList");
     container.innerHTML = "";
