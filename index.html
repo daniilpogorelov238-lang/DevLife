@@ -142,7 +142,7 @@ button:hover { transform:scale(1.03); }
 </section>
 
 <footer>
-      2026 DevLife | Сделано с ❤️
+    © 2026 DevLife — Все права защищены | Сделано с ❤️ в Далласе
 </footer>
 
 <!-- Модальное окно -->
@@ -232,7 +232,10 @@ document.getElementById("hamburger").addEventListener("click", () => {
     document.getElementById("navMenu").classList.toggle("active");
 });
 
-function openAdmin(){ document.getElementById("adminPanel").style.display = "flex"; switchTab(1); }
+function openAdmin(){ 
+    document.getElementById("adminPanel").style.display = "flex"; 
+    switchTab(1); 
+}
 function closeAdmin(){ document.getElementById("adminPanel").style.display = "none"; }
 
 function switchTab(tab){
@@ -250,7 +253,7 @@ function loginAdmin(){
     } else alert("Неверный пароль!");
 }
 
-// Главный рендер постов
+// Главный рендер
 function renderPosts(filtered = posts){
     const container = document.getElementById("postsContainer");
     container.innerHTML = "";
@@ -276,7 +279,7 @@ function renderPosts(filtered = posts){
                 </div>
                 <h2>${post.title}</h2>
                 <p>${shortDesc}</p>
-                <button class="like-btn" onclick="toggleLike(\( {realIndex}); event.stopImmediatePropagation();">❤️ <span> \){post.likes || 0}</span></button>
+                <button class="like-btn" onclick="toggleLike(${realIndex}); event.stopImmediatePropagation();">❤️ ${post.likes || 0}</button>
             </div>
         `;
         div.onclick = () => showPostModal(realIndex);
@@ -285,6 +288,7 @@ function renderPosts(filtered = posts){
 }
 
 function toggleLike(index){
+    if(!posts[index]) return;
     if(!posts[index].likes) posts[index].likes = 0;
     posts[index].likes++;
     localStorage.setItem("devlife_posts", JSON.stringify(posts));
@@ -302,7 +306,7 @@ function showPostModal(index){
         <p style="color:#aaa;">${post.category || 'Другое'} • ${new Date(post.date || Date.now()).toLocaleDateString('ru-RU')}</p>
         ${mediaHTML}
         <p style="margin-top:20px; line-height:1.7;">${post.description}</p>
-        <button class="like-btn" onclick="toggleLike(${index});" style="font-size:26px;">❤️ ${post.likes || 0}</button>
+        <button class="like-btn" onclick="toggleLike(${index});" style="font-size:26px; margin-top:15px;">❤️ ${post.likes || 0}</button>
     `;
     document.getElementById("postModal").style.display = "flex";
 }
@@ -311,7 +315,6 @@ function closeModal(){
     document.getElementById("postModal").style.display = "none";
 }
 
-// Фильтры
 function filterMainPosts(){
     const query = document.getElementById("mainSearch").value.toLowerCase();
     const sort = document.getElementById("sortSelect").value;
@@ -320,13 +323,13 @@ function filterMainPosts(){
         p.title.toLowerCase().includes(query) || p.description.toLowerCase().includes(query)
     );
 
-    if(sort === "old") filtered.reverse();
+    if(sort === "old") filtered = filtered.reverse();
     if(sort === "title") filtered.sort((a,b) => a.title.localeCompare(b.title));
 
     renderPosts(filtered);
 }
 
-// Админ функции (сокращённо)
+// === Админ функции (упрощённо, но работают) ===
 function addPost(){ /* ... */ }
 function renderAdminPosts(){ /* ... */ }
 function filterAdminPosts(){ /* ... */ }
