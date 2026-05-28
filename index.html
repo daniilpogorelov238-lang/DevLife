@@ -39,9 +39,6 @@ nav a:hover { color:#00ffe1; }
 .container { width:100%; padding:100px 5%; }
 .section-title { font-size: clamp(32px, 6vw, 45px); margin-bottom:30px; text-align:center; background:linear-gradient(45deg,#00ffe1,#7a5cff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 
-.controls { display:flex; gap:15px; margin-bottom:30px; flex-wrap:wrap; }
-.controls input, .controls select { padding:12px; background:#1a2542; border:none; border-radius:12px; color:white; flex:1; min-width:200px; }
-
 .posts { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:30px; }
 .post { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:25px; overflow:hidden; transition:.5s; cursor:pointer; }
 .post:hover { transform:translateY(-10px); box-shadow:0 0 30px rgba(0,255,225,.2); }
@@ -111,7 +108,12 @@ button:hover { transform:scale(1.03); }
     <h1 class="section-title">Обо мне</h1>
     <p style="max-width:800px;margin:0 auto;text-align:center;font-size:19px;line-height:1.8;color:#ddd;">
         Здравствуйте, меня зовут <strong>Даниил</strong>. Я начинающий программист, разработчик плагинов и приложений с сайтами. 
-        Хочу больше учиться, узнавать новое и создавать для вас интересное.
+        Хочу больше учиться, узнавать новое и создавать для вас интересное.<br><br>
+        
+        <strong>Мой Twitch-канал:</strong> 
+        <a href="https://www.twitch.tv/daniil_pogorelov_9" target="_blank" style="color:#00ffe1; text-decoration:underline;">
+            twitch.tv/daniil_pogorelov_9
+        </a>
     </p>
 </section>
 
@@ -134,7 +136,7 @@ button:hover { transform:scale(1.03); }
 </section>
 
 <footer>
-    © 2026 DevLife | Сделано с ❤️
+    © 2026 DevLife — Все права защищены | Сделано с ❤️ в Далласе
 </footer>
 
 <!-- Админ-панель -->
@@ -240,14 +242,14 @@ function renderPosts(){
     const container = document.getElementById("postsContainer");
     container.innerHTML = "";
 
-    posts.slice().reverse().forEach(post => {
+    posts.slice().reverse().forEach((post, realIndex) => {
         let mediaHTML = '';
         if(post.type === "image" && post.media) mediaHTML = `<img src="${post.media}" alt="">`;
         else if(post.type === "video" && post.media) mediaHTML = `<video controls src="${post.media}"></video>`;
         else if(post.type === "link" && post.media) mediaHTML = `<a href="${post.media}" target="_blank" style="color:#00ffe1;">Перейти по ссылке →</a>`;
 
-        const shortDesc = post.description.length > 100 
-            ? post.description.substring(0, 100) + '...' 
+        const shortDesc = post.description.length > 120 
+            ? post.description.substring(0, 120) + '...' 
             : post.description;
 
         const div = document.createElement("div");
@@ -346,10 +348,10 @@ function deletePost(index){
     }
 }
 
-function editPost(index){ alert("Редактирование пока в разработке"); }
-function filterAdminPosts(){ /* можно добавить позже */ }
-function changeFavicon(){ /* можно добавить позже */ }
-function sendMessage(){ /* можно добавить позже */ }
+function editPost(index){ alert("Функция редактирования в разработке"); }
+function filterAdminPosts(){ }
+function changeFavicon(){ }
+function sendMessage(){ }
 </script>
 </body>
 </html>
