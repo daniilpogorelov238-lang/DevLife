@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -49,12 +48,12 @@ nav a:hover { color:#00ffe1; }
 .post img, .post video { width:100%; max-height:260px; object-fit:cover; }
 .post-content { padding:20px; }
 .post-header { display:flex; justify-content:space-between; font-size:14px; color:#888; margin-bottom:8px; }
-.like-btn { background:none; border:none; font-size:20px; cursor:pointer; margin-top:10px; }
+.like-btn { background:none; border:none; font-size:22px; cursor:pointer; margin-top:10px; transition:.3s; }
+.like-btn:hover { transform:scale(1.3); }
 
 .modal { position:fixed; inset:0; background:rgba(0,0,0,.9); display:none; align-items:center; justify-content:center; z-index:10000; }
 .modal-content { background:#0f1729; max-width:800px; width:90%; max-height:90vh; overflow-y:auto; border-radius:25px; padding:30px; position:relative; }
 
-/* Админ */
 .admin-panel { position:fixed; inset:0; background:rgba(0,0,0,.95); display:none; justify-content:center; align-items:center; z-index:9999; padding:15px; }
 .admin-box { width:100%; max-width:760px; background:#0f1729; border-radius:28px; padding:30px; max-height:92vh; overflow-y:auto; }
 
@@ -66,8 +65,6 @@ input, textarea, select { width:100%; padding:14px; margin-bottom:15px; backgrou
 button { padding:14px 28px; border:none; border-radius:12px; background:linear-gradient(45deg,#00ffe1,#7a5cff); color:white; cursor:pointer; transition:.3s; }
 button:hover { transform:scale(1.03); }
 .close { background:#ff3c6f !important; width:100%; margin-top:20px; }
-
-.post-item { background:rgba(255,255,255,0.05); padding:15px; border-radius:15px; margin-bottom:15px; }
 
 @media (max-width: 768px) {
     nav { display:none; position:absolute; top:70px; left:0; right:0; background:#050816; flex-direction:column; padding:20px; gap:15px; }
@@ -103,8 +100,8 @@ button:hover { transform:scale(1.03); }
 </header>
 
 <section class="hero">
-    <h1>Публикую свои проекты и другое.</h1>
-    <p>Разработано для меня и публикации моих проекто, и не только проектов.</p>
+    <h1>Публикуй свои работы и вдохновляй других</h1>
+    <p>Современная платформа для разработчиков, дизайнеров и креаторов</p>
     <button onclick="document.getElementById('posts').scrollIntoView({behavior:'smooth'})">Смотреть публикации</button>
 </section>
 
@@ -145,12 +142,12 @@ button:hover { transform:scale(1.03); }
 </section>
 
 <footer>
-       2026 DevLife | Сделано с ❤️
+      2026 DevLife | Сделано с ❤️
 </footer>
 
 <!-- Модальное окно -->
 <div class="modal" id="postModal">
-    <div class="modal-content" id="modalContent">
+    <div class="modal-content">
         <button onclick="closeModal()" style="position:absolute; top:15px; right:20px; background:#ff3c6f; padding:8px 16px;">✕</button>
         <div id="modalBody"></div>
     </div>
@@ -171,7 +168,7 @@ button:hover { transform:scale(1.03); }
             <button onclick="loginAdmin()" style="width:100%; margin-bottom:20px;">Войти</button>
             <div id="adminContent" style="display:none;">
                 <input type="text" id="title" placeholder="Название поста">
-                <textarea id="description" placeholder="Описание" rows="4"></textarea>
+                <textarea id="description" placeholder="Описание" rows="5"></textarea>
                 <select id="category">
                     <option value="Frontend">Frontend</option>
                     <option value="Backend">Backend</option>
@@ -186,7 +183,7 @@ button:hover { transform:scale(1.03); }
                     <option value="text">Только текст</option>
                     <option value="link">Ссылка</option>
                 </select>
-                <input type="text" id="mediaUrl" placeholder="Ссылка на медиа (опционально)">
+                <input type="text" id="mediaUrl" placeholder="Ссылка на медиа">
                 <p style="text-align:center;margin:10px 0; color:#777;">— или загрузите файл —</p>
                 <input type="file" id="mediaFile" accept="image/*,video/*">
                 <button onclick="addPost()" style="width:100%;">Опубликовать пост</button>
@@ -253,17 +250,20 @@ function loginAdmin(){
     } else alert("Неверный пароль!");
 }
 
-// Рендер постов
+// Главный рендер постов
 function renderPosts(filtered = posts){
     const container = document.getElementById("postsContainer");
     container.innerHTML = "";
 
-    filtered.slice().reverse().forEach((post, i) => {
-        const realIndex = posts.indexOf(post);
+    filtered.slice().reverse().forEach((post, realIndex) => {
         let mediaHTML = '';
         if(post.type === "image" && post.media) mediaHTML = `<img src="${post.media}" alt="">`;
         else if(post.type === "video" && post.media) mediaHTML = `<video controls src="${post.media}"></video>`;
         else if(post.type === "link" && post.media) mediaHTML = `<a href="${post.media}" target="_blank" style="color:#00ffe1;">Перейти по ссылке →</a>`;
+
+        const shortDesc = post.description.length > 120 
+            ? post.description.substring(0, 120) + '...' 
+            : post.description;
 
         const div = document.createElement("div");
         div.className = "post";
@@ -275,8 +275,8 @@ function renderPosts(filtered = posts){
                     <span>${new Date(post.date || Date.now()).toLocaleDateString('ru-RU')}</span>
                 </div>
                 <h2>${post.title}</h2>
-                <p>\( {post.description.substring(0, 120)} \){post.description.length > 120 ? '...' : ''}</p>
-                <button class="like-btn" onclick="toggleLike(\( {realIndex}); event.stopImmediatePropagation();">❤️ <span id="like-count- \){realIndex}">${post.likes || 0}</span></button>
+                <p>${shortDesc}</p>
+                <button class="like-btn" onclick="toggleLike(\( {realIndex}); event.stopImmediatePropagation();">❤️ <span> \){post.likes || 0}</span></button>
             </div>
         `;
         div.onclick = () => showPostModal(realIndex);
@@ -288,10 +288,9 @@ function toggleLike(index){
     if(!posts[index].likes) posts[index].likes = 0;
     posts[index].likes++;
     localStorage.setItem("devlife_posts", JSON.stringify(posts));
-    document.getElementById(`like-count-${index}`).textContent = posts[index].likes;
+    renderPosts(); // обновляем все посты
 }
 
-// Модальное окно
 function showPostModal(index){
     const post = posts[index];
     let mediaHTML = '';
@@ -303,7 +302,7 @@ function showPostModal(index){
         <p style="color:#aaa;">${post.category || 'Другое'} • ${new Date(post.date || Date.now()).toLocaleDateString('ru-RU')}</p>
         ${mediaHTML}
         <p style="margin-top:20px; line-height:1.7;">${post.description}</p>
-        <button class="like-btn" onclick="toggleLike(${index});" style="font-size:24px; margin-top:20px;">❤️ ${post.likes || 0}</button>
+        <button class="like-btn" onclick="toggleLike(${index});" style="font-size:26px;">❤️ ${post.likes || 0}</button>
     `;
     document.getElementById("postModal").style.display = "flex";
 }
@@ -312,7 +311,7 @@ function closeModal(){
     document.getElementById("postModal").style.display = "none";
 }
 
-// Фильтры главной страницы
+// Фильтры
 function filterMainPosts(){
     const query = document.getElementById("mainSearch").value.toLowerCase();
     const sort = document.getElementById("sortSelect").value;
@@ -321,28 +320,19 @@ function filterMainPosts(){
         p.title.toLowerCase().includes(query) || p.description.toLowerCase().includes(query)
     );
 
-    if(sort === "old") filtered = filtered.reverse();
+    if(sort === "old") filtered.reverse();
     if(sort === "title") filtered.sort((a,b) => a.title.localeCompare(b.title));
 
     renderPosts(filtered);
 }
 
-// Админ функции (сокращённо, но работают)
+// Админ функции (сокращённо)
 function addPost(){ /* ... */ }
-function saveNewPost(title, description, type, media){
-    posts.push({title, description, type, media, category: document.getElementById("category").value, date: Date.now()});
-    localStorage.setItem("devlife_posts", JSON.stringify(posts));
-    renderPosts();
-    alert("Пост опубликован!");
-    renderAdminPosts();
-}
-
 function renderAdminPosts(){ /* ... */ }
 function filterAdminPosts(){ /* ... */ }
 function editPost(index){ /* ... */ }
 function saveEditedPost(){ /* ... */ }
 function deletePost(index){ /* ... */ }
-
 function changeFavicon(){ /* ... */ }
 function sendMessage(){ /* ... */ }
 </script>
