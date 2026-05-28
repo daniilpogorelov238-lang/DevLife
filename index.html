@@ -65,6 +65,8 @@ button { padding:14px 28px; border:none; border-radius:12px; background:linear-g
 button:hover { transform:scale(1.03); }
 .close { background:#ff3c6f !important; width:100%; margin-top:20px; }
 
+.post-item { background:rgba(255,255,255,0.05); padding:15px; border-radius:15px; margin-bottom:15px; }
+
 @media (max-width: 768px) {
     nav { display:none; position:absolute; top:70px; left:0; right:0; background:#050816; flex-direction:column; padding:20px; gap:15px; }
     nav.active { display:flex; }
@@ -114,16 +116,6 @@ button:hover { transform:scale(1.03); }
 
 <section class="container" id="posts">
     <h1 class="section-title">Публикации</h1>
-    
-    <div class="controls">
-        <input type="text" id="mainSearch" placeholder="Поиск постов..." onkeyup="filterMainPosts()">
-        <select id="sortSelect" onchange="filterMainPosts()">
-            <option value="new">Новые сначала</option>
-            <option value="old">Старые сначала</option>
-            <option value="title">По названию</option>
-        </select>
-    </div>
-
     <div class="posts" id="postsContainer"></div>
 </section>
 
@@ -143,14 +135,6 @@ button:hover { transform:scale(1.03); }
 <footer>
     © 2026 DevLife — Все права защищены | Сделано с ❤️ в Далласе
 </footer>
-
-<!-- Модальное окно -->
-<div class="modal" id="postModal">
-    <div class="modal-content">
-        <button onclick="closeModal()" style="position:absolute; top:15px; right:20px; background:#ff3c6f; padding:8px 16px;">✕</button>
-        <div id="modalBody"></div>
-    </div>
-</div>
 
 <!-- Админ-панель -->
 <div class="admin-panel" id="adminPanel">
@@ -224,6 +208,7 @@ window.onload = () => {
     }, 1200);
     emailjs.init(EMAILJS_PUBLIC_KEY);
     renderPosts();
+    renderAdminPosts();
 };
 
 // Hamburger
@@ -231,7 +216,10 @@ document.getElementById("hamburger").addEventListener("click", () => {
     document.getElementById("navMenu").classList.toggle("active");
 });
 
-function openAdmin(){ document.getElementById("adminPanel").style.display = "flex"; switchTab(1); }
+function openAdmin(){ 
+    document.getElementById("adminPanel").style.display = "flex"; 
+    switchTab(1); 
+}
 function closeAdmin(){ document.getElementById("adminPanel").style.display = "none"; }
 
 function switchTab(tab){
@@ -249,20 +237,16 @@ function loginAdmin(){
     } else alert("Неверный пароль!");
 }
 
-// Рендер постов
-function renderPosts(filtered = posts){
+// Главная страница
+function renderPosts(){
     const container = document.getElementById("postsContainer");
     container.innerHTML = "";
 
-    filtered.slice().reverse().forEach((post, realIndex) => {
+    posts.slice().reverse().forEach((post, idx) => {
         let mediaHTML = '';
         if(post.type === "image" && post.media) mediaHTML = `<img src="${post.media}" alt="">`;
         else if(post.type === "video" && post.media) mediaHTML = `<video controls src="${post.media}"></video>`;
         else if(post.type === "link" && post.media) mediaHTML = `<a href="${post.media}" target="_blank" style="color:#00ffe1;">Перейти по ссылке →</a>`;
-
-        const shortDesc = post.description.length > 120 
-            ? post.description.substring(0, 120) + '...' 
-            : post.description;
 
         const div = document.createElement("div");
         div.className = "post";
@@ -274,48 +258,14 @@ function renderPosts(filtered = posts){
                     <span>${new Date(post.date || Date.now()).toLocaleDateString('ru-RU')}</span>
                 </div>
                 <h2>${post.title}</h2>
-                <p>${shortDesc}</p>
+                <p>${post.description}</p>
             </div>
         `;
-        div.onclick = () => showPostModal(realIndex);
         container.appendChild(div);
     });
 }
 
-function showPostModal(index){
-    const post = posts[index];
-    let mediaHTML = '';
-    if(post.type === "image" && post.media) mediaHTML = `<img src="${post.media}" style="width:100%; border-radius:15px; margin:15px 0;">`;
-    else if(post.type === "video" && post.media) mediaHTML = `<video controls src="${post.media}" style="width:100%; border-radius:15px; margin:15px 0;"></video>`;
-
-    document.getElementById("modalBody").innerHTML = `
-        <h2>${post.title}</h2>
-        <p style="color:#aaa;">${post.category || 'Другое'} • ${new Date(post.date || Date.now()).toLocaleDateString('ru-RU')}</p>
-        ${mediaHTML}
-        <p style="margin-top:20px; line-height:1.7;">${post.description}</p>
-    `;
-    document.getElementById("postModal").style.display = "flex";
-}
-
-function closeModal(){
-    document.getElementById("postModal").style.display = "none";
-}
-
-function filterMainPosts(){
-    const query = document.getElementById("mainSearch").value.toLowerCase();
-    const sort = document.getElementById("sortSelect").value;
-
-    let filtered = posts.filter(p => 
-        p.title.toLowerCase().includes(query) || p.description.toLowerCase().includes(query)
-    );
-
-    if(sort === "old") filtered = filtered.reverse();
-    if(sort === "title") filtered.sort((a,b) => a.title.localeCompare(b.title));
-
-    renderPosts(filtered);
-}
-
-// Админ функции (основные)
+// Добавление поста
 function addPost(){
     const title = document.getElementById("title").value.trim();
     const description = document.getElementById("description").value.trim();
@@ -337,23 +287,62 @@ function addPost(){
 
 function saveNewPost(title, description, type, media){
     posts.push({
-        title,
-        description,
-        type,
-        media,
+        title: title,
+        description: description,
+        type: type,
+        media: media,
         category: document.getElementById("category").value,
         date: Date.now()
     });
     localStorage.setItem("devlife_posts", JSON.stringify(posts));
     renderPosts();
-    alert("Пост успешно опубликован!");
     renderAdminPosts();
+    alert("Пост успешно опубликован!");
 }
 
-function renderAdminPosts(){ /* можно добавить позже */ }
-function filterAdminPosts(){ /* можно добавить позже */ }
+// Управление постами
+function renderAdminPosts(){
+    const container = document.getElementById("adminPostsList");
+    container.innerHTML = "";
+
+    if(posts.length === 0){
+        container.innerHTML = "<p style='text-align:center;color:#777;padding:20px;'>Пока нет публикаций</p>";
+        return;
+    }
+
+    posts.slice().reverse().forEach((post, idx) => {
+        const realIndex = posts.length - 1 - idx;
+        let mediaHTML = '';
+        if(post.type === "image" && post.media) mediaHTML = `<img src="${post.media}" style="max-height:180px; width:100%; object-fit:cover; border-radius:10px;">`;
+        else if(post.type === "video" && post.media) mediaHTML = `<video controls src="${post.media}" style="max-height:180px; width:100%; border-radius:10px;"></video>`;
+
+        const div = document.createElement("div");
+        div.className = "post-item";
+        div.innerHTML = `
+            ${mediaHTML}
+            <h3>${post.title}</h3>
+            <p>\( {post.description.substring(0, 100)} \){post.description.length > 100 ? '...' : ''}</p>
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button onclick="editPost(${realIndex})" style="background:#00b4d8; flex:1;">Редактировать</button>
+                <button onclick="deletePost(${realIndex})" style="background:#ff3c6f; flex:1;">Удалить</button>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function deletePost(index){
+    if(confirm("Удалить этот пост?")){
+        posts.splice(index, 1);
+        localStorage.setItem("devlife_posts", JSON.stringify(posts));
+        renderPosts();
+        renderAdminPosts();
+        alert("Пост удалён");
+    }
+}
+
 function editPost(index){ /* можно добавить позже */ }
-function deletePost(index){ /* можно добавить позже */ }
+function filterAdminPosts(){ /* можно добавить позже */ }
 function changeFavicon(){ /* можно добавить позже */ }
 function sendMessage(){ /* можно добавить позже */ }
 </script>
